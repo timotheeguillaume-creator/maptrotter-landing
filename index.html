@@ -9,10 +9,10 @@
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="apple-touch-icon" href="/favicon.png" />
 
-  <!-- Google Fonts : Montserrat pour le style du Logo -->
+  <!-- Google Fonts : Montserrat (Titre) + Caveat (Cursive 'live') + Plus Jakarta Sans (Corps) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -24,6 +24,7 @@
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
             logo: ['Montserrat', 'sans-serif'],
+            cursive: ['Caveat', 'cursive'],
           },
           colors: {
             brand: {
@@ -31,6 +32,7 @@
               card: '#1A222D',
               accent: '#E2725B',
               cyan: '#00E9FF',
+              gold: '#E5B869',
               cream: '#F5F5DC',
             }
           }
@@ -46,38 +48,42 @@
     }
     .accent-bg { background-color: #E2725B; }
     .accent-text { color: #E2725B; }
-    .cyan-text { color: #00E9FF; }
 
-    /* Neon glow effect for the O in MAPTROTTER */
+    /* Rétroéclairage néon pour le O de MAPTROTTER */
     .glow-cyan {
       color: #00E9FF;
-      text-shadow: 0 0 10px rgba(0, 233, 255, 0.7), 0 0 20px rgba(0, 233, 255, 0.4);
+      text-shadow: 0 0 12px rgba(0, 233, 255, 0.8), 0 0 24px rgba(0, 233, 255, 0.4);
     }
   </style>
 </head>
 
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-[#E2725B] selection:text-white">
 
-  <!-- Header / Navigation -->
-  <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex justify-between items-center gap-3">
+  <!-- Header / Navigation (Responsive Layout 2-block sur mobile) -->
+  <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
     
-    <!-- Logo MAPTROTTER avec Style Custom -->
-    <a href="#" class="flex items-center gap-2.5 group">
+    <!-- Ligne 1 sur Mobile : Logo + Titre "MAPTROTTER live" -->
+    <a href="#" class="flex items-center gap-3 group select-none">
       <img 
-        src="/favicon.png" 
-        alt="MapTrotter Icon" 
-        class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl shadow-lg border border-white/10 object-cover" 
+        src="/logo.png" 
+        alt="MAPTROTTER Logo" 
+        class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl shadow-lg object-contain" 
         onerror="this.style.display='none'"
       />
-      <span class="font-logo font-black text-2xl sm:text-3xl tracking-wider uppercase text-[#E2725B] select-none">
-        MAPTR<span class="glow-cyan inline-block transform hover:scale-110 transition-transform duration-200">O</span>TTER
-      </span>
+      <div class="flex items-baseline gap-1.5">
+        <span class="font-logo font-bold text-2xl sm:text-3xl tracking-widest uppercase text-[#E2725B]">
+          MAPTR<span class="glow-cyan inline-block">O</span>TTER
+        </span>
+        <span class="font-cursive font-bold text-2xl sm:text-3xl text-[#E5B869] transform -rotate-6 translate-y-1">
+          live
+        </span>
+      </div>
     </a>
 
-    <!-- Right Controls: Language Selector + CTA -->
-    <div class="flex items-center gap-2 sm:gap-4">
+    <!-- Ligne 2 sur Mobile : Sélecteur de langue + Bouton CTA -->
+    <div class="flex items-center justify-center w-full sm:w-auto gap-3 sm:gap-4">
       
-      <!-- Sélecteur de langue personnalisé (Compatible Emoji Flags sur Windows) -->
+      <!-- Sélecteur de langue personnalisé avec drapeaux SVG -->
       <div class="relative inline-block text-left" id="lang-dropdown-wrapper">
         <button 
           type="button" 
@@ -85,35 +91,35 @@
           aria-haspopup="true"
           aria-expanded="false"
           class="bg-[#1A222D] hover:bg-[#242F3E] border border-white/20 text-xs sm:text-sm text-white px-3 py-2 rounded-xl flex items-center gap-2 transition focus:outline-none focus:border-[#E2725B]">
-          <span id="current-lang-flag">🇫🇷</span>
+          <img id="current-lang-flag" src="https://flagcdn.com/w40/fr.png" alt="FR" class="w-4 h-3 rounded-sm object-cover" />
           <span id="current-lang-code" class="font-bold uppercase text-xs">FR</span>
           <span class="text-[10px] text-gray-400">▼</span>
         </button>
 
-        <!-- Menu déroulant -->
+        <!-- Menu déroulant des langues -->
         <div 
           id="lang-menu" 
           class="hidden absolute right-0 mt-2 w-36 bg-[#1A222D] border border-white/20 rounded-xl shadow-2xl z-50 overflow-hidden py-1 backdrop-blur-md">
-          <button onclick="selectLanguage('fr')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2 transition">
-            <span>🇫🇷</span> <span>Français</span>
+          <button onclick="selectLanguage('fr')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+            <img src="https://flagcdn.com/w40/fr.png" alt="FR" class="w-4 h-3 rounded-sm object-cover" /> <span>Français</span>
           </button>
-          <button onclick="selectLanguage('en')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2 transition">
-            <span>🇬🇧</span> <span>English</span>
+          <button onclick="selectLanguage('en')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+            <img src="https://flagcdn.com/w40/gb.png" alt="EN" class="w-4 h-3 rounded-sm object-cover" /> <span>English</span>
           </button>
-          <button onclick="selectLanguage('es')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2 transition">
-            <span>🇪🇸</span> <span>Español</span>
+          <button onclick="selectLanguage('es')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+            <img src="https://flagcdn.com/w40/es.png" alt="ES" class="w-4 h-3 rounded-sm object-cover" /> <span>Español</span>
           </button>
-          <button onclick="selectLanguage('de')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2 transition">
-            <span>🇩🇪</span> <span>Deutsch</span>
+          <button onclick="selectLanguage('de')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+            <img src="https://flagcdn.com/w40/de.png" alt="DE" class="w-4 h-3 rounded-sm object-cover" /> <span>Deutsch</span>
           </button>
-          <button onclick="selectLanguage('pt')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2 transition">
-            <span>🇵🇹</span> <span>Português</span>
+          <button onclick="selectLanguage('pt')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+            <img src="https://flagcdn.com/w40/pt.png" alt="PT" class="w-4 h-3 rounded-sm object-cover" /> <span>Português</span>
           </button>
         </div>
       </div>
 
       <!-- CTA App -->
-      <a href="#download" data-i18n="get_app" class="accent-bg text-white text-xs sm:text-sm font-bold px-3.5 sm:px-5 py-2.5 rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition text-center whitespace-nowrap">
+      <a href="#download" data-i18n="get_app" class="accent-bg text-white text-xs sm:text-sm font-bold px-4 sm:px-5 py-2.5 rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition text-center whitespace-nowrap">
         Obtenir l'application
       </a>
     </div>
@@ -167,7 +173,7 @@
     // Dictionnaire de traduction (5 langues)
     const translations = {
       fr: {
-        flag: "🇫🇷",
+        flagUrl: "https://flagcdn.com/w40/fr.png",
         badge: "🛰️ La carte interactive de la communauté",
         title_main: "Découvrez ce qui se passe",
         title_accent: "exactement là où vous êtes.",
@@ -178,7 +184,7 @@
         rights: "Tous droits réservés."
       },
       en: {
-        flag: "🇬🇧",
+        flagUrl: "https://flagcdn.com/w40/gb.png",
         badge: "🛰️ The community's interactive map",
         title_main: "Discover what's happening",
         title_accent: "right where you are.",
@@ -189,7 +195,7 @@
         rights: "All rights reserved."
       },
       es: {
-        flag: "🇪🇸",
+        flagUrl: "https://flagcdn.com/w40/es.png",
         badge: "🛰️ El mapa interactivo de la comunidad",
         title_main: "Descubre lo que pasa",
         title_accent: "exactamente donde estás.",
@@ -200,7 +206,7 @@
         rights: "Todos los derechos reservados."
       },
       de: {
-        flag: "🇩🇪",
+        flagUrl: "https://flagcdn.com/w40/de.png",
         badge: "🛰️ Die interaktive Karte der Community",
         title_main: "Entdecke, was passiert",
         title_accent: "genau da, wo du bist.",
@@ -211,7 +217,7 @@
         rights: "Alle Rechte vorbehalten."
       },
       pt: {
-        flag: "🇵🇹",
+        flagUrl: "https://flagcdn.com/w40/pt.png",
         badge: "🛰️ O mapa interativo da comunidade",
         title_main: "Descubra o que está acontecendo",
         title_accent: "exatamente onde você está.",
@@ -226,7 +232,7 @@
     const SUPPORTED_LANGS = ['fr', 'en', 'es', 'de', 'pt'];
     const DEFAULT_LANG = 'fr';
 
-    // Détection automatique de la langue du navigateur
+    // Détection automatique de la langue
     function detectLanguage() {
       const savedLang = localStorage.getItem('maptrotter_web_lang');
       if (savedLang && SUPPORTED_LANGS.includes(savedLang)) return savedLang;
@@ -249,26 +255,23 @@
       });
 
       document.documentElement.lang = lang;
-      document.getElementById('current-lang-flag').innerText = dict.flag;
+      document.getElementById('current-lang-flag').src = dict.flagUrl;
       document.getElementById('current-lang-code').innerText = lang.toUpperCase();
       localStorage.setItem('maptrotter_web_lang', lang);
     }
 
-    // Gestion du menu déroulant
+    // Sélection d'une langue depuis le menu
     function selectLanguage(lang) {
       applyLanguage(lang);
       document.getElementById('lang-menu').classList.add('hidden');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Mise à jour de l'année automatique
       document.getElementById('year').innerText = new Date().getFullYear();
 
-      // Initialisation de la langue
       const initialLang = detectLanguage();
       applyLanguage(initialLang);
 
-      // Toggle du menu déroulant de langue
       const langBtn = document.getElementById('lang-btn');
       const langMenu = document.getElementById('lang-menu');
 
@@ -277,7 +280,6 @@
         langMenu.classList.toggle('hidden');
       });
 
-      // Fermeture du menu si clic à l'extérieur
       document.addEventListener('click', () => {
         langMenu.classList.add('hidden');
       });
