@@ -4,126 +4,213 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MapTrotter — Explorez le monde autrement</title>
+  
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#0F172A',
+              card: '#1A222D',
+              accent: '#E2725B',
+              cyan: '#00E9FF',
+              cream: '#F5F5DC',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    body { background-color: #1A222D; color: #F5F5DC; }
+    body {
+      background-color: #0F172A;
+      color: #F5F5DC;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
     .accent-bg { background-color: #E2725B; }
     .accent-text { color: #E2725B; }
+    .cyan-text { color: #00E9FF; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between antialiased">
 
-  <!-- Header / Nav -->
-  <header class="max-w-6xl mx-auto w-full p-6 flex justify-between items-center">
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-[#E2725B] selection:text-white">
+
+  <!-- Header / Navigation -->
+  <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex justify-between items-center gap-2">
+    <!-- Logo -->
     <div class="flex items-center gap-2">
-      <span class="text-3xl">🧭</span>
-      <span class="text-2xl font-bold tracking-tight text-white">MapTrotter</span>
+      <span class="text-2xl sm:text-3xl">🌍</span>
+      <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">MapTrotter</span>
     </div>
-    <a href="#download" class="accent-bg text-white font-semibold px-5 py-2.5 rounded-full shadow-lg hover:opacity-90 transition">
-      Obtenir l'application
-    </a>
+
+    <!-- Right Controls: Language Selector + CTA -->
+    <div class="flex items-center gap-2 sm:gap-4">
+      <!-- Sélecteur de langue -->
+      <div class="relative">
+        <select 
+          id="lang-select" 
+          aria-label="Sélectionner la langue / Select language"
+          class="bg-[#1A222D] border border-white/20 text-xs sm:text-sm text-white px-2.5 sm:px-3 py-2 rounded-xl cursor-pointer focus:outline-none focus:border-[#E2725B] transition appearance-none pr-7">
+          <option value="fr">🇫🇷 FR</option>
+          <option value="en">🇬🇧 EN</option>
+          <option value="es">🇪🇸 ES</option>
+          <option value="de">🇩🇪 DE</option>
+          <option value="pt">🇵🇹 PT</option>
+        </select>
+        <span class="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400 pointer-events-none">▼</span>
+      </div>
+
+      <!-- CTA App -->
+      <a href="#download" data-i18n="get_app" class="accent-bg text-white text-xs sm:text-sm font-bold px-3.5 sm:px-5 py-2.5 rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition text-center whitespace-nowrap">
+        Obtenir l'application
+      </a>
+    </div>
   </header>
 
   <!-- Hero Section -->
-  <main class="max-w-4xl mx-auto text-center px-6 py-20 my-auto">
-    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-sm font-medium mb-8 border border-white/15">
-      <span>🛰️</span> La carte interactive de la communauté
+  <main class="max-w-4xl mx-auto text-center px-4 sm:px-6 py-12 sm:py-20 my-auto">
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#1A222D] text-xs sm:text-sm font-medium mb-6 sm:mb-8 border border-white/10 shadow-inner">
+      <span data-i18n="badge">🛰️ La carte interactive de la communauté</span>
     </div>
-    <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
-      Découvrez ce qui se passe <br />
-      <span class="accent-text">exactement là où vous êtes.</span>
+
+    <!-- Title -->
+    <h1 class="text-3xl sm:text-6xl font-black text-white tracking-tight leading-tight mb-6">
+      <span data-i18n="title_main">Découvrez ce qui se passe</span> <br />
+      <span class="accent-text" data-i18n="title_accent">exactement là où vous êtes.</span>
     </h1>
-    <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+
+    <!-- Description -->
+    <p class="text-base sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal" data-i18n="description">
       Explorez votre ville, partagez vos meilleures adresses en temps réel et débloquez des zones inédites avec la communauté MapTrotter.
     </p>
 
-    <!-- Boutons Téléchargement -->
-    <div id="download" class="flex flex-col sm:flex-row justify-center items-center gap-4">
-      <a href="#" class="w-full sm:w-auto bg-black/60 hover:bg-black border border-white/20 text-white px-8 py-4 rounded-2xl flex items-center justify-center gap-3 transition">
+    <!-- App Store / Play Store Buttons -->
+    <div id="download" class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-sm sm:max-w-none mx-auto">
+      <a href="#" class="w-full sm:w-auto bg-[#1A222D] hover:bg-black/40 border border-white/15 text-white px-6 py-3.5 rounded-2xl flex items-center justify-center gap-3 transition active:scale-95">
         <span class="text-2xl">🍏</span>
         <div class="text-left">
-          <div class="text-xs text-gray-400">Télécharger dans l'</div>
-          <div class="text-sm font-bold">App Store</div>
+          <div class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold" data-i18n="app_store_sub">Télécharger dans l'</div>
+          <div class="text-sm font-bold text-white">App Store</div>
         </div>
       </a>
-      <a href="#" class="w-full sm:w-auto bg-black/60 hover:bg-black border border-white/20 text-white px-8 py-4 rounded-2xl flex items-center justify-center gap-3 transition">
+
+      <a href="#" class="w-full sm:w-auto bg-[#1A222D] hover:bg-black/40 border border-white/15 text-white px-6 py-3.5 rounded-2xl flex items-center justify-center gap-3 transition active:scale-95">
         <span class="text-2xl">🤖</span>
         <div class="text-left">
-          <div class="text-xs text-gray-400">Disponible sur</div>
-          <div class="text-sm font-bold">Google Play</div>
+          <div class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold" data-i18n="play_store_sub">Disponible sur</div>
+          <div class="text-sm font-bold text-white">Google Play</div>
         </div>
       </a>
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="max-w-6xl mx-auto w-full p-6 text-center text-sm text-gray-500 border-t border-white/10">
-    &copy; 2026 MapTrotter. Tous droits réservés.
+  <footer class="max-w-6xl mx-auto w-full p-6 text-center text-xs sm:text-sm text-gray-500 border-t border-white/10">
+    &copy; <span id="year">2026</span> MapTrotter. <span data-i18n="rights">Tous droits réservés.</span>
   </footer>
 
-</body>
-</html><!DOCTYPE html>
-<html lang="fr" class="dark">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MapTrotter — Explorez le monde autrement</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { background-color: #1A222D; color: #F5F5DC; }
-    .accent-bg { background-color: #E2725B; }
-    .accent-text { color: #E2725B; }
-  </style>
-</head>
-<body class="min-h-screen flex flex-col justify-between antialiased">
+  <!-- i18n JavaScript Engine -->
+  <script>
+    // Dictionnaire de traduction (5 langues)
+    const translations = {
+      fr: {
+        badge: "🛰️ La carte interactive de la communauté",
+        title_main: "Découvrez ce qui se passe",
+        title_accent: "exactement là où vous êtes.",
+        description: "Explorez votre ville, partagez vos meilleures adresses en temps réel et débloquez des zones inédites avec la communauté MapTrotter.",
+        get_app: "Obtenir l'application",
+        app_store_sub: "Télécharger dans l'",
+        play_store_sub: "Disponible sur",
+        rights: "Tous droits réservés."
+      },
+      en: {
+        badge: "🛰️ The community's interactive map",
+        title_main: "Discover what's happening",
+        title_accent: "right where you are.",
+        description: "Explore your city, share your best spots in real-time, and unlock hidden areas with the MapTrotter community.",
+        get_app: "Get the app",
+        app_store_sub: "Download on the",
+        play_store_sub: "Get it on",
+        rights: "All rights reserved."
+      },
+      es: {
+        badge: "🛰️ El mapa interactivo de la comunidad",
+        title_main: "Descubre lo que pasa",
+        title_accent: "exactamente donde estás.",
+        description: "Explora tu ciudad, comparte tus mejores lugares en tiempo real y desbloquea zonas inéditas con la comunidad MapTrotter.",
+        get_app: "Obtener la app",
+        app_store_sub: "Consíguelo en el",
+        play_store_sub: "Disponible en",
+        rights: "Todos los derechos reservados."
+      },
+      de: {
+        badge: "🛰️ Die interaktive Karte der Community",
+        title_main: "Entdecke, was passiert",
+        title_accent: "genau da, wo du bist.",
+        description: "Erkunde deine Stadt, teile deine besten Orte in Echtzeit und schalte neue Gebiete mit der MapTrotter-Community frei.",
+        get_app: "App holen",
+        app_store_sub: "Laden im",
+        play_store_sub: "Jetzt bei",
+        rights: "Alle Rechte vorbehalten."
+      },
+      pt: {
+        badge: "🛰️ O mapa interativo da comunidade",
+        title_main: "Descubra o que está acontecendo",
+        title_accent: "exatamente onde você está.",
+        description: "Explore sua cidade, compartilhe seus melhores lugares em tempo real e desbloqueie novas áreas com a comunidade MapTrotter.",
+        get_app: "Obter o app",
+        app_store_sub: "Baixar na",
+        play_store_sub: "Disponível no",
+        rights: "Todos os direitos reservados."
+      }
+    };
 
-  <!-- Header / Nav -->
-  <header class="max-w-6xl mx-auto w-full p-6 flex justify-between items-center">
-    <div class="flex items-center gap-2">
-      <span class="text-3xl">🧭</span>
-      <span class="text-2xl font-bold tracking-tight text-white">MapTrotter</span>
-    </div>
-    <a href="#download" class="accent-bg text-white font-semibold px-5 py-2.5 rounded-full shadow-lg hover:opacity-90 transition">
-      Obtenir l'application
-    </a>
-  </header>
+    const SUPPORTED_LANGS = ['fr', 'en', 'es', 'de', 'pt'];
+    const DEFAULT_LANG = 'fr';
 
-  <!-- Hero Section -->
-  <main class="max-w-4xl mx-auto text-center px-6 py-20 my-auto">
-    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-sm font-medium mb-8 border border-white/15">
-      <span>🛰️</span> La carte interactive de la communauté
-    </div>
-    <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
-      Découvrez ce qui se passe <br />
-      <span class="accent-text">exactement là où vous êtes.</span>
-    </h1>
-    <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-      Explorez votre ville, partagez vos meilleures adresses en temps réel et débloquez des zones inédites avec la communauté MapTrotter.
-    </p>
+    // Détection automatique de la langue
+    function detectLanguage() {
+      const savedLang = localStorage.getItem('maptrotter_web_lang');
+      if (savedLang && SUPPORTED_LANGS.includes(savedLang)) return savedLang;
 
-    <!-- Boutons Téléchargement -->
-    <div id="download" class="flex flex-col sm:flex-row justify-center items-center gap-4">
-      <a href="#" class="w-full sm:w-auto bg-black/60 hover:bg-black border border-white/20 text-white px-8 py-4 rounded-2xl flex items-center justify-center gap-3 transition">
-        <span class="text-2xl">🍏</span>
-        <div class="text-left">
-          <div class="text-xs text-gray-400">Télécharger dans l'</div>
-          <div class="text-sm font-bold">App Store</div>
-        </div>
-      </a>
-      <a href="#" class="w-full sm:w-auto bg-black/60 hover:bg-black border border-white/20 text-white px-8 py-4 rounded-2xl flex items-center justify-center gap-3 transition">
-        <span class="text-2xl">🤖</span>
-        <div class="text-left">
-          <div class="text-xs text-gray-400">Disponible sur</div>
-          <div class="text-sm font-bold">Google Play</div>
-        </div>
-      </a>
-    </div>
-  </main>
+      const browserLang = (navigator.language || navigator.userLanguage || '').slice(0, 2).toLowerCase();
+      if (SUPPORTED_LANGS.includes(browserLang)) return browserLang;
 
-  <!-- Footer -->
-  <footer class="max-w-6xl mx-auto w-full p-6 text-center text-sm text-gray-500 border-t border-white/10">
-    &copy; 2026 MapTrotter. Tous droits réservés.
-  </footer>
+      return DEFAULT_LANG;
+    }
 
+    // Application de la traduction dans le DOM
+    function applyLanguage(lang) {
+      const dict = translations[lang] || translations[DEFAULT_LANG];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.innerText = dict[key];
+        }
+      });
+
+      document.documentElement.lang = lang;
+      document.getElementById('lang-select').value = lang;
+      localStorage.setItem('maptrotter_web_lang', lang);
+    }
+
+    // Événements & Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('year').innerText = new Date().getFullYear();
+
+      const initialLang = detectLanguage();
+      applyLanguage(initialLang);
+
+      document.getElementById('lang-select').addEventListener('change', (e) => {
+        applyLanguage(e.target.value);
+      });
+    });
+  </script>
 </body>
 </html>
