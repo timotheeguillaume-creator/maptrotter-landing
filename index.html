@@ -3,8 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MapTrotter — Explorez le monde autrement</title>
+  <title>MAPTROTTER — Explorez le monde autrement</title>
   
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+
+  <!-- Google Fonts : Montserrat pour le style du Logo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -12,6 +21,10 @@
       darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            logo: ['Montserrat', 'sans-serif'],
+          },
           colors: {
             brand: {
               bg: '#0F172A',
@@ -30,39 +43,73 @@
     body {
       background-color: #0F172A;
       color: #F5F5DC;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     .accent-bg { background-color: #E2725B; }
     .accent-text { color: #E2725B; }
     .cyan-text { color: #00E9FF; }
+
+    /* Neon glow effect for the O in MAPTROTTER */
+    .glow-cyan {
+      color: #00E9FF;
+      text-shadow: 0 0 10px rgba(0, 233, 255, 0.7), 0 0 20px rgba(0, 233, 255, 0.4);
+    }
   </style>
 </head>
 
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-[#E2725B] selection:text-white">
 
   <!-- Header / Navigation -->
-  <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex justify-between items-center gap-2">
-    <!-- Logo -->
-    <div class="flex items-center gap-2">
-      <span class="text-2xl sm:text-3xl">🌍</span>
-      <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">MapTrotter</span>
-    </div>
+  <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex justify-between items-center gap-3">
+    
+    <!-- Logo MAPTROTTER avec Style Custom -->
+    <a href="#" class="flex items-center gap-2.5 group">
+      <img 
+        src="/favicon.png" 
+        alt="MapTrotter Icon" 
+        class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl shadow-lg border border-white/10 object-cover" 
+        onerror="this.style.display='none'"
+      />
+      <span class="font-logo font-black text-2xl sm:text-3xl tracking-wider uppercase text-[#E2725B] select-none">
+        MAPTR<span class="glow-cyan inline-block transform hover:scale-110 transition-transform duration-200">O</span>TTER
+      </span>
+    </a>
 
     <!-- Right Controls: Language Selector + CTA -->
     <div class="flex items-center gap-2 sm:gap-4">
-      <!-- Sélecteur de langue -->
-      <div class="relative">
-        <select 
-          id="lang-select" 
-          aria-label="Sélectionner la langue / Select language"
-          class="bg-[#1A222D] border border-white/20 text-xs sm:text-sm text-white px-2.5 sm:px-3 py-2 rounded-xl cursor-pointer focus:outline-none focus:border-[#E2725B] transition appearance-none pr-7">
-          <option value="fr">🇫🇷 FR</option>
-          <option value="en">🇬🇧 EN</option>
-          <option value="es">🇪🇸 ES</option>
-          <option value="de">🇩🇪 DE</option>
-          <option value="pt">🇵🇹 PT</option>
-        </select>
-        <span class="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400 pointer-events-none">▼</span>
+      
+      <!-- Sélecteur de langue personnalisé (Compatible Emoji Flags sur Windows) -->
+      <div class="relative inline-block text-left" id="lang-dropdown-wrapper">
+        <button 
+          type="button" 
+          id="lang-btn"
+          aria-haspopup="true"
+          aria-expanded="false"
+          class="bg-[#1A222D] hover:bg-[#242F3E] border border-white/20 text-xs sm:text-sm text-white px-3 py-2 rounded-xl flex items-center gap-2 transition focus:outline-none focus:border-[#E2725B]">
+          <span id="current-lang-flag">🇫🇷</span>
+          <span id="current-lang-code" class="font-bold uppercase text-xs">FR</span>
+          <span class="text-[10px] text-gray-400">▼</span>
+        </button>
+
+        <!-- Menu déroulant -->
+        <div 
+          id="lang-menu" 
+          class="hidden absolute right-0 mt-2 w-36 bg-[#1A222D] border border-white/20 rounded-xl shadow-2xl z-50 overflow-hidden py-1 backdrop-blur-md">
+          <button onclick="selectLanguage('fr')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2 transition">
+            <span>🇫🇷</span> <span>Français</span>
+          </button>
+          <button onclick="selectLanguage('en')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2 transition">
+            <span>🇬🇧</span> <span>English</span>
+          </button>
+          <button onclick="selectLanguage('es')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2 transition">
+            <span>🇪🇸</span> <span>Español</span>
+          </button>
+          <button onclick="selectLanguage('de')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2 transition">
+            <span>🇩🇪</span> <span>Deutsch</span>
+          </button>
+          <button onclick="selectLanguage('pt')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2 transition">
+            <span>🇵🇹</span> <span>Português</span>
+          </button>
+        </div>
       </div>
 
       <!-- CTA App -->
@@ -73,7 +120,7 @@
   </header>
 
   <!-- Hero Section -->
-  <main class="max-w-4xl mx-auto text-center px-4 sm:px-6 py-12 sm:py-20 my-auto">
+  <main class="max-w-4xl mx-auto text-center px-4 sm:px-6 py-10 sm:py-20 my-auto">
     <!-- Badge -->
     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#1A222D] text-xs sm:text-sm font-medium mb-6 sm:mb-8 border border-white/10 shadow-inner">
       <span data-i18n="badge">🛰️ La carte interactive de la communauté</span>
@@ -92,7 +139,7 @@
 
     <!-- App Store / Play Store Buttons -->
     <div id="download" class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-sm sm:max-w-none mx-auto">
-      <a href="#" class="w-full sm:w-auto bg-[#1A222D] hover:bg-black/40 border border-white/15 text-white px-6 py-3.5 rounded-2xl flex items-center justify-center gap-3 transition active:scale-95">
+      <a href="#" class="w-full sm:w-auto bg-[#1A222D] hover:bg-black/40 border border-white/15 text-white px-6 py-3.5 rounded-2xl flex items-center justify-center gap-3 transition active:scale-95 shadow-md">
         <span class="text-2xl">🍏</span>
         <div class="text-left">
           <div class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold" data-i18n="app_store_sub">Télécharger dans l'</div>
@@ -100,7 +147,7 @@
         </div>
       </a>
 
-      <a href="#" class="w-full sm:w-auto bg-[#1A222D] hover:bg-black/40 border border-white/15 text-white px-6 py-3.5 rounded-2xl flex items-center justify-center gap-3 transition active:scale-95">
+      <a href="#" class="w-full sm:w-auto bg-[#1A222D] hover:bg-black/40 border border-white/15 text-white px-6 py-3.5 rounded-2xl flex items-center justify-center gap-3 transition active:scale-95 shadow-md">
         <span class="text-2xl">🤖</span>
         <div class="text-left">
           <div class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold" data-i18n="play_store_sub">Disponible sur</div>
@@ -112,14 +159,15 @@
 
   <!-- Footer -->
   <footer class="max-w-6xl mx-auto w-full p-6 text-center text-xs sm:text-sm text-gray-500 border-t border-white/10">
-    &copy; <span id="year">2026</span> MapTrotter. <span data-i18n="rights">Tous droits réservés.</span>
+    &copy; <span id="year">2026</span> <strong class="text-gray-400 font-bold">MAPTROTTER</strong> by <span class="text-[#E2725B] font-semibold">xWalk</span>. <span data-i18n="rights">Tous droits réservés.</span>
   </footer>
 
-  <!-- i18n JavaScript Engine -->
+  <!-- i18n & UI JavaScript Engine -->
   <script>
     // Dictionnaire de traduction (5 langues)
     const translations = {
       fr: {
+        flag: "🇫🇷",
         badge: "🛰️ La carte interactive de la communauté",
         title_main: "Découvrez ce qui se passe",
         title_accent: "exactement là où vous êtes.",
@@ -130,6 +178,7 @@
         rights: "Tous droits réservés."
       },
       en: {
+        flag: "🇬🇧",
         badge: "🛰️ The community's interactive map",
         title_main: "Discover what's happening",
         title_accent: "right where you are.",
@@ -140,6 +189,7 @@
         rights: "All rights reserved."
       },
       es: {
+        flag: "🇪🇸",
         badge: "🛰️ El mapa interactivo de la comunidad",
         title_main: "Descubre lo que pasa",
         title_accent: "exactamente donde estás.",
@@ -150,6 +200,7 @@
         rights: "Todos los derechos reservados."
       },
       de: {
+        flag: "🇩🇪",
         badge: "🛰️ Die interaktive Karte der Community",
         title_main: "Entdecke, was passiert",
         title_accent: "genau da, wo du bist.",
@@ -160,6 +211,7 @@
         rights: "Alle Rechte vorbehalten."
       },
       pt: {
+        flag: "🇵🇹",
         badge: "🛰️ O mapa interativo da comunidade",
         title_main: "Descubra o que está acontecendo",
         title_accent: "exatamente onde você está.",
@@ -174,7 +226,7 @@
     const SUPPORTED_LANGS = ['fr', 'en', 'es', 'de', 'pt'];
     const DEFAULT_LANG = 'fr';
 
-    // Détection automatique de la langue
+    // Détection automatique de la langue du navigateur
     function detectLanguage() {
       const savedLang = localStorage.getItem('maptrotter_web_lang');
       if (savedLang && SUPPORTED_LANGS.includes(savedLang)) return savedLang;
@@ -185,9 +237,10 @@
       return DEFAULT_LANG;
     }
 
-    // Application de la traduction dans le DOM
+    // Application de la langue sélectionnée
     function applyLanguage(lang) {
       const dict = translations[lang] || translations[DEFAULT_LANG];
+      
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[key]) {
@@ -196,19 +249,37 @@
       });
 
       document.documentElement.lang = lang;
-      document.getElementById('lang-select').value = lang;
+      document.getElementById('current-lang-flag').innerText = dict.flag;
+      document.getElementById('current-lang-code').innerText = lang.toUpperCase();
       localStorage.setItem('maptrotter_web_lang', lang);
     }
 
-    // Événements & Initialisation
+    // Gestion du menu déroulant
+    function selectLanguage(lang) {
+      applyLanguage(lang);
+      document.getElementById('lang-menu').classList.add('hidden');
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      // Mise à jour de l'année automatique
       document.getElementById('year').innerText = new Date().getFullYear();
 
+      // Initialisation de la langue
       const initialLang = detectLanguage();
       applyLanguage(initialLang);
 
-      document.getElementById('lang-select').addEventListener('change', (e) => {
-        applyLanguage(e.target.value);
+      // Toggle du menu déroulant de langue
+      const langBtn = document.getElementById('lang-btn');
+      const langMenu = document.getElementById('lang-menu');
+
+      langBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        langMenu.classList.toggle('hidden');
+      });
+
+      // Fermeture du menu si clic à l'extérieur
+      document.addEventListener('click', () => {
+        langMenu.classList.add('hidden');
       });
     });
   </script>
