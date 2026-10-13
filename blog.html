@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Blog MAPTROTTER — Sorties, Rencontres et Astuces Locales</title>
+  <meta name="description" content="Découvrez les meilleurs conseils de la communauté MapTrotter pour explorer votre ville, trouver des événements exclusifs et faire de nouvelles rencontres." />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="canonical" href="https://maptrotter.xyz/blog.html" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body { background-color: #0F172A; color: #F5F5DC; }</style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-[#E2725B] selection:text-white">
+  
+  <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex justify-between items-center border-b border-white/10">
+    <a href="/" class="flex items-center group">
+      <img src="/splash.png" alt="MapTrotter" class="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform" onerror="this.style.display='none'" />
+    </a>
+    <a href="/" class="text-sm font-semibold text-white bg-[#1A222D] border border-white/20 px-4 py-2 rounded-xl hover:bg-[#242F3E] transition">
+      ← Retour
+    </a>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-12 flex-grow w-full">
+    <h1 class="text-3xl sm:text-5xl font-black text-white mb-4">Le Radar <span class="text-[#E2725B]">MapTrotter</span></h1>
+    <p class="text-gray-400 text-lg mb-12">Guides locaux, astuces communautaires et actualités de l'application.</p>
+
+    <!-- Grille des articles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <!-- Article 1 (Exemple SEO : "Rencontres Voyageurs") -->
+      <article class="bg-[#1A222D] rounded-2xl border border-white/10 overflow-hidden hover:border-[#E2725B]/50 transition-colors group cursor-pointer">
+        <div class="h-48 bg-gray-800 relative overflow-hidden">
+          <!-- Espace pour image d'illustration -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-[#E2725B]/20 to-[#00E9FF]/20 group-hover:scale-105 transition-transform duration-500"></div>
+        </div>
+        <div class="p-6">
+          <div class="text-[#00E9FF] text-xs font-bold uppercase tracking-wider mb-2">Astuces</div>
+          <h2 class="text-xl font-bold text-white mb-3">Comment rencontrer des voyageurs solo dans votre propre ville ?</h2>
+          <p class="text-gray-400 text-sm mb-4 line-clamp-3">Utilisez la carte interactive pour repérer les spots populaires auprès des backpackers et des nomades digitaux ce week-end...</p>
+          <a href="#" class="text-[#E2725B] text-sm font-semibold hover:underline">Lire la suite →</a>
+        </div>
+      </article>
+
+      <!-- Article 2 (Exemple SEO : "Activités Locales") -->
+      <article class="bg-[#1A222D] rounded-2xl border border-white/10 overflow-hidden hover:border-[#E2725B]/50 transition-colors group cursor-pointer">
+        <div class="h-48 bg-gray-800 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-tr from-[#E5B869]/20 to-[#E2725B]/20 group-hover:scale-105 transition-transform duration-500"></div>
+        </div>
+        <div class="p-6">
+          <div class="text-[#E5B869] text-xs font-bold uppercase tracking-wider mb-2">Festivals</div>
+          <h2 class="text-xl font-bold text-white mb-3">Les 5 festivals de rue cachés à ne pas rater cet été</h2>
+          <p class="text-gray-400 text-sm mb-4 line-clamp-3">La communauté a signalé de nombreux événements underground. Voici comment les trouver avant tout le monde grâce aux filtres de l'app...</p>
+          <a href="#" class="text-[#E2725B] text-sm font-semibold hover:underline">Lire la suite →</a>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <footer class="max-w-6xl mx-auto w-full p-6 text-center text-xs sm:text-sm text-gray-500 border-t border-white/10 mt-auto">
+    &copy; 2026 <strong class="text-gray-400 font-bold">MAPTROTTER</strong> by <span class="text-[#E2725B]">xWalk</span>. 
+    <a href="/legals.html" class="ml-3 hover:text-[#E2725B] transition">Mentions Légales</a>
+  </footer>
+</body>
+</html>
