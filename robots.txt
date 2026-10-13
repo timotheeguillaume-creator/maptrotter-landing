@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Interdire l'indexation de futurs dossiers privés ou d'administration
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: https://maptrotter.xyz/sitemap.xml
