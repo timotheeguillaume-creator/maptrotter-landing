@@ -13,10 +13,10 @@
   <meta name="author" content="xWalk" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
-  <!-- Balise Canonique (Évite le contenu dupliqué) -->
+  <!-- Balise Canonique -->
   <link rel="canonical" href="https://maptrotter.xyz/" />
 
-  <!-- Smart App Banners & App Links (Liaison officielle avec les Stores) -->
+  <!-- Smart App Banners & App Links -->
   <meta name="apple-itunes-app" content="app-id=VOTRE_APP_ID_APPLE, app-argument=https://maptrotter.xyz/" />
   <link rel="alternate" href="android-app://xyz.maptrotter.app/https/maptrotter.xyz" />
 
@@ -34,7 +34,7 @@
   <meta property="twitter:description" content="La carte interactive ultime pour vos sorties, activités locales et rencontres humaines." />
   <meta property="twitter:image" content="https://maptrotter.xyz/splash.png" />
 
-  <!-- Schema.org JSON-LD (Données structurées pour Google/IA) -->
+  <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -102,14 +102,14 @@
   <!-- Header / Navigation -->
   <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
     
-    <!-- Ligne 1 sur Mobile : Logo Image Seule -->
-    <a href="/" class="flex items-center group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-lg p-1">
+    <!-- Ligne 1 sur Mobile : Logo Splash Image (Ajusté pour une visibilité maximale) -->
+    <a href="/" class="flex items-center group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-xl p-1">
       <img 
         src="/splash.png" 
         alt="MapTrotter Live - Carte interactive et réseau social géolocalisé" 
-        width="300" 
-        height="120"
-        class="h-10 sm:h-14 w-auto max-w-[200px] sm:max-w-[300px] object-contain transition-transform duration-300 group-hover:scale-105" 
+        width="440" 
+        height="180"
+        class="h-12 sm:h-16 md:h-20 w-auto max-w-[280px] sm:max-w-[380px] md:max-w-[440px] object-contain transition-transform duration-300 group-hover:scale-105" 
         onerror="this.style.display='none'"
       />
     </a>
@@ -117,7 +117,7 @@
     <!-- Ligne 2 sur Mobile : Sélecteur de langue + Bouton CTA -->
     <div class="flex items-center justify-center w-full sm:w-auto gap-3 sm:gap-4">
       
-      <!-- Sélecteur de langue -->
+      <!-- Sélecteur de langue (FR, EN, ES, DE, PT, IT) -->
       <div class="relative inline-block text-left" id="lang-dropdown-wrapper">
         <button 
           type="button" 
@@ -146,6 +146,9 @@
           <button onclick="selectLanguage('pt')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
             <img src="https://flagcdn.com/w40/pt.png" alt="PT" class="w-4 h-3 rounded-sm object-cover" /> <span>Português</span>
           </button>
+          <button onclick="selectLanguage('it')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+            <img src="https://flagcdn.com/w40/it.png" alt="IT" class="w-4 h-3 rounded-sm object-cover" /> <span>Italiano</span>
+          </button>
         </div>
       </div>
 
@@ -156,7 +159,7 @@
   </header>
 
   <!-- Hero Section -->
-  <main class="max-w-4xl mx-auto text-center px-4 sm:px-6 py-10 sm:py-20 my-auto">
+  <main class="max-w-4xl mx-auto text-center px-4 sm:px-6 py-8 sm:py-16 my-auto">
     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#1A222D] text-xs sm:text-sm font-medium mb-6 sm:mb-8 border border-white/10 shadow-inner">
       <span data-i18n="badge">🛰️ La carte interactive de la communauté</span>
     </div>
@@ -190,7 +193,7 @@
   </main>
 
   <!-- Footer avec liens SEO -->
-  <footer class="max-w-6xl mx-auto w-full p-6 text-center text-xs sm:text-sm text-gray-500 border-t border-white/10 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
+  <footer class="max-w-6xl mx-auto w-full p-6 text-center text-xs sm:text-sm text-gray-500 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
     <div>
       &copy; <span id="year">2026</span> <strong class="text-gray-400 font-bold">MAPTROTTER</strong> by <span class="text-[#E2725B] font-semibold">xWalk</span>.
     </div>
@@ -252,10 +255,20 @@
         get_app: "Obter o app",
         app_store_sub: "Baixar na",
         play_store_sub: "Disponível no"
+      },
+      it: {
+        flagUrl: "https://flagcdn.com/w40/it.png",
+        badge: "🛰️ La mappa interattiva della community",
+        title_main: "Scopri cosa sta succedendo",
+        title_accent: "esattamente dove ti trovi.",
+        description: "Trova attività locali, festival, vita notturna e fai incontri autentici con viaggiatori e del posto.",
+        get_app: "Scarica l'app",
+        app_store_sub: "Scarica su",
+        play_store_sub: "Disponibile su"
       }
     };
 
-    const SUPPORTED_LANGS = ['fr', 'en', 'es', 'de', 'pt'];
+    const SUPPORTED_LANGS = ['fr', 'en', 'es', 'de', 'pt', 'it'];
     const DEFAULT_LANG = 'fr';
 
     function detectLanguage() {
