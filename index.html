@@ -3,16 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MAPTROTTER — Explorez le monde autrement</title>
   
+  <!-- ========================================== -->
+  <!-- OPTIMISATION SEO & IA (Moteurs de recherche) -->
+  <!-- ========================================== -->
+  <title>MAPTROTTER — Carte Interactive, Rencontres & Activités Locales</title>
+  <meta name="description" content="Découvrez MapTrotter, l'application mobile et la carte interactive de référence. Trouvez des activités locales, des festivals, des sorties en soirée et faites des rencontres authentiques avec des voyageurs et des locaux exactement là où vous êtes." />
+  <meta name="keywords" content="MapTrotter, carte interactive, activités locales, rencontres voyageurs, sorties soirée, festival, mise en relation humaine, réseau social géolocalisé, application mobile, explorer la ville" />
+  <meta name="author" content="xWalk" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+  <!-- Balise Canonique (Évite le contenu dupliqué) -->
+  <link rel="canonical" href="https://maptrotter.xyz/" />
+
+  <!-- Smart App Banners & App Links (Liaison officielle avec les Stores) -->
+  <meta name="apple-itunes-app" content="app-id=VOTRE_APP_ID_APPLE, app-argument=https://maptrotter.xyz/" />
+  <link rel="alternate" href="android-app://xyz.maptrotter.app/https/maptrotter.xyz" />
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://maptrotter.xyz/" />
+  <meta property="og:title" content="MAPTROTTER — Carte Interactive & Rencontres" />
+  <meta property="og:description" content="Découvrez ce qui se passe exactement là où vous êtes. Partagez vos adresses, trouvez des festivals et rencontrez la communauté MapTrotter." />
+  <meta property="og:image" content="https://maptrotter.xyz/splash.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://maptrotter.xyz/" />
+  <meta property="twitter:title" content="MAPTROTTER — Explorez le monde autrement" />
+  <meta property="twitter:description" content="La carte interactive ultime pour vos sorties, activités locales et rencontres humaines." />
+  <meta property="twitter:image" content="https://maptrotter.xyz/splash.png" />
+
+  <!-- Schema.org JSON-LD (Données structurées pour Google/IA) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MobileApplication",
+    "name": "MapTrotter",
+    "operatingSystem": "iOS, Android",
+    "applicationCategory": "SocialNetworkingApplication",
+    "description": "MapTrotter est une carte interactive communautaire permettant de découvrir des activités locales, des événements, des festivals et de faciliter les rencontres humaines entre voyageurs et locaux.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "xWalk"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    }
+  }
+  </script>
+  <!-- ========================================== -->
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="apple-touch-icon" href="/favicon.png" />
 
-  <!-- Google Fonts : Montserrat (Titre) + Caveat (Cursive 'live') + Plus Jakarta Sans (Corps) -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -23,8 +74,6 @@
         extend: {
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            logo: ['Montserrat', 'sans-serif'],
-            cursive: ['Caveat', 'cursive'],
           },
           colors: {
             brand: {
@@ -42,48 +91,33 @@
   </script>
 
   <style>
-    body {
-      background-color: #0F172A;
-      color: #F5F5DC;
-    }
+    body { background-color: #0F172A; color: #F5F5DC; }
     .accent-bg { background-color: #E2725B; }
     .accent-text { color: #E2725B; }
-
-    /* Rétroéclairage néon pour le O de MAPTROTTER */
-    .glow-cyan {
-      color: #00E9FF;
-      text-shadow: 0 0 12px rgba(0, 233, 255, 0.8), 0 0 24px rgba(0, 233, 255, 0.4);
-    }
   </style>
 </head>
 
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-[#E2725B] selection:text-white">
 
-  <!-- Header / Navigation (Responsive Layout 2-block sur mobile) -->
+  <!-- Header / Navigation -->
   <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
     
-    <!-- Ligne 1 sur Mobile : Logo + Titre "MAPTROTTER live" -->
-    <a href="#" class="flex items-center gap-3 group select-none">
+    <!-- Ligne 1 sur Mobile : Logo Image Seule -->
+    <a href="/" class="flex items-center group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-lg p-1">
       <img 
-        src="/logo.png" 
-        alt="MAPTROTTER Logo" 
-        class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl shadow-lg object-contain" 
+        src="/splash.png" 
+        alt="MapTrotter Live - Carte interactive et réseau social géolocalisé" 
+        width="300" 
+        height="120"
+        class="h-10 sm:h-14 w-auto max-w-[200px] sm:max-w-[300px] object-contain transition-transform duration-300 group-hover:scale-105" 
         onerror="this.style.display='none'"
       />
-      <div class="flex items-baseline gap-1.5">
-        <span class="font-logo font-bold text-2xl sm:text-3xl tracking-widest uppercase text-[#E2725B]">
-          MAPTR<span class="glow-cyan inline-block">O</span>TTER
-        </span>
-        <span class="font-cursive font-bold text-2xl sm:text-3xl text-[#E5B869] transform -rotate-6 translate-y-1">
-          live
-        </span>
-      </div>
     </a>
 
     <!-- Ligne 2 sur Mobile : Sélecteur de langue + Bouton CTA -->
     <div class="flex items-center justify-center w-full sm:w-auto gap-3 sm:gap-4">
       
-      <!-- Sélecteur de langue personnalisé avec drapeaux SVG -->
+      <!-- Sélecteur de langue -->
       <div class="relative inline-block text-left" id="lang-dropdown-wrapper">
         <button 
           type="button" 
@@ -96,10 +130,7 @@
           <span class="text-[10px] text-gray-400">▼</span>
         </button>
 
-        <!-- Menu déroulant des langues -->
-        <div 
-          id="lang-menu" 
-          class="hidden absolute right-0 mt-2 w-36 bg-[#1A222D] border border-white/20 rounded-xl shadow-2xl z-50 overflow-hidden py-1 backdrop-blur-md">
+        <div id="lang-menu" class="hidden absolute right-0 mt-2 w-36 bg-[#1A222D] border border-white/20 rounded-xl shadow-2xl z-50 overflow-hidden py-1 backdrop-blur-md">
           <button onclick="selectLanguage('fr')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
             <img src="https://flagcdn.com/w40/fr.png" alt="FR" class="w-4 h-3 rounded-sm object-cover" /> <span>Français</span>
           </button>
@@ -118,7 +149,6 @@
         </div>
       </div>
 
-      <!-- CTA App -->
       <a href="#download" data-i18n="get_app" class="accent-bg text-white text-xs sm:text-sm font-bold px-4 sm:px-5 py-2.5 rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition text-center whitespace-nowrap">
         Obtenir l'application
       </a>
@@ -127,20 +157,17 @@
 
   <!-- Hero Section -->
   <main class="max-w-4xl mx-auto text-center px-4 sm:px-6 py-10 sm:py-20 my-auto">
-    <!-- Badge -->
     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#1A222D] text-xs sm:text-sm font-medium mb-6 sm:mb-8 border border-white/10 shadow-inner">
       <span data-i18n="badge">🛰️ La carte interactive de la communauté</span>
     </div>
 
-    <!-- Title -->
     <h1 class="text-3xl sm:text-6xl font-black text-white tracking-tight leading-tight mb-6">
       <span data-i18n="title_main">Découvrez ce qui se passe</span> <br />
       <span class="accent-text" data-i18n="title_accent">exactement là où vous êtes.</span>
     </h1>
 
-    <!-- Description -->
     <p class="text-base sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal" data-i18n="description">
-      Explorez votre ville, partagez vos meilleures adresses en temps réel et débloquez des zones inédites avec la communauté MapTrotter.
+      Trouvez des activités locales, des festivals, des sorties en soirée et faites des rencontres authentiques avec des voyageurs et locaux.
     </p>
 
     <!-- App Store / Play Store Buttons -->
@@ -152,7 +179,6 @@
           <div class="text-sm font-bold text-white">App Store</div>
         </div>
       </a>
-
       <a href="#" class="w-full sm:w-auto bg-[#1A222D] hover:bg-black/40 border border-white/15 text-white px-6 py-3.5 rounded-2xl flex items-center justify-center gap-3 transition active:scale-95 shadow-md">
         <span class="text-2xl">🤖</span>
         <div class="text-left">
@@ -163,104 +189,97 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="max-w-6xl mx-auto w-full p-6 text-center text-xs sm:text-sm text-gray-500 border-t border-white/10">
-    &copy; <span id="year">2026</span> <strong class="text-gray-400 font-bold">MAPTROTTER</strong> by <span class="text-[#E2725B] font-semibold">xWalk</span>. <span data-i18n="rights">Tous droits réservés.</span>
+  <!-- Footer avec liens SEO -->
+  <footer class="max-w-6xl mx-auto w-full p-6 text-center text-xs sm:text-sm text-gray-500 border-t border-white/10 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
+    <div>
+      &copy; <span id="year">2026</span> <strong class="text-gray-400 font-bold">MAPTROTTER</strong> by <span class="text-[#E2725B] font-semibold">xWalk</span>.
+    </div>
+    <div class="flex gap-4">
+      <a href="/blog.html" class="hover:text-[#E2725B] transition">Blog & Guides</a>
+      <a href="/legals.html" class="hover:text-[#E2725B] transition">Mentions Légales</a>
+    </div>
   </footer>
 
   <!-- i18n & UI JavaScript Engine -->
   <script>
-    // Dictionnaire de traduction (5 langues)
     const translations = {
       fr: {
         flagUrl: "https://flagcdn.com/w40/fr.png",
         badge: "🛰️ La carte interactive de la communauté",
         title_main: "Découvrez ce qui se passe",
         title_accent: "exactement là où vous êtes.",
-        description: "Explorez votre ville, partagez vos meilleures adresses en temps réel et débloquez des zones inédites avec la communauté MapTrotter.",
+        description: "Trouvez des activités locales, des festivals, des sorties en soirée et faites des rencontres authentiques avec des voyageurs et locaux.",
         get_app: "Obtenir l'application",
         app_store_sub: "Télécharger dans l'",
-        play_store_sub: "Disponible sur",
-        rights: "Tous droits réservés."
+        play_store_sub: "Disponible sur"
       },
       en: {
         flagUrl: "https://flagcdn.com/w40/gb.png",
         badge: "🛰️ The community's interactive map",
         title_main: "Discover what's happening",
         title_accent: "right where you are.",
-        description: "Explore your city, share your best spots in real-time, and unlock hidden areas with the MapTrotter community.",
+        description: "Find local activities, festivals, nightlife, and make authentic connections with travelers and locals alike.",
         get_app: "Get the app",
         app_store_sub: "Download on the",
-        play_store_sub: "Get it on",
-        rights: "All rights reserved."
+        play_store_sub: "Get it on"
       },
       es: {
         flagUrl: "https://flagcdn.com/w40/es.png",
         badge: "🛰️ El mapa interactivo de la comunidad",
         title_main: "Descubre lo que pasa",
         title_accent: "exactamente donde estás.",
-        description: "Explora tu ciudad, comparte tus mejores lugares en tiempo real y desbloquea zonas inéditas con la comunidad MapTrotter.",
+        description: "Encuentra actividades locales, festivales, vida nocturna y haz conexiones auténticas con viajeros y locales.",
         get_app: "Obtener la app",
         app_store_sub: "Consíguelo en el",
-        play_store_sub: "Disponible en",
-        rights: "Todos los derechos reservados."
+        play_store_sub: "Disponible en"
       },
       de: {
         flagUrl: "https://flagcdn.com/w40/de.png",
         badge: "🛰️ Die interaktive Karte der Community",
         title_main: "Entdecke, was passiert",
         title_accent: "genau da, wo du bist.",
-        description: "Erkunde deine Stadt, teile deine besten Orte in Echtzeit und schalte neue Gebiete mit der MapTrotter-Community frei.",
+        description: "Finde lokale Aktivitäten, Festivals, Nachtleben und knüpfe authentische Kontakte mit Reisenden und Einheimischen.",
         get_app: "App holen",
         app_store_sub: "Laden im",
-        play_store_sub: "Jetzt bei",
-        rights: "Alle Rechte vorbehalten."
+        play_store_sub: "Jetzt bei"
       },
       pt: {
         flagUrl: "https://flagcdn.com/w40/pt.png",
         badge: "🛰️ O mapa interativo da comunidade",
         title_main: "Descubra o que está acontecendo",
         title_accent: "exatamente onde você está.",
-        description: "Explore sua cidade, compartilhe seus melhores lugares em tempo real e desbloqueie novas áreas com a comunidade MapTrotter.",
+        description: "Encontre atividades locais, festivais, vida noturna e faça conexões autênticas com viajantes e moradores locais.",
         get_app: "Obter o app",
         app_store_sub: "Baixar na",
-        play_store_sub: "Disponível no",
-        rights: "Todos os direitos reservados."
+        play_store_sub: "Disponível no"
       }
     };
 
     const SUPPORTED_LANGS = ['fr', 'en', 'es', 'de', 'pt'];
     const DEFAULT_LANG = 'fr';
 
-    // Détection automatique de la langue
     function detectLanguage() {
       const savedLang = localStorage.getItem('maptrotter_web_lang');
       if (savedLang && SUPPORTED_LANGS.includes(savedLang)) return savedLang;
-
       const browserLang = (navigator.language || navigator.userLanguage || '').slice(0, 2).toLowerCase();
       if (SUPPORTED_LANGS.includes(browserLang)) return browserLang;
-
       return DEFAULT_LANG;
     }
 
-    // Application de la langue sélectionnée
     function applyLanguage(lang) {
       const dict = translations[lang] || translations[DEFAULT_LANG];
-      
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[key]) {
           el.innerText = dict[key];
         }
       });
-
       document.documentElement.lang = lang;
       document.getElementById('current-lang-flag').src = dict.flagUrl;
       document.getElementById('current-lang-code').innerText = lang.toUpperCase();
       localStorage.setItem('maptrotter_web_lang', lang);
     }
 
-    // Sélection d'une langue depuis le menu
     function selectLanguage(lang) {
       applyLanguage(lang);
       document.getElementById('lang-menu').classList.add('hidden');
@@ -268,18 +287,17 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('year').innerText = new Date().getFullYear();
-
       const initialLang = detectLanguage();
       applyLanguage(initialLang);
-
+      
       const langBtn = document.getElementById('lang-btn');
       const langMenu = document.getElementById('lang-menu');
-
+      
       langBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         langMenu.classList.toggle('hidden');
       });
-
+      
       document.addEventListener('click', () => {
         langMenu.classList.add('hidden');
       });
