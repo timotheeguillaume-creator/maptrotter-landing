@@ -12,10 +12,14 @@ from typing import Any
 
 log = logging.getLogger("blog.gemini")
 
-DEFAULT_MODEL = "gemini-2.0-flash"
+# gemini-2.0-flash was retired (HTTP 404); Gemini 3.8 Flash is the current stable Flash.
+DEFAULT_MODEL = "gemini-3.8-flash"
 BACKOFF_SECONDS = (30, 60, 120, 240, 300)
 REQUEST_TIMEOUT = 90
 MAX_ATTEMPTS = 5
+# Blog drafts: keep thinking low so thought tokens do not eat maxOutputTokens.
+DEFAULT_THINKING_LEVEL = "low"
+DEFAULT_MAX_OUTPUT_TOKENS = 16384
 
 
 class GeminiError(RuntimeError):
@@ -44,11 +48,12 @@ def call_gemini(
         raise GeminiError("GEMINI_API_KEY is missing", retryable=False)
     model = model or os.environ.get("GEMINI_MODEL") or DEFAULT_MODEL
 
+    # Gemini 3.x: do not send temperature/top_p/top_k (deprecated; may 400 later).
     body: dict[str, Any] = {
         "contents": [{"role": "user", "parts": [{"text": prompt}]}],
         "generationConfig": {
-            "temperature": 0.7,
-            "maxOutputTokens": 8192,
+            "maxOutputTokens": DEFAULT_MAX_OUTPUT_TOKENS,
+            "thinkingConfig": {"thinkingLevel": DEFAULT_THINKING_LEVEL},
         },
     }
     data = json.dumps(body).encode("utf-8")
@@ -111,7 +116,11 @@ def _extract_text(payload: dict[str, Any]) -> str:
     if not candidates:
         raise GeminiError(f"empty candidates: {json.dumps(payload)[:300]}")
     parts = (candidates[0].get("content") or {}).get("parts") or []
-    texts = [p.get("text", "") for p in parts if isinstance(p, dict)]
+    texts = [
+        p.get("text", "")
+        for p in parts
+        if isinstance(p, dict) and p.get("text") and not p.get("thought")
+    ]
     text = "".join(texts).strip()
     if not text:
         raise GeminiError("empty model text")

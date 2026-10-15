@@ -5,7 +5,7 @@
 #   INDEXNOW_KEY     — IndexNow key (Bing/Yandex/etc.); also creates /{key}.txt
 #
 # Optional variables:
-#   GEMINI_MODEL     — default gemini-2.0-flash
+#   GEMINI_MODEL     — default gemini-3.8-flash (gemini-2.0-flash retired)
 #
 # First enable: add secrets, then Actions → seo-blog-cron → Run workflow
 # (dry_run=true recommended for the first smoke test).
@@ -58,12 +58,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -82,7 +82,7 @@ jobs:
         id: gen
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.0-flash' }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.8-flash' }}
           DRY_RUN_DIR: ${{ github.workspace }}/dry-run-out
         run: |
           set -euo pipefail
@@ -108,7 +108,7 @@ jobs:
 
       - name: Upload generated artifact
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: blog-generate-${{ github.run_id }}
           path: |

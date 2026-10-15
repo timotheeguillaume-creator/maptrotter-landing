@@ -52,7 +52,7 @@ GEMINI_API_KEY=... python3 scripts/generate-blog-post.py --locale fr
 | `GEMINI_API_KEY` | oui | Google AI Studio / Gemini API (free tier) |
 | `INDEXNOW_KEY` | recommandé | IndexNow + fichier public `/{key}.txt` |
 
-Variable optionnelle : `GEMINI_MODEL` (défaut `gemini-2.0-flash`).
+Variable optionnelle : `GEMINI_MODEL` (défaut `gemini-3.8-flash`).
 
 ### Activer
 
