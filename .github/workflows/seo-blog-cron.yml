@@ -1,0 +1,202 @@
+# MapTrotter SEO blog — Gemini free tier, ~2 posts/week
+#
+# Required secrets (Settings → Secrets and variables → Actions):
+#   GEMINI_API_KEY   — Google AI Studio key (Gemini API, free tier)
+#   INDEXNOW_KEY     — IndexNow key (Bing/Yandex/etc.); also creates /{key}.txt
+#
+# Optional variables:
+#   GEMINI_MODEL     — default gemini-2.0-flash
+#
+# First enable: add secrets, then Actions → seo-blog-cron → Run workflow
+# (dry_run=true recommended for the first smoke test).
+#
+# Deploy model: commit/merge to main → Cloudflare Workers/Pages republish.
+# Rodage default: open a draft PR instead of pushing straight to main.
+
+name: seo-blog-cron
+
+on:
+  schedule:
+    # Tue & Thu 08:00 UTC → 2 articles / week
+    - cron: "0 8 * * 2,4"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Generate without committing / opening PR"
+        type: boolean
+        default: false
+      locale:
+        description: "Force locale (fr|en|es) or leave empty"
+        type: string
+        default: ""
+      city:
+        description: "Force city or leave empty"
+        type: string
+        default: ""
+      slug_override:
+        description: "Force slug (optional)"
+        type: string
+        default: ""
+      publish_mode:
+        description: "pr = draft PR (rodage); commit = push main + IndexNow"
+        type: choice
+        options:
+          - pr
+          - commit
+        default: pr
+
+concurrency:
+  group: seo-blog
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve inputs
+        id: opts
+        run: |
+          DRY="${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}"
+          MODE="${{ github.event_name == 'workflow_dispatch' && inputs.publish_mode || 'pr' }}"
+          echo "dry_run=${DRY}" >> "$GITHUB_OUTPUT"
+          echo "publish_mode=${MODE}" >> "$GITHUB_OUTPUT"
+          echo "locale=${{ github.event_name == 'workflow_dispatch' && inputs.locale || '' }}" >> "$GITHUB_OUTPUT"
+          echo "city=${{ github.event_name == 'workflow_dispatch' && inputs.city || '' }}" >> "$GITHUB_OUTPUT"
+          echo "slug_override=${{ github.event_name == 'workflow_dispatch' && inputs.slug_override || '' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate post (Gemini)
+        id: gen
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.0-flash' }}
+          DRY_RUN_DIR: ${{ github.workspace }}/dry-run-out
+        run: |
+          set -euo pipefail
+          if [ -z "${GEMINI_API_KEY:-}" ]; then
+            echo "::error::GEMINI_API_KEY secret is not set. Add it under Settings → Secrets → Actions."
+            exit 3
+          fi
+          ARGS=()
+          if [ "${{ steps.opts.outputs.dry_run }}" = "true" ]; then
+            ARGS+=(--dry-run)
+            mkdir -p "$DRY_RUN_DIR"
+          fi
+          if [ -n "${{ steps.opts.outputs.locale }}" ]; then
+            ARGS+=(--locale "${{ steps.opts.outputs.locale }}")
+          fi
+          if [ -n "${{ steps.opts.outputs.city }}" ]; then
+            ARGS+=(--city "${{ steps.opts.outputs.city }}")
+          fi
+          if [ -n "${{ steps.opts.outputs.slug_override }}" ]; then
+            ARGS+=(--slug-override "${{ steps.opts.outputs.slug_override }}")
+          fi
+          python3 scripts/generate-blog-post.py "${ARGS[@]+"${ARGS[@]}"}"
+
+      - name: Upload generated artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blog-generate-${{ github.run_id }}
+          path: |
+            blog-generate-summary.json
+            blog/posts/
+            blog/*.html
+            blog-index.json
+            sitemap.xml
+            feed.xml
+            dry-run-out/
+          if-no-files-found: warn
+
+      - name: Detect changes
+        id: changes
+        if: success() && steps.opts.outputs.dry_run != 'true'
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No file changes — nothing to publish."
+            exit 0
+          fi
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          if [ -f blog-generate-summary.json ]; then
+            python3 - <<'PY'
+          import json, os
+          s = json.load(open("blog-generate-summary.json"))
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"canonical={s['canonical']}\n")
+              f.write(f"slug={s['slug']}\n")
+              f.write(f"title={s['title']}\n")
+          PY
+          fi
+
+      - name: Commit bot identity
+        if: success() && steps.opts.outputs.dry_run != 'true' && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit & push to main
+        if: >-
+          success()
+          && steps.opts.outputs.dry_run != 'true'
+          && steps.changes.outputs.has_changes == 'true'
+          && steps.opts.outputs.publish_mode == 'commit'
+        run: |
+          set -euo pipefail
+          SLUG="${{ steps.changes.outputs.slug }}"
+          git add blog/ blog-index.json sitemap.xml feed.xml data/keyword-dictionary.json index.html blog.html || true
+          git ls-files --others --exclude-standard | grep -E '^[A-Za-z0-9_-]+\.txt$' | xargs -r git add || true
+          git commit -m "chore(blog): add post ${SLUG}"
+          git push origin HEAD:main
+
+      - name: Open draft PR (rodage)
+        if: >-
+          success()
+          && steps.opts.outputs.dry_run != 'true'
+          && steps.changes.outputs.has_changes == 'true'
+          && steps.opts.outputs.publish_mode != 'commit'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          SLUG="${{ steps.changes.outputs.slug }}"
+          BRANCH="blog/auto-${SLUG}-$(date -u +%Y%m%d)"
+          git checkout -b "$BRANCH"
+          git add blog/ blog-index.json sitemap.xml feed.xml data/keyword-dictionary.json index.html blog.html || true
+          git ls-files --others --exclude-standard | grep -E '^[A-Za-z0-9_-]+\.txt$' | xargs -r git add || true
+          git commit -m "chore(blog): add post ${SLUG}"
+          git push -u origin "$BRANCH"
+          TITLE="chore(blog): add post ${SLUG}"
+          BODY="Automated MapTrotter blog post (Gemini free tier).
+
+          - **Slug:** \`${SLUG}\`
+          - **Canonical:** ${{ steps.changes.outputs.canonical }}
+          - **Title:** ${{ steps.changes.outputs.title }}
+
+          Rodage: skim quality, then merge → Cloudflare republishes from \`main\`.
+          After merge, IndexNow can be triggered with \`publish_mode=commit\` or a follow-up ping job."
+          gh pr create --draft --base main --title "$TITLE" --body "$BODY"
+
+      - name: Ping IndexNow + sitemap
+        if: >-
+          success()
+          && steps.opts.outputs.dry_run != 'true'
+          && steps.opts.outputs.publish_mode == 'commit'
+          && steps.changes.outputs.has_changes == 'true'
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          CANONICAL_URL: ${{ steps.changes.outputs.canonical }}
+        run: python3 scripts/ping-indexnow.py

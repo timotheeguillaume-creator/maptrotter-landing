@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Le Radar MapTrotter</title>
+    <link>https://maptrotter.xyz/blog.html</link>
+    <description>Guides locaux, rencontres et spots authentiques — MapTrotter</description>
+    <language>fr</language>
+    <lastBuildDate>Thu, 15 Oct 2026 02:10:01 +0000</lastBuildDate>
+    <image>
+      <url>https://maptrotter.xyz/splash.png</url>
+      <title>MapTrotter</title>
+      <link>https://maptrotter.xyz/blog.html</link>
+    </image>
+    <item>
+      <title>Comment rencontrer des voyageurs solo dans votre propre ville ?</title>
+      <link>https://maptrotter.xyz/blog/rencontrer-voyageurs-ville.html</link>
+      <guid isPermaLink="true">https://maptrotter.xyz/blog/rencontrer-voyageurs-ville.html</guid>
+      <pubDate>Thu, 15 Oct 2026 08:00:00 +0000</pubDate>
+      <description>Astuces concrètes et carte interactive MapTrotter pour repérer les lieux animés et rencontrer des voyageurs authentiques près de chez vous.</description>
+      <language>fr</language>
+    </item>
+  </channel>
+</rss>
