@@ -74,6 +74,31 @@
       "status": "published",
       "image": "/splash.png",
       "keywordId": "es-sydney-decouvrir-spot-spots-local-street-art-01"
+    },
+    {
+      "slug": "maptrotter-gold-coast-it",
+      "title": "Esplorare la Gold Coast: la mappa interattiva per viaggiatori curiosi",
+      "description": "Scopri la Gold Coast oltre i grattacieli: una mappa interattiva per scovare spot autentici, onde tranquille e caffè condivisi da locali e viaggiatori.",
+      "excerpt": "La Gold Coast non è solo la linea di grattacieli di Surfers Paradise. Usare una mappa interattiva come MapTrotter Gold Coast permette di orientarsi tra i quarti",
+      "date": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "locale": "it",
+      "city": "Gold Coast",
+      "cluster": "voyageur-carte-interactive-it",
+      "category": "Guides",
+      "tags": [
+        "Gold Coast",
+        "Australia",
+        "Mappa interattiva",
+        "Surf",
+        "Community"
+      ],
+      "readingMinutes": 5,
+      "path": "/blog/maptrotter-gold-coast-it.html",
+      "source": "/blog/posts/2026-10-15-maptrotter-gold-coast-it.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "it-gold-coast-carte-interactive-brand-city-01"
     }
   ]
 }
