@@ -1,0 +1,14 @@
+# Keep SEO tooling / builder inputs out of the public Worker asset bundle.
+.git
+.github
+.wrangler
+node_modules
+data
+scripts
+*.py
+.DS_Store
+README.md
+wrangler.jsonc
+wrangler.toml
+package.json
+package-lock.json
