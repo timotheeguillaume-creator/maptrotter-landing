@@ -33,7 +33,9 @@ body {
 
 .brand-splash {
   display: block;
-  width: min(calc(100vw - 5.5rem), 14rem);
+  /* Fixed rem widths — avoid width:% against auto-sized flex parents */
+  width: 14rem;
+  max-width: calc(100vw - 5.5rem);
   height: auto;
   max-height: none;
   object-fit: contain;
@@ -48,18 +50,21 @@ body {
 
 /* Homepage / primary headers: brand-first, centered on mobile */
 .brand-splash--home {
-  width: min(calc(100vw - 3.5rem), 15.5rem);
+  width: 15.5rem;
+  max-width: calc(100vw - 3.5rem);
   margin-inline: auto;
   object-position: center;
 }
 
 @media (min-width: 640px) {
   .brand-splash {
-    width: min(100%, 18rem);
+    width: 18rem;
+    max-width: 100%;
   }
 
   .brand-splash--home {
-    width: min(100%, 22rem);
+    width: 22rem;
+    max-width: 100%;
     margin-inline: 0;
     object-position: left center;
   }
@@ -67,11 +72,11 @@ body {
 
 @media (min-width: 768px) {
   .brand-splash {
-    width: min(100%, 22rem);
+    width: 22rem;
   }
 
   .brand-splash--home {
-    width: min(100%, 26rem);
+    width: 26rem;
   }
 }
 
