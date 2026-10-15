@@ -378,42 +378,42 @@ body {
 
 .mt-spot-pops span {
   position: absolute;
-  font-size: 1.45rem;
+  font-size: 1.85rem;
   line-height: 1;
   opacity: 0;
   will-change: transform, opacity;
   user-select: none;
-  filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.35));
+  filter: drop-shadow(0 3px 8px rgb(0 0 0 / 0.4));
 }
 
 /* Far corners / edges — readable but not crowding the title */
 .mt-spot-pops span:nth-child(1) {
-  left: 3%; top: 10%;
-  font-size: 1.65rem;
+  left: 2%; top: 8%;
+  font-size: 2.15rem;
   animation: mt-pop-drift-a 7.2s cubic-bezier(0.22, 1.2, 0.36, 1) infinite;
   animation-delay: 0.2s;
 }
 .mt-spot-pops span:nth-child(2) {
-  right: 4%; top: 16%;
-  font-size: 1.35rem;
+  right: 3%; top: 14%;
+  font-size: 1.75rem;
   animation: mt-pop-drift-b 9.4s cubic-bezier(0.34, 1.4, 0.64, 1) infinite;
   animation-delay: 1.6s;
 }
 .mt-spot-pops span:nth-child(3) {
-  left: 6%; bottom: 14%;
-  font-size: 1.55rem;
+  left: 5%; bottom: 12%;
+  font-size: 2rem;
   animation: mt-pop-drift-c 8.1s cubic-bezier(0.16, 1, 0.3, 1) infinite;
   animation-delay: 3.4s;
 }
 .mt-spot-pops span:nth-child(4) {
-  right: 7%; bottom: 18%;
-  font-size: 1.4rem;
+  right: 6%; bottom: 16%;
+  font-size: 1.85rem;
   animation: mt-pop-drift-d 10.2s cubic-bezier(0.45, 0.05, 0.2, 1.2) infinite;
   animation-delay: 5.1s;
 }
 .mt-spot-pops span:nth-child(5) {
-  left: 48%; top: 4%;
-  font-size: 1.25rem;
+  left: 47%; top: 3%;
+  font-size: 1.6rem;
   animation: mt-pop-drift-e 11s cubic-bezier(0.28, 1.35, 0.4, 1) infinite;
   animation-delay: 6.8s;
 }
@@ -512,32 +512,35 @@ body {
 .mt-play-rocket__smoke {
   position: absolute;
   left: 50%;
-  top: 78%;
-  width: 0.55rem;
-  height: 0.9rem;
-  margin-left: -0.275rem;
-  border-radius: 50% 50% 40% 40%;
+  top: 72%;
+  width: 0.7rem;
+  height: 1.15rem;
+  margin-left: -0.35rem;
+  border-radius: 40% 40% 50% 50%;
   opacity: 0;
   pointer-events: none;
   z-index: 1;
   transform: translate3d(0, 0, 0) scaleY(0.4);
   background: linear-gradient(
     180deg,
-    #fff6a8 0%,
-    var(--mt-gold) 35%,
-    var(--mt-accent) 75%,
+    #fff8c4 0%,
+    #ffe066 25%,
+    var(--mt-gold) 45%,
+    var(--mt-accent) 78%,
     transparent 100%
   );
-  filter: blur(0.5px);
+  filter: blur(0.4px);
+  box-shadow: 0 0 10px 2px rgb(226 114 91 / 0.45);
 }
 
 .mt-play-rocket__smoke {
-  width: 0.85rem;
-  height: 1.1rem;
-  margin-left: -0.425rem;
-  top: 92%;
-  background: radial-gradient(circle, rgb(148 163 184 / 0.55) 0%, transparent 70%);
-  filter: blur(2px);
+  width: 1.05rem;
+  height: 1.35rem;
+  margin-left: -0.525rem;
+  top: 95%;
+  background: radial-gradient(circle, rgb(203 213 225 / 0.65) 0%, transparent 70%);
+  filter: blur(2.5px);
+  box-shadow: none;
 }
 
 .mt-play-rocket.is-flying {
