@@ -80,12 +80,18 @@ body {
   }
 }
 
-/* Language picker as absolute corner chrome (not stacked with CTAs) */
+/*
+ * Language chrome:
+ * - Mobile: in-flow under centered splash (stack: splash → lang → CTAs)
+ * - Desktop (sm+): absolute top-right corner utility
+ */
 .mt-lang-chrome {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  position: static;
   z-index: 20;
+  display: flex;
+  justify-content: center;
+  width: auto;
+  flex: none;
 }
 
 .mt-lang-chrome #lang-btn {
@@ -105,8 +111,10 @@ body {
 
 @media (min-width: 640px) {
   .mt-lang-chrome {
+    position: absolute;
     top: 0.25rem;
     right: 0;
+    justify-content: flex-end;
   }
 
   .mt-lang-chrome #lang-btn {
@@ -114,14 +122,16 @@ body {
   }
 }
 
-/* Brand + CTAs clear of corner lang chrome */
+/* Mobile: centered column. Desktop: offset row (brand + CTAs), lang out of flow */
 .mt-header-primary {
-  padding-top: 2.25rem;
+  padding-top: 0;
 }
 
-/* Don't let brand flex-grow shove CTAs into the lang corner */
 .mt-header-primary .brand-splash-link {
-  flex: 0 1 auto;
+  flex: none;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
 }
 
 @media (min-width: 640px) {
@@ -129,6 +139,11 @@ body {
     padding-top: 0.5rem;
     padding-right: 5.75rem;
     justify-content: flex-start;
+    align-items: center;
+  }
+
+  .mt-header-primary .brand-splash-link {
+    margin-inline: 0;
   }
 }
 

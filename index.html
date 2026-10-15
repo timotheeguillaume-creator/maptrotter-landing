@@ -101,50 +101,11 @@
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-[#E2725B] selection:text-white">
 
   <!-- Header / Navigation -->
+  <!-- Mobile: centered stack splash → lang → CTAs. Desktop: offset brand + CTAs, lang corner chrome. -->
   <header class="relative max-w-6xl mx-auto w-full px-1.5 pt-2 pb-3 sm:px-6 sm:pt-5 sm:pb-4">
 
-    <!-- Language: corner chrome only — not part of the CTA pair -->
-    <div class="mt-lang-chrome" id="lang-dropdown-wrapper">
-      <div class="relative inline-block text-left">
-        <button
-          type="button"
-          id="lang-btn"
-          aria-haspopup="true"
-          aria-expanded="false"
-          aria-label="Language"
-          class="border text-white rounded-lg flex items-center gap-1.5 transition focus:outline-none focus:border-[#E2725B]"
-        >
-          <img id="current-lang-flag" src="https://flagcdn.com/w40/fr.png" alt="" class="w-4 h-3 rounded-sm object-cover" />
-          <span id="current-lang-code" class="font-semibold uppercase tracking-wide">FR</span>
-          <span class="text-[9px] opacity-60" aria-hidden="true">▼</span>
-        </button>
-
-        <div id="lang-menu" class="hidden absolute right-0 mt-2 w-36 bg-[#1A222D] border border-white/20 rounded-xl shadow-2xl z-50 overflow-hidden py-1 backdrop-blur-md">
-          <button type="button" onclick="selectLanguage('fr')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
-            <img src="https://flagcdn.com/w40/fr.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>Français</span>
-          </button>
-          <button type="button" onclick="selectLanguage('en')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
-            <img src="https://flagcdn.com/w40/gb.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>English</span>
-          </button>
-          <button type="button" onclick="selectLanguage('es')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
-            <img src="https://flagcdn.com/w40/es.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>Español</span>
-          </button>
-          <button type="button" onclick="selectLanguage('de')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
-            <img src="https://flagcdn.com/w40/de.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>Deutsch</span>
-          </button>
-          <button type="button" onclick="selectLanguage('pt')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
-            <img src="https://flagcdn.com/w40/pt.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>Português</span>
-          </button>
-          <button type="button" onclick="selectLanguage('it')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
-            <img src="https://flagcdn.com/w40/it.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>Italiano</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Brand + primary CTA pair (actions only) -->
-    <div class="mt-header-primary flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 w-full">
-      <a href="/" class="brand-splash-link group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-xl w-full sm:w-auto" aria-label="MapTrotter">
+    <div class="mt-header-primary flex flex-col items-center sm:flex-row sm:items-center gap-2.5 sm:gap-5 w-full">
+      <a href="/" class="brand-splash-link group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-xl" aria-label="MapTrotter">
         <img
           src="/splash.png"
           alt="MapTrotter Live - Carte interactive et réseau social géolocalisé"
@@ -155,6 +116,45 @@
         />
         <span class="brand-wordmark-fallback" hidden aria-hidden="true">MAPTROTTER <em>live</em></span>
       </a>
+
+      <!-- Language: in-flow under splash on mobile; absolute corner chrome on sm+ -->
+      <div class="mt-lang-chrome" id="lang-dropdown-wrapper">
+        <div class="relative inline-block text-left">
+          <button
+            type="button"
+            id="lang-btn"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-label="Language"
+            class="border text-white rounded-lg flex items-center gap-1.5 transition focus:outline-none focus:border-[#E2725B]"
+          >
+            <img id="current-lang-flag" src="https://flagcdn.com/w40/fr.png" alt="" class="w-4 h-3 rounded-sm object-cover" />
+            <span id="current-lang-code" class="font-semibold uppercase tracking-wide">FR</span>
+            <span class="text-[9px] opacity-60" aria-hidden="true">▼</span>
+          </button>
+
+          <div id="lang-menu" class="hidden absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 mt-2 w-36 bg-[#1A222D] border border-white/20 rounded-xl shadow-2xl z-50 overflow-hidden py-1 backdrop-blur-md">
+            <button type="button" onclick="selectLanguage('fr')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+              <img src="https://flagcdn.com/w40/fr.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>Français</span>
+            </button>
+            <button type="button" onclick="selectLanguage('en')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+              <img src="https://flagcdn.com/w40/gb.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>English</span>
+            </button>
+            <button type="button" onclick="selectLanguage('es')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+              <img src="https://flagcdn.com/w40/es.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>Español</span>
+            </button>
+            <button type="button" onclick="selectLanguage('de')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+              <img src="https://flagcdn.com/w40/de.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>Deutsch</span>
+            </button>
+            <button type="button" onclick="selectLanguage('pt')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+              <img src="https://flagcdn.com/w40/pt.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>Português</span>
+            </button>
+            <button type="button" onclick="selectLanguage('it')" class="w-full text-left px-3 py-2 text-xs sm:text-sm text-white hover:bg-[#E2725B]/20 flex items-center gap-2.5 transition">
+              <img src="https://flagcdn.com/w40/it.png" alt="" class="w-4 h-3 rounded-sm object-cover" /> <span>Italiano</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div class="mt-cta-pair w-full sm:w-auto" role="group" aria-label="Actions">
         <a href="/" data-i18n="open_map" class="mt-cta mt-cta--sm">
