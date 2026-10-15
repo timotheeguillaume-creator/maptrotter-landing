@@ -114,10 +114,16 @@ body {
   padding-top: 2.25rem;
 }
 
+/* Don't let brand flex-grow shove CTAs into the lang corner */
+.mt-header-primary .brand-splash-link {
+  flex: 0 1 auto;
+}
+
 @media (min-width: 640px) {
   .mt-header-primary {
-    padding-top: 1.75rem;
-    padding-right: 5.5rem;
+    padding-top: 0.5rem;
+    padding-right: 5.75rem;
+    justify-content: flex-start;
   }
 }
 
