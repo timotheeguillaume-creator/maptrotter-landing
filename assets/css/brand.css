@@ -11,6 +11,13 @@
   --mt-font: "Plus Jakarta Sans", system-ui, sans-serif;
 }
 
+/* Animated conic angle for CTA running border (GPU-friendly) */
+@property --mt-cta-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 body {
   background-color: var(--mt-bg);
   color: var(--mt-cream);
@@ -35,7 +42,8 @@ body {
   display: block;
   /* Fixed rem widths — avoid width:% against auto-sized flex parents */
   width: 14rem;
-  max-width: calc(100vw - 5.5rem);
+  /* Prefer % over 100vw to avoid scrollbar-gutter horizontal shift */
+  max-width: calc(100% - 0.25rem);
   height: auto;
   max-height: none;
   object-fit: contain;
@@ -51,9 +59,10 @@ body {
 /* Homepage / primary headers: brand-first, centered on mobile */
 .brand-splash--home {
   width: 15.5rem;
-  max-width: calc(100vw - 3.5rem);
+  max-width: min(15.5rem, calc(100% - 0.5rem));
   margin-inline: auto;
-  object-position: center;
+  /* Optical center: coral wordmark sits slightly left of PNG mid ("live" overhangs right) */
+  object-position: 54% center;
 }
 
 @media (min-width: 640px) {
@@ -125,6 +134,9 @@ body {
 /* Mobile: centered column. Desktop: offset row (brand + CTAs), lang out of flow */
 .mt-header-primary {
   padding-top: 0;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .mt-header-primary .brand-splash-link {
@@ -132,6 +144,9 @@ body {
   width: fit-content;
   max-width: 100%;
   margin-inline: auto;
+  /* Kill any leftover asymmetric padding from prior layouts */
+  padding-inline: 0;
+  align-self: center;
 }
 
 @media (min-width: 640px) {
@@ -140,10 +155,16 @@ body {
     padding-right: 5.75rem;
     justify-content: flex-start;
     align-items: center;
+    text-align: left;
   }
 
   .mt-header-primary .brand-splash-link {
     margin-inline: 0;
+    align-self: auto;
+  }
+
+  .brand-splash--home {
+    object-position: left center;
   }
 }
 
@@ -164,36 +185,93 @@ body {
   }
 }
 
-/* Solid accent CTA — always readable on orange (beats .prose a color) */
+/* Solid accent CTA — FOMO: soft pulse + running warm border */
 .mt-cta {
+  --mt-cta-angle: 0deg;
+  position: relative;
   display: inline-block;
+  isolation: isolate;
+  z-index: 0;
   background-color: var(--mt-accent);
   color: #ffffff !important;
   font-weight: 700;
   padding: 0.625rem 1.25rem;
   border-radius: 0.75rem;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.25);
+  border: 1px solid transparent;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.25),
+    0 0 0 0 rgb(226 114 91 / 0.35);
   text-decoration: none !important;
   text-align: center;
   white-space: nowrap;
   transition: filter 0.15s ease, transform 0.1s ease;
+  animation: mt-cta-pulse 2.8s ease-in-out infinite;
+}
+
+/* Running border via masked conic-gradient (warm brand hues, not purple) */
+.mt-cta::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--mt-cta-angle),
+    var(--mt-accent),
+    var(--mt-gold),
+    rgba(0, 233, 255, 0.85),
+    var(--mt-gold),
+    var(--mt-accent)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: mt-cta-border-spin 3.2s linear infinite;
+  pointer-events: none;
+  opacity: 0.9;
 }
 
 .mt-cta:hover,
 .mt-cta:focus,
 .mt-cta:focus-visible {
   color: #ffffff !important;
-  filter: brightness(1.1);
+  filter: brightness(1.08);
   text-decoration: none !important;
 }
 
 .mt-cta:active {
   transform: scale(0.97);
+  animation: none;
 }
 
 .mt-cta:focus-visible {
   outline: 2px solid #ffffff;
-  outline-offset: 2px;
+  outline-offset: 3px;
+}
+
+@keyframes mt-cta-pulse {
+  0%, 100% {
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.25),
+      0 0 0 0 rgb(226 114 91 / 0.28),
+      0 0 18px -4px rgb(229 184 105 / 0.25);
+  }
+  50% {
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.25),
+      0 0 0 6px rgb(226 114 91 / 0),
+      0 0 28px -2px rgb(229 184 105 / 0.4);
+  }
+}
+
+@keyframes mt-cta-border-spin {
+  to { --mt-cta-angle: 360deg; }
 }
 
 .mt-cta--sm {
@@ -219,6 +297,137 @@ body {
 .prose .article-cta a:hover,
 .article-cta a.mt-cta:hover {
   color: #ffffff !important;
+}
+
+/* —— Hero title: true center on mobile; balanced wrap —— */
+.mt-hero {
+  position: relative;
+  text-align: center;
+}
+
+.mt-hero-title {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  text-align: center;
+  text-wrap: balance;
+  /* Explicit reset — no leftover transform/indent from older layouts */
+  transform: none;
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: 0;
+  letter-spacing: -0.02em;
+}
+
+.mt-hero-title > span {
+  display: inline;
+}
+
+/* Soft shimmer on the accent line (“…right where you are”) */
+.mt-title-shimmer {
+  background-image: linear-gradient(
+    105deg,
+    var(--mt-accent) 0%,
+    var(--mt-accent) 38%,
+    var(--mt-gold) 48%,
+    #fff6e8 52%,
+    var(--mt-gold) 56%,
+    var(--mt-accent) 66%,
+    var(--mt-accent) 100%
+  );
+  background-size: 220% 100%;
+  background-position: 100% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: mt-title-shimmer 5.5s ease-in-out infinite;
+}
+
+@keyframes mt-title-shimmer {
+  0%, 70% { background-position: 100% 50%; }
+  85% { background-position: 0% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/*
+ * Motif: sparse “spot pops” — occasional map-pin / wave / sparkle near the hero.
+ * Cap at 5 nodes; transform+opacity only; paused when .is-paused (offscreen).
+ */
+.mt-spot-pops {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mt-hero > *:not(.mt-spot-pops) {
+  position: relative;
+  z-index: 1;
+}
+
+.mt-spot-pops span {
+  position: absolute;
+  font-size: 0.95rem;
+  line-height: 1;
+  opacity: 0;
+  transform: translate3d(0, 8px, 0) scale(0.85);
+  animation: mt-spot-pop 7.5s ease-in-out infinite;
+  filter: none;
+  user-select: none;
+}
+
+.mt-spot-pops span:nth-child(1) { left: 8%;  top: 18%; animation-delay: 0s; }
+.mt-spot-pops span:nth-child(2) { right: 10%; top: 28%; animation-delay: 1.8s; font-size: 0.85rem; }
+.mt-spot-pops span:nth-child(3) { left: 14%;  bottom: 22%; animation-delay: 3.4s; }
+.mt-spot-pops span:nth-child(4) { right: 16%; bottom: 30%; animation-delay: 5s; font-size: 0.8rem; }
+.mt-spot-pops span:nth-child(5) { left: 46%;  top: 8%; animation-delay: 6.2s; font-size: 0.75rem; }
+
+.mt-spot-pops.is-paused span,
+.mt-spot-pops[hidden] span {
+  animation-play-state: paused;
+  opacity: 0;
+}
+
+@keyframes mt-spot-pop {
+  0%, 8% { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.8); }
+  18%, 32% { opacity: 0.55; transform: translate3d(0, 0, 0) scale(1); }
+  45%, 100% { opacity: 0; transform: translate3d(0, -6px, 0) scale(0.9); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-cta,
+  .mt-cta::before,
+  .mt-title-shimmer,
+  .mt-spot-pops span {
+    animation: none !important;
+  }
+
+  .mt-cta {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.25);
+  }
+
+  .mt-cta::before {
+    opacity: 0.55;
+    background: linear-gradient(
+      135deg,
+      var(--mt-gold),
+      var(--mt-accent),
+      rgba(0, 233, 255, 0.7)
+    );
+  }
+
+  .mt-title-shimmer {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: var(--mt-accent);
+  }
+
+  .mt-spot-pops {
+    display: none;
+  }
 }
 
 /* Optional text fallback if splash.png fails to load */

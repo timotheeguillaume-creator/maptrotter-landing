@@ -168,21 +168,30 @@
   </header>
 
   <!-- Hero Section -->
-  <main class="max-w-4xl mx-auto text-center px-4 sm:px-6 py-8 sm:py-16 my-auto">
-    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#1A222D] text-xs sm:text-sm font-medium mb-6 sm:mb-8 border border-white/10 shadow-inner">
+  <main class="mt-hero max-w-4xl mx-auto text-center px-4 sm:px-6 py-8 sm:py-16 my-auto">
+    <!-- Sparse spot pops — one motif, capped at 5 (CSS-only; paused offscreen) -->
+    <div class="mt-spot-pops" aria-hidden="true">
+      <span>📍</span>
+      <span>👋</span>
+      <span>✨</span>
+      <span>🗺️</span>
+      <span>📍</span>
+    </div>
+
+    <div class="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#1A222D] text-xs sm:text-sm font-medium mb-6 sm:mb-8 border border-white/10 shadow-inner mx-auto">
       <span data-i18n="badge">🛰️ La carte interactive de la communauté</span>
     </div>
 
-    <h1 class="text-3xl sm:text-6xl font-black text-white tracking-tight leading-tight mb-6">
-      <span data-i18n="title_main">Découvrez ce qui se passe</span> <br />
-      <span class="accent-text" data-i18n="title_accent">exactement là où vous êtes.</span>
+    <h1 class="mt-hero-title text-3xl sm:text-6xl font-black text-white tracking-tight leading-tight mb-6">
+      <span data-i18n="title_main">Découvrez ce qui se passe</span><br />
+      <span class="accent-text mt-title-shimmer" data-i18n="title_accent">exactement là où vous êtes.</span>
     </h1>
 
     <p class="text-base sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal" data-i18n="description">
       Trouvez des activités locales, des festivals, des sorties en soirée et faites des rencontres authentiques avec des voyageurs et locaux.
     </p>
 
-    <!-- App Store / Play Store Buttons -->
+    <!-- App Store / Play Store Buttons (placeholders until real store IDs) -->
     <div id="download" class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-sm sm:max-w-none mx-auto">
       <a href="#" class="w-full sm:w-auto bg-[#1A222D] hover:bg-black/40 border border-white/15 text-white px-6 py-3.5 rounded-2xl flex items-center justify-center gap-3 transition active:scale-95 shadow-md">
         <span class="text-2xl">🍏</span>
@@ -330,6 +339,18 @@
       document.addEventListener('click', () => {
         langMenu.classList.add('hidden');
       });
+
+      // Pause sparse spot pops when hero is offscreen (cheap; no rAF loop)
+      const pops = document.querySelector('.mt-spot-pops');
+      if (pops && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          ([entry]) => {
+            pops.classList.toggle('is-paused', !entry.isIntersecting);
+          },
+          { rootMargin: '40px', threshold: 0 }
+        );
+        io.observe(pops);
+      }
     });
   </script>
 </body>
