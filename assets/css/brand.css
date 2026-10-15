@@ -554,8 +554,11 @@ body {
   position: fixed;
   z-index: 80;
   margin: 0;
-  /* ~15% slower than 2.35s */
-  animation: mt-rocket-orbit 2.7s cubic-bezier(0.12, 0.7, 0.2, 1) forwards;
+  /*
+   * linear timing — ease must NOT be per-segment (that caused freinage
+   * at each keyframe). Acceleration is baked into keyframe spacing.
+   */
+  animation: mt-rocket-orbit 2.7s linear forwards;
 }
 
 .mt-play-rocket.is-flying .mt-play-rocket__flame {
@@ -572,32 +575,26 @@ body {
   animation: mt-rocket-reappear 0.55s cubic-bezier(0.22, 1.2, 0.36, 1) forwards;
 }
 
-/* SpaceX-ish arc: slow lift → curve → rapid climb off the top */
+/*
+ * Continuous SpaceX-like arc (dense samples, monotonic Y up).
+ * X peaks gently then softens — no hard reverse. Rotate follows path.
+ * Early % = small deltas (slow lift); late % = large deltas (accel).
+ */
 @keyframes mt-rocket-orbit {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-    opacity: 1;
-  }
-  12% {
-    transform: translate3d(8px, -28px, 0) rotate(-12deg) scale(1.08);
-    opacity: 1;
-  }
-  28% {
-    transform: translate3d(48px, -18vh, 0) rotate(-28deg) scale(1.12);
-    opacity: 1;
-  }
-  48% {
-    transform: translate3d(110px, -42vh, 0) rotate(-48deg) scale(1.05);
-    opacity: 1;
-  }
-  72% {
-    transform: translate3d(70px, -78vh, 0) rotate(-22deg) scale(0.92);
-    opacity: 0.95;
-  }
-  100% {
-    transform: translate3d(20px, -115vh, 0) rotate(-8deg) scale(0.55);
-    opacity: 0;
-  }
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); opacity: 1; }
+  8%   { transform: translate3d(4px, -2vh, 0) rotate(-6deg) scale(1.02); opacity: 1; }
+  16%  { transform: translate3d(12px, -5vh, 0) rotate(-12deg) scale(1.05); opacity: 1; }
+  24%  { transform: translate3d(24px, -10vh, 0) rotate(-18deg) scale(1.08); opacity: 1; }
+  32%  { transform: translate3d(40px, -16vh, 0) rotate(-24deg) scale(1.1); opacity: 1; }
+  40%  { transform: translate3d(58px, -24vh, 0) rotate(-30deg) scale(1.1); opacity: 1; }
+  48%  { transform: translate3d(74px, -34vh, 0) rotate(-35deg) scale(1.08); opacity: 1; }
+  56%  { transform: translate3d(88px, -46vh, 0) rotate(-38deg) scale(1.05); opacity: 1; }
+  64%  { transform: translate3d(98px, -60vh, 0) rotate(-40deg) scale(1.02); opacity: 1; }
+  72%  { transform: translate3d(104px, -74vh, 0) rotate(-38deg) scale(0.98); opacity: 0.98; }
+  80%  { transform: translate3d(102px, -88vh, 0) rotate(-32deg) scale(0.92); opacity: 0.95; }
+  88%  { transform: translate3d(96px, -100vh, 0) rotate(-24deg) scale(0.82); opacity: 0.85; }
+  94%  { transform: translate3d(88px, -110vh, 0) rotate(-16deg) scale(0.7); opacity: 0.55; }
+  100% { transform: translate3d(80px, -120vh, 0) rotate(-10deg) scale(0.55); opacity: 0; }
 }
 
 @keyframes mt-rocket-flame {
@@ -616,7 +613,7 @@ body {
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
-/* —— App Store apple: short left roll → tip-off fall (synced mid-rocket) —— */
+/* —— App Store apple: longer left roll → tip-off fall (near end of rocket) —— */
 .mt-store-btn--apple {
   position: relative;
   overflow: visible;
@@ -666,35 +663,35 @@ body {
 }
 
 @keyframes mt-apple-roll-fall {
-  /* Phase 1 — short horizontal roll left on the “table” */
+  /* Phase 1 — longer horizontal roll left (~2× prior distance) */
   0% {
     transform: translate3d(0, 0, 0) rotate(0deg);
     opacity: 1;
   }
-  12% {
-    transform: translate3d(-14px, 0, 0) rotate(-90deg);
+  10% {
+    transform: translate3d(-28px, 0, 0) rotate(-120deg);
     opacity: 1;
   }
-  22% {
-    transform: translate3d(-28px, 1px, 0) rotate(-180deg);
+  20% {
+    transform: translate3d(-56px, 1px, 0) rotate(-240deg);
     opacity: 1;
   }
   30% {
     /* tip off the edge — still mostly horizontal, slight drop */
-    transform: translate3d(-40px, 6px, 0) rotate(-250deg);
+    transform: translate3d(-80px, 8px, 0) rotate(-340deg);
     opacity: 1;
   }
   /* Phase 2 — fall with angled trajectory (keep leftward speed) */
   55% {
-    transform: translate3d(-72px, 28vh, 0) rotate(-480deg);
+    transform: translate3d(-130px, 28vh, 0) rotate(-560deg);
     opacity: 1;
   }
   78% {
-    transform: translate3d(-98px, 62vh, 0) rotate(-700deg);
+    transform: translate3d(-170px, 62vh, 0) rotate(-780deg);
     opacity: 0.9;
   }
   100% {
-    transform: translate3d(-120px, 115vh, 0) rotate(-900deg);
+    transform: translate3d(-210px, 115vh, 0) rotate(-980deg);
     opacity: 0;
   }
 }
