@@ -101,9 +101,9 @@
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-[#E2725B] selection:text-white">
 
   <!-- Header / Navigation -->
-  <header class="max-w-6xl mx-auto w-full px-1.5 pt-2 pb-3 sm:p-6 flex flex-col gap-2 sm:gap-3">
+  <header class="relative max-w-6xl mx-auto w-full px-1.5 pt-2 pb-3 sm:px-6 sm:pt-5 sm:pb-4">
 
-    <!-- Language as header chrome (utility, not in CTA cluster) -->
+    <!-- Language: corner chrome only — not part of the CTA pair -->
     <div class="mt-lang-chrome" id="lang-dropdown-wrapper">
       <div class="relative inline-block text-left">
         <button
@@ -142,8 +142,8 @@
       </div>
     </div>
 
-    <!-- Brand + primary CTA pair -->
-    <div class="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-6 w-full">
+    <!-- Brand + primary CTA pair (actions only) -->
+    <div class="mt-header-primary flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 w-full">
       <a href="/" class="brand-splash-link group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-xl w-full sm:w-auto" aria-label="MapTrotter">
         <img
           src="/splash.png"

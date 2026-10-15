@@ -33,7 +33,7 @@ body {
 
 .brand-splash {
   display: block;
-  width: min(calc(100vw - 5rem), 16rem);
+  width: min(calc(100vw - 5.5rem), 14rem);
   height: auto;
   max-height: none;
   object-fit: contain;
@@ -48,18 +48,18 @@ body {
 
 /* Homepage / primary headers: brand-first, centered on mobile */
 .brand-splash--home {
-  width: min(calc(100vw - 2.75rem), 19rem);
+  width: min(calc(100vw - 3.5rem), 15.5rem);
   margin-inline: auto;
   object-position: center;
 }
 
 @media (min-width: 640px) {
   .brand-splash {
-    width: min(100%, 22rem);
+    width: min(100%, 18rem);
   }
 
   .brand-splash--home {
-    width: min(100%, 28rem);
+    width: min(100%, 22rem);
     margin-inline: 0;
     object-position: left center;
   }
@@ -67,24 +67,24 @@ body {
 
 @media (min-width: 768px) {
   .brand-splash {
-    width: min(100%, 26rem);
+    width: min(100%, 22rem);
   }
 
   .brand-splash--home {
-    width: min(100%, 34rem);
+    width: min(100%, 26rem);
   }
 }
 
-/* Language picker as header chrome (not part of CTA cluster) */
+/* Language picker as absolute corner chrome (not stacked with CTAs) */
 .mt-lang-chrome {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  padding-inline: 0.25rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 20;
 }
 
 .mt-lang-chrome #lang-btn {
-  background: transparent;
+  background: rgba(26, 34, 45, 0.65);
   border-color: rgba(255, 255, 255, 0.14);
   color: var(--mt-muted);
   padding: 0.375rem 0.625rem;
@@ -100,11 +100,24 @@ body {
 
 @media (min-width: 640px) {
   .mt-lang-chrome {
-    padding-inline: 0;
+    top: 0.25rem;
+    right: 0;
   }
 
   .mt-lang-chrome #lang-btn {
     font-size: 0.75rem;
+  }
+}
+
+/* Brand + CTAs clear of corner lang chrome */
+.mt-header-primary {
+  padding-top: 2.25rem;
+}
+
+@media (min-width: 640px) {
+  .mt-header-primary {
+    padding-top: 1.75rem;
+    padding-right: 5.5rem;
   }
 }
 
@@ -119,7 +132,8 @@ body {
 
 @media (min-width: 640px) {
   .mt-cta-pair {
-    justify-content: flex-end;
+    justify-content: flex-start;
+    flex-shrink: 0;
     gap: 0.75rem;
   }
 }
