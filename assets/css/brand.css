@@ -215,6 +215,11 @@ body {
   white-space: nowrap;
   transition: filter 0.15s ease, transform 0.1s ease;
   animation: mt-cta-pulse 2.8s ease-in-out infinite;
+  animation-play-state: paused; /* until body.mt-motion-cta */
+}
+
+body.mt-motion-cta .mt-cta {
+  animation-play-state: running;
 }
 
 /* Running border via masked conic-gradient (warm brand hues, not purple) */
@@ -242,8 +247,13 @@ body {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: mt-cta-border-spin 3.2s linear infinite;
+  animation-play-state: paused;
   pointer-events: none;
   opacity: 0.9;
+}
+
+body.mt-motion-cta .mt-cta::before {
+  animation-play-state: running;
 }
 
 .mt-cta:hover,
@@ -351,6 +361,11 @@ body {
   background-clip: text;
   color: transparent;
   animation: mt-title-shimmer 5.5s ease-in-out infinite;
+  animation-play-state: paused; /* until body.mt-motion-shimmer */
+}
+
+body.mt-motion-shimmer .mt-title-shimmer {
+  animation-play-state: running;
 }
 
 @keyframes mt-title-shimmer {
@@ -655,10 +670,11 @@ body {
   z-index: 79;
   margin: 0;
   /*
-   * Roll ~+33% longer (~0.62s), fall faster (~0.73s) vs prior 1.55s split.
-   * Path unchanged; only phase timing. Tip-off still synced late via JS.
+   * Short tip-off at button exit edge (~⅓ prior horizontal path).
+   * linear = no per-segment freinage; rotate synced to travel.
+   * Roll wall-clock kept (~0.62s @ 46% of 1.35s) → slower feel over short distance.
    */
-  animation: mt-apple-roll-fall 1.35s cubic-bezier(0.33, 0.1, 0.25, 1) forwards;
+  animation: mt-apple-roll-fall 1.35s linear forwards;
 }
 
 .mt-apple.is-reappearing {
@@ -666,35 +682,47 @@ body {
 }
 
 @keyframes mt-apple-roll-fall {
-  /* Phase 1 — table roll (~46% of timeline ≈ +1/3 vs prior 30%) */
+  /* Phase 1 — short roll to App Store button left exit edge (~27px ≈ prior×⅓) */
   0% {
     transform: translate3d(0, 0, 0) rotate(0deg);
     opacity: 1;
   }
-  15% {
-    transform: translate3d(-28px, 0, 0) rotate(-120deg);
+  12% {
+    transform: translate3d(-7px, 0, 0) rotate(-32deg);
     opacity: 1;
   }
-  31% {
-    transform: translate3d(-56px, 1px, 0) rotate(-240deg);
+  24% {
+    transform: translate3d(-14px, 0, 0) rotate(-64deg);
+    opacity: 1;
+  }
+  35% {
+    transform: translate3d(-21px, 1px, 0) rotate(-96deg);
     opacity: 1;
   }
   46% {
-    /* tip off the edge — still mostly horizontal, slight drop */
-    transform: translate3d(-80px, 8px, 0) rotate(-340deg);
+    /* tip off button frame edge */
+    transform: translate3d(-27px, 5px, 0) rotate(-130deg);
     opacity: 1;
   }
-  /* Phase 2 — faster fall (compressed into remaining ~54%) */
-  65% {
-    transform: translate3d(-130px, 28vh, 0) rotate(-560deg);
+  /* Phase 2 — angled fall (also ×⅓ horizontal; denser samples for fluid drop) */
+  58% {
+    transform: translate3d(-38px, 12vh, 0) rotate(-200deg);
     opacity: 1;
   }
-  83% {
-    transform: translate3d(-170px, 62vh, 0) rotate(-780deg);
-    opacity: 0.9;
+  70% {
+    transform: translate3d(-48px, 32vh, 0) rotate(-280deg);
+    opacity: 1;
+  }
+  82% {
+    transform: translate3d(-57px, 58vh, 0) rotate(-360deg);
+    opacity: 0.92;
+  }
+  92% {
+    transform: translate3d(-64px, 88vh, 0) rotate(-430deg);
+    opacity: 0.55;
   }
   100% {
-    transform: translate3d(-210px, 115vh, 0) rotate(-980deg);
+    transform: translate3d(-70px, 115vh, 0) rotate(-480deg);
     opacity: 0;
   }
 }
