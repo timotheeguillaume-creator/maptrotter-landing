@@ -352,6 +352,21 @@
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+      /*
+       * Site entrance: quiet beat, then stagger hero motion systems.
+       * Nothing animates until after ENTRANCE_QUIET_MS.
+       */
+      const ENTRANCE_QUIET_MS = 1400;
+      const STAGGER_CTA_MS = 0;
+      const STAGGER_SHIMMER_MS = 400;
+      const STAGGER_POPS_MS = 900;
+      const STAGGER_ROCKET_MS = 1500;
+      const FIRST_LAUNCH_DELAY_MS = 1000; // after rocket gate + in view
+
+      let rocketGateOpen = false;
+      let startPops = () => {};
+      let armRocketSystem = () => {};
+
       // —— Organic spot pops: random emoji + motion class + edge position ——
       const pops = document.querySelector('.mt-spot-pops');
       if (pops && !reduceMotion) {
@@ -424,17 +439,18 @@
           if (e.target.parentElement !== pops) return;
           if (!String(e.animationName || '').startsWith('mt-pop-drift-')) return;
           if (pops.classList.contains('is-paused')) return;
-          // Small gap, then respawn with new random combo
           window.setTimeout(() => armPop(e.target), 180 + Math.random() * 520);
         };
 
         pops.addEventListener('animationend', onPopEnd);
 
-        for (let i = 0; i < POP_CAP; i++) {
-          const el = document.createElement('span');
-          pops.appendChild(el);
-          window.setTimeout(() => armPop(el), i * (280 + Math.random() * 420));
-        }
+        startPops = () => {
+          for (let i = 0; i < POP_CAP; i++) {
+            const el = document.createElement('span');
+            pops.appendChild(el);
+            window.setTimeout(() => armPop(el), i * (280 + Math.random() * 420));
+          }
+        };
 
         if ('IntersectionObserver' in window) {
           new IntersectionObserver(
@@ -460,9 +476,8 @@
         let appleBusy = false;
         let appleTimer = null;
         const MAX_AUTO = 3;
-        const FIRST_LAUNCH_DELAY_MS = 2800;
         const ROCKET_ORBIT_MS = 2700;
-        /* Near end of orbit — almost finished, not mid-flight */
+        /* Near end of orbit — almost finished */
         const APPLE_NEAR_END_MS = Math.round(ROCKET_ORBIT_MS * 0.88);
 
         const tipApple = () => {
@@ -494,7 +509,6 @@
           rocketSlot.classList.add('is-empty');
           void rocket.offsetWidth;
           rocket.classList.add('is-flying');
-          // Apple rolls + falls when rocket is almost finished
           if (appleTimer) window.clearTimeout(appleTimer);
           appleTimer = window.setTimeout(tipApple, APPLE_NEAR_END_MS);
         };
@@ -548,21 +562,42 @@
           apple.addEventListener('animationend', onAppleReappearEnd);
         }
 
+        const tryScheduleFirstLaunch = () => {
+          if (!rocketGateOpen) return;
+          if (playBtn.dataset.inView === '1' && cycles === 0 && !busy && !firstLaunchPending) {
+            firstLaunchPending = true;
+            window.setTimeout(launchRocket, FIRST_LAUNCH_DELAY_MS);
+          }
+        };
+
         const playIo = new IntersectionObserver(
           ([entry]) => {
             playBtn.dataset.inView = entry.isIntersecting ? '1' : '0';
-            if (entry.isIntersecting && cycles === 0 && !busy && !firstLaunchPending) {
-              firstLaunchPending = true;
-              window.setTimeout(launchRocket, FIRST_LAUNCH_DELAY_MS);
-            }
+            if (entry.isIntersecting) tryScheduleFirstLaunch();
           },
           { threshold: 0.45, rootMargin: '0px' }
         );
         playIo.observe(playBtn);
 
+        armRocketSystem = () => {
+          rocketGateOpen = true;
+          tryScheduleFirstLaunch();
+        };
+
         playBtn.addEventListener('focus', () => {
+          if (!rocketGateOpen) return;
           if (!busy) { cycles = Math.min(cycles, MAX_AUTO - 1); launchRocket(); }
         });
+      }
+
+      // Entrance quiet → staggered motion enable
+      if (!reduceMotion) {
+        window.setTimeout(() => {
+          window.setTimeout(() => document.body.classList.add('mt-motion-cta'), STAGGER_CTA_MS);
+          window.setTimeout(() => document.body.classList.add('mt-motion-shimmer'), STAGGER_SHIMMER_MS);
+          window.setTimeout(() => startPops(), STAGGER_POPS_MS);
+          window.setTimeout(() => armRocketSystem(), STAGGER_ROCKET_MS);
+        }, ENTRANCE_QUIET_MS);
       }
     });
   </script>
