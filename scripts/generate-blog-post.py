@@ -133,11 +133,19 @@ def main() -> int:
         return 2
     dictionary = json.loads(dict_path.read_text(encoding="utf-8"))
 
+    blog_index = catalog.load_blog_index(ROOT)
+    recent_titles = [
+        str(p.get("title") or "")
+        for p in (blog_index.get("posts") or [])[:12]
+        if p.get("title")
+    ]
+
     picked = topic.pick_topic(
         dictionary,
         today=today,
         locale=args.locale,
         city=args.city,
+        recent_titles=recent_titles,
     )
     if not picked:
         log.error("no active keyword to pick")
