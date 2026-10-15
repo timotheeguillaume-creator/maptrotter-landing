@@ -51,12 +51,24 @@ GEMINI_API_KEY=... python3 scripts/generate-blog-post.py --locale fr
 |--------|-------------|------|
 | `GEMINI_API_KEY` | oui | Google AI Studio / Gemini API (free tier) |
 | `INDEXNOW_KEY` | recommandé | IndexNow + fichier public `/{key}.txt` |
+| `SEO_CRON_TOKEN` | optionnel | PAT (repo + pull requests) si `GITHUB_TOKEN` ne peut pas ouvrir de PR |
 
 Variable optionnelle : `GEMINI_MODEL` (défaut `gemini-3.8-flash`).
 
+### Permissions Actions (obligatoire pour `publish_mode=pr`)
+
+Sans PAT `SEO_CRON_TOKEN`, activer dans le repo :
+
+**Settings → Actions → General → Workflow permissions**
+
+- Workflow permissions : **Read and write**
+- Cocher **Allow GitHub Actions to create and approve pull requests**
+
+Sans cette case, le cron génère + push la branche puis échoue à `gh pr create` (exit 8) avec le message GraphQL *GitHub Actions is not permitted to create or approve pull requests*.
+
 ### Activer
 
-1. Ajouter les secrets dans le repo GitHub.
+1. Ajouter les secrets dans le repo GitHub (+ case Actions ci-dessus pour le mode PR).
 2. Actions → **seo-blog-cron** → **Run workflow** avec `dry_run=true` (smoke).
 3. Relancer avec `dry_run=false`, `publish_mode=pr` (rodage : PR draft).
 4. Après validation humaine, merger → Cloudflare republie depuis `main`.
