@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="{{LANG}}" class="dark">
 <head>
   <!--
-    TEMPLATE SOURCE for generated posts (phase C).
+    TEMPLATE SOURCE for generated posts (phase C / Gemini pipeline).
     Clone this file into /blog/{slug}.html, then replace:
-      {{TITLE}}, {{DESCRIPTION}}, {{CANONICAL}}, {{DATE_ISO}}, {{DATE_LABEL}},
-      {{CATEGORY}}, {{READING_MINUTES}}, {{BODY_HTML}}, {{OG_IMAGE}}
+      {{LANG}}, {{TITLE}}, {{DESCRIPTION}}, {{CANONICAL}}, {{DATE_ISO}}, {{DATE_LABEL}},
+      {{CATEGORY}}, {{READING_MINUTES}}, {{BODY_HTML}}, {{OG_IMAGE}}, {{JSON_LD}}
     Published URLs live under /blog/{slug}.html — see blog/README.md
     Old /article.html traffic redirects via _redirects.
   -->
@@ -16,6 +16,7 @@
   <title>{{TITLE}} | Blog MapTrotter</title>
   <meta name="description" content="{{DESCRIPTION}}" />
   <meta name="author" content="Équipe MapTrotter" />
+  <link rel="alternate" type="application/rss+xml" title="Le Radar MapTrotter" href="/feed.xml" />
   <link rel="canonical" href="{{CANONICAL}}" />
 
   <meta property="og:type" content="article" />
@@ -33,37 +34,7 @@
   <meta property="twitter:image" content="{{OG_IMAGE}}" />
 
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "{{CANONICAL}}"
-    },
-    "headline": "{{TITLE}}",
-    "description": "{{DESCRIPTION}}",
-    "image": "{{OG_IMAGE}}",
-    "author": {
-      "@type": "Organization",
-      "name": "Équipe MapTrotter"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "MapTrotter",
-      "url": "https://maptrotter.xyz/",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://maptrotter.xyz/favicon.png"
-      },
-      "parentOrganization": {
-        "@type": "Organization",
-        "name": "xWalk"
-      }
-    },
-    "datePublished": "{{DATE_ISO}}",
-    "dateModified": "{{DATE_ISO}}",
-    "inLanguage": "fr"
-  }
+  {{JSON_LD}}
   </script>
 
   <link rel="icon" type="image/png" href="/favicon.png" />
