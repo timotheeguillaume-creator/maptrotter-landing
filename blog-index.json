@@ -50,6 +50,30 @@
       "status": "published",
       "image": "/splash.png",
       "keywordId": "en-newcastle-eviter-touristique-spots-hidden-food-hall-01"
+    },
+    {
+      "slug": "spots-street-art-locales-sydney-es",
+      "title": "Spots de street art locales en Sydney: ruta por murales y callejones alternativos",
+      "description": "Descubre los mejores spots de street art locales en Sydney. Recorre callejones vibrantes en Newtown, Marrickville y Bondi con consejos de la comunidad.",
+      "excerpt": "Para encontrar auténticos spots de street art locales en Sydney, sal del centro y adéntrate en el Inner West, el corazón creativo de la ciudad. Barrios como New",
+      "date": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "locale": "es",
+      "city": "Sydney",
+      "cluster": "voyageur-decouvrir-spot-es",
+      "category": "Spots",
+      "tags": [
+        "street-art",
+        "sydney",
+        "inner-west",
+        "viajes"
+      ],
+      "readingMinutes": 6,
+      "path": "/blog/spots-street-art-locales-sydney-es.html",
+      "source": "/blog/posts/2026-10-15-spots-street-art-locales-sydney-es.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "es-sydney-decouvrir-spot-spots-local-street-art-01"
     }
   ]
 }

@@ -5,7 +5,7 @@
     <link>https://maptrotter.xyz/blog.html</link>
     <description>Guides locaux, rencontres et spots authentiques — MapTrotter</description>
     <language>fr</language>
-    <lastBuildDate>Thu, 15 Oct 2026 02:44:11 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 15 Oct 2026 03:00:35 +0000</lastBuildDate>
     <image>
       <url>https://maptrotter.xyz/splash.png</url>
       <title>MapTrotter</title>
@@ -26,6 +26,14 @@
       <pubDate>Thu, 15 Oct 2026 08:00:00 +0000</pubDate>
       <description>Ditch the generic dining chains. Explore vibrant, independent food halls and hidden culinary hubs across Newcastle's creative quarters with MapTrotter.</description>
       <language>en</language>
+    </item>
+    <item>
+      <title>Spots de street art locales en Sydney: ruta por murales y callejones alternativos</title>
+      <link>https://maptrotter.xyz/blog/spots-street-art-locales-sydney-es.html</link>
+      <guid isPermaLink="true">https://maptrotter.xyz/blog/spots-street-art-locales-sydney-es.html</guid>
+      <pubDate>Thu, 15 Oct 2026 08:00:00 +0000</pubDate>
+      <description>Descubre los mejores spots de street art locales en Sydney. Recorre callejones vibrantes en Newtown, Marrickville y Bondi con consejos de la comunidad.</description>
+      <language>es</language>
     </item>
   </channel>
 </rss>
