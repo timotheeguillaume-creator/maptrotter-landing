@@ -68,10 +68,9 @@ Sans cette case, le cron génère + push la branche puis échoue à `gh pr creat
 
 ### Activer
 
-1. Ajouter les secrets dans le repo GitHub (+ case Actions ci-dessus pour le mode PR).
+1. Ajouter les secrets dans le repo GitHub (`GEMINI_API_KEY`, `INDEXNOW_KEY` recommandé).
 2. Actions → **seo-blog-cron** → **Run workflow** avec `dry_run=true` (smoke).
-3. Relancer avec `dry_run=false`, `publish_mode=pr` (rodage : PR draft).
-4. Après validation humaine, merger → Cloudflare republie depuis `main`.
-5. Plus tard : `publish_mode=commit` pour push direct + ping IndexNow.
+3. Cron programmé (mar/jeu 08:00 UTC) : `publish_mode=commit` — push direct sur `main` + ping IndexNow si `INDEXNOW_KEY` est défini.
+4. Manuel (`workflow_dispatch`) : choisir `publish_mode=commit` (défaut fire-and-forget) ou `pr` (PR draft / rodage ; nécessite la case Actions ci-dessus ou `SEO_CRON_TOKEN`).
 
 Cron : mardi & jeudi 08:00 UTC. Cap ~2 posts/semaine. Retries Gemini : backoff 30s→240s.
