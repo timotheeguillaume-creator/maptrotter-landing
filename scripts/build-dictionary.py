@@ -3,8 +3,9 @@
 One-shot builder for MapTrotter SEO keyword dictionary (phase C1).
 
 Generates data/keyword-dictionary.json from intentions × spot types ×
-cities × locales (FR / EN / ES). Filters absurd geo×spot combos and
-deduplicates by normalized phrase.
+cities × locales (FR / EN / ES / IT / DE). Australia-first city rollout
+(major → secondary → NZ Oceania anchors → legacy EU/NA seeds). Filters
+absurd geo×spot combos and deduplicates by normalized phrase.
 
 Usage:
   python3 scripts/build-dictionary.py
@@ -20,7 +21,38 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "keyword-dictionary.json"
 
-CITIES = [
+# Australia-first (prefs): majors → secondary → Oceania hubs → legacy seeds
+CITIES_AU_MAJOR = [
+    "Sydney",
+    "Melbourne",
+    "Brisbane",
+    "Perth",
+    "Adelaide",
+    "Canberra",
+    "Gold Coast",
+    "Newcastle",
+]
+CITIES_AU_SECONDARY = [
+    "Hobart",
+    "Darwin",
+    "Cairns",
+    "Wollongong",
+    "Geelong",
+    "Townsville",
+    "Toowoomba",
+    "Ballarat",
+    "Launceston",
+    "Sunshine Coast",
+    "Fremantle",
+    "Byron Bay",
+]
+# NZ hubs only — justified “around Australia”, do not dilute AU focus
+CITIES_OCEANIA = [
+    "Auckland",
+    "Wellington",
+    "Christchurch",
+]
+CITIES_LEGACY = [
     "Paris",
     "Lyon",
     "Marseille",
@@ -42,9 +74,34 @@ CITIES = [
     "London",
     "New York",
 ]
+CITIES = CITIES_AU_MAJOR + CITIES_AU_SECONDARY + CITIES_OCEANIA + CITIES_LEGACY
+
+AU_CITIES = set(CITIES_AU_MAJOR + CITIES_AU_SECONDARY)
+OCEANIA_CITIES = set(CITIES_OCEANIA)
 
 # Cities where "urban beach / waterfront" phrasing is plausible
 BEACH_OK = {
+    # AU / Oceania coastal & waterfront
+    "Sydney",
+    "Melbourne",
+    "Brisbane",
+    "Perth",
+    "Adelaide",
+    "Gold Coast",
+    "Newcastle",
+    "Hobart",
+    "Darwin",
+    "Cairns",
+    "Wollongong",
+    "Geelong",
+    "Townsville",
+    "Sunshine Coast",
+    "Fremantle",
+    "Byron Bay",
+    "Auckland",
+    "Wellington",
+    "Christchurch",
+    # Legacy
     "Marseille",
     "Nice",
     "Barcelona",
@@ -112,7 +169,7 @@ MODIFIERS = [
     "budget",
 ]
 
-LOCALES = ("fr", "en", "es")
+LOCALES = ("fr", "en", "es", "it", "de")
 
 SPOT_LABEL = {
     "fr": {
@@ -166,6 +223,40 @@ SPOT_LABEL = {
         "vue-panoramique": "miradores",
         "evenement-ephemere": "eventos efímeros",
     },
+    "it": {
+        "cafe": "caffè",
+        "bar": "bar",
+        "rooftop": "rooftop",
+        "marche": "mercati",
+        "parc": "parchi",
+        "plage": "spiagge urbane",
+        "street-art": "spot di street art",
+        "musee-gratuit": "musei gratuiti",
+        "club": "club",
+        "afterwork": "afterwork",
+        "food-hall": "food hall",
+        "auberge": "ostelli",
+        "cowork": "coworking",
+        "vue-panoramique": "belvedere",
+        "evenement-ephemere": "eventi pop-up",
+    },
+    "de": {
+        "cafe": "Cafés",
+        "bar": "Bars",
+        "rooftop": "Rooftops",
+        "marche": "Märkte",
+        "parc": "Parks",
+        "plage": "Stadtstrände",
+        "street-art": "Street-Art-Spots",
+        "musee-gratuit": "kostenlose Museen",
+        "club": "Clubs",
+        "afterwork": "Afterworks",
+        "food-hall": "Food Halls",
+        "auberge": "Hostels",
+        "cowork": "Coworking-Spaces",
+        "vue-panoramique": "Aussichtspunkte",
+        "evenement-ephemere": "Pop-up-Events",
+    },
 }
 
 MOD_LABEL = {
@@ -205,12 +296,38 @@ MOD_LABEL = {
         "sans-alcool": "sin alcohol",
         "budget": "baratos",
     },
+    "it": {
+        "gratuit": "gratuiti",
+        "cache": "nascosti",
+        "late-night": "notturni",
+        "dimanche": "di domenica",
+        "pluie": "con la pioggia",
+        "solo-friendly": "adatti da soli",
+        "dog-friendly": "pet-friendly",
+        "lgbtq": "LGBTQ+ friendly",
+        "sans-alcool": "senza alcol",
+        "budget": "low cost",
+    },
+    "de": {
+        "gratuit": "kostenlose",
+        "cache": "versteckte",
+        "late-night": "Late-Night",
+        "dimanche": "am Sonntag",
+        "pluie": "bei Regen",
+        "solo-friendly": "solo-freundlich",
+        "dog-friendly": "hundefreundlich",
+        "lgbtq": "LGBTQ+ friendly",
+        "sans-alcool": "alkoholfrei",
+        "budget": "günstig",
+    },
 }
 
 CITY_PREP = {
     "fr": "à",
     "en": "in",
     "es": "en",
+    "it": "a",
+    "de": "in",
 }
 
 
@@ -236,7 +353,13 @@ def spot_ok(spot: str, city: str) -> bool:
     return True
 
 
-def priority_for(intent: str, persona: str, is_faq: bool, is_brand: bool) -> int:
+def priority_for(
+    intent: str,
+    persona: str,
+    is_faq: bool,
+    is_brand: bool,
+    city: str | None = None,
+) -> int:
     base = 3
     if intent in ("rencontre", "locaux-voyageurs", "decouvrir-spot"):
         base = 5
@@ -248,6 +371,11 @@ def priority_for(intent: str, persona: str, is_faq: bool, is_brand: bool) -> int
         base = min(5, base + 1)
     if is_brand:
         base = max(2, base - 1)
+    # Australia-first: boost AU majors, mild boost secondary / NZ hubs
+    if city in CITIES_AU_MAJOR:
+        base = min(5, base + 1)
+    elif city in CITIES_AU_SECONDARY or city in OCEANIA_CITIES:
+        base = min(5, base)
     return base
 
 
@@ -745,8 +873,8 @@ def patterns_for_locale(locale: str) -> list[dict]:
             },
         ]
 
-    # es
-    return [
+    if locale == "es":
+        return [
         {
             "kind": "meet-travelers",
             "intent": "rencontre",
@@ -974,7 +1102,455 @@ def patterns_for_locale(locale: str) -> list[dict]:
             "faq": False,
             "fn": lambda city, **_: f"mercados para conocer gente {prep} {city}",
         },
-    ]
+        ]
+
+    if locale == "it":
+        return [
+            {
+                "kind": "meet-travelers",
+                "intent": "rencontre",
+                "persona": "local",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"incontrare viaggiatori {prep} {city}",
+            },
+            {
+                "kind": "meet-locals",
+                "intent": "rencontre",
+                "persona": "voyageur",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"incontrare locali {prep} {city}",
+            },
+            {
+                "kind": "meet-solo",
+                "intent": "rencontre",
+                "persona": "solo",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"incontrare viaggiatori solo {prep} {city}",
+            },
+            {
+                "kind": "faq-meet",
+                "intent": "rencontre",
+                "persona": "voyageur",
+                "spot": None,
+                "faq": True,
+                "fn": lambda city, **_: f"come conoscere gente {prep} {city}",
+            },
+            {
+                "kind": "faq-meet-local",
+                "intent": "rencontre",
+                "persona": "local",
+                "spot": None,
+                "faq": True,
+                "fn": lambda city, **_: f"come incontrare viaggiatori {prep} {city}",
+            },
+            {
+                "kind": "spots-local",
+                "intent": "decouvrir-spot",
+                "persona": "voyageur",
+                "spot": True,
+                "faq": False,
+                "fn": lambda city, spot, **_: f"{spots[spot]} locali {prep} {city}",
+            },
+            {
+                "kind": "spots-hidden",
+                "intent": "eviter-touristique",
+                "persona": "voyageur",
+                "spot": True,
+                "faq": False,
+                "fn": lambda city, spot, **_: f"{spots[spot]} nascosti {prep} {city}",
+            },
+            {
+                "kind": "cafe-meet",
+                "intent": "rencontre",
+                "persona": "voyageur",
+                "spot": "cafe",
+                "faq": False,
+                "fn": lambda city, **_: f"caffè per conoscere locali {prep} {city}",
+            },
+            {
+                "kind": "tonight-solo",
+                "intent": "sortir-soir",
+                "persona": "solo",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"cosa fare stasera {prep} {city} da soli",
+            },
+            {
+                "kind": "faq-tonight",
+                "intent": "sortir-soir",
+                "persona": "local",
+                "spot": None,
+                "faq": True,
+                "fn": lambda city, **_: f"cosa fare stasera {prep} {city}",
+            },
+            {
+                "kind": "festival-week",
+                "intent": "festival",
+                "persona": "local",
+                "spot": "evenement-ephemere",
+                "faq": False,
+                "fn": lambda city, **_: f"festival ed eventi {prep} {city} questa settimana",
+            },
+            {
+                "kind": "map-activities",
+                "intent": "carte-interactive",
+                "persona": "voyageur",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"mappa interattiva attività {prep} {city}",
+            },
+            {
+                "kind": "locals-travelers",
+                "intent": "locaux-voyageurs",
+                "persona": "local",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"locali e viaggiatori {prep} {city}",
+            },
+            {
+                "kind": "nightlife",
+                "intent": "sortir-soir",
+                "persona": "amis",
+                "spot": "bar",
+                "faq": False,
+                "fn": lambda city, **_: f"vita notturna e uscite {prep} {city}",
+            },
+            {
+                "kind": "afterwork",
+                "intent": "sortir-soir",
+                "persona": "local",
+                "spot": "afterwork",
+                "faq": False,
+                "fn": lambda city, **_: f"afterwork per incontri {prep} {city}",
+            },
+            {
+                "kind": "walking-tour",
+                "intent": "itineraire",
+                "persona": "voyageur",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"itinerario a piedi comunità {prep} {city}",
+            },
+            {
+                "kind": "last-minute",
+                "intent": "last-minute",
+                "persona": "voyageur",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"attività last-minute {prep} {city}",
+            },
+            {
+                "kind": "share-spot",
+                "intent": "partager-adresse",
+                "persona": "local",
+                "spot": True,
+                "faq": False,
+                "fn": lambda city, spot, **_: f"condividere un indirizzo {spots[spot]} {prep} {city}",
+            },
+            {
+                "kind": "mod-spots",
+                "intent": "decouvrir-spot",
+                "persona": "voyageur",
+                "spot": True,
+                "mod": True,
+                "faq": False,
+                "fn": lambda city, spot, mod, **_: f"{spots[spot]} {mods[mod]} {prep} {city}",
+            },
+            {
+                "kind": "faq-where-spot",
+                "intent": "decouvrir-spot",
+                "persona": "voyageur",
+                "spot": True,
+                "faq": True,
+                "fn": lambda city, spot, **_: f"dove trovare {spots[spot]} {prep} {city}",
+            },
+            {
+                "kind": "nomad-cowork",
+                "intent": "decouvrir-spot",
+                "persona": "nomade",
+                "spot": "cowork",
+                "faq": False,
+                "fn": lambda city, **_: f"coworking per nomadi digitali {prep} {city}",
+            },
+            {
+                "kind": "expat-meet",
+                "intent": "rencontre",
+                "persona": "expat",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"incontrare altri expat {prep} {city}",
+            },
+            {
+                "kind": "couple-citybreak",
+                "intent": "decouvrir-spot",
+                "persona": "couple",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"spot autentici in coppia {prep} {city}",
+            },
+            {
+                "kind": "organizer",
+                "intent": "partager-adresse",
+                "persona": "organisateur",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"organizzare un'uscita community {prep} {city}",
+            },
+            {
+                "kind": "bored-local",
+                "intent": "sortir-soir",
+                "persona": "local",
+                "spot": None,
+                "faq": True,
+                "fn": lambda city, **_: f"mi annoio {prep} {city} cosa fare stasera",
+            },
+            {
+                "kind": "brand-city",
+                "intent": "carte-interactive",
+                "persona": "voyageur",
+                "spot": None,
+                "brand": True,
+                "faq": False,
+                "fn": lambda city, **_: f"MapTrotter {city}",
+            },
+            {
+                "kind": "brand-spot",
+                "intent": "decouvrir-spot",
+                "persona": "local",
+                "spot": True,
+                "brand": True,
+                "faq": False,
+                "fn": lambda city, spot, **_: f"MapTrotter {spots[spot]} {city}",
+            },
+        ]
+
+    if locale == "de":
+        return [
+            {
+                "kind": "meet-travelers",
+                "intent": "rencontre",
+                "persona": "local",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"Reisende treffen {prep} {city}",
+            },
+            {
+                "kind": "meet-locals",
+                "intent": "rencontre",
+                "persona": "voyageur",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"Locals treffen {prep} {city}",
+            },
+            {
+                "kind": "meet-solo",
+                "intent": "rencontre",
+                "persona": "solo",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"Solo-Reisende treffen {prep} {city}",
+            },
+            {
+                "kind": "faq-meet",
+                "intent": "rencontre",
+                "persona": "voyageur",
+                "spot": None,
+                "faq": True,
+                "fn": lambda city, **_: f"wie man Leute kennenlernt {prep} {city}",
+            },
+            {
+                "kind": "faq-meet-local",
+                "intent": "rencontre",
+                "persona": "local",
+                "spot": None,
+                "faq": True,
+                "fn": lambda city, **_: f"wie man Reisende trifft {prep} {city}",
+            },
+            {
+                "kind": "spots-local",
+                "intent": "decouvrir-spot",
+                "persona": "voyageur",
+                "spot": True,
+                "faq": False,
+                "fn": lambda city, spot, **_: f"lokale {spots[spot]} {prep} {city}",
+            },
+            {
+                "kind": "spots-hidden",
+                "intent": "eviter-touristique",
+                "persona": "voyageur",
+                "spot": True,
+                "faq": False,
+                "fn": lambda city, spot, **_: f"versteckte {spots[spot]} {prep} {city}",
+            },
+            {
+                "kind": "cafe-meet",
+                "intent": "rencontre",
+                "persona": "voyageur",
+                "spot": "cafe",
+                "faq": False,
+                "fn": lambda city, **_: f"Cafés um Locals zu treffen {prep} {city}",
+            },
+            {
+                "kind": "tonight-solo",
+                "intent": "sortir-soir",
+                "persona": "solo",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"was tun heute Abend {prep} {city} solo",
+            },
+            {
+                "kind": "faq-tonight",
+                "intent": "sortir-soir",
+                "persona": "local",
+                "spot": None,
+                "faq": True,
+                "fn": lambda city, **_: f"was tun heute Abend {prep} {city}",
+            },
+            {
+                "kind": "festival-week",
+                "intent": "festival",
+                "persona": "local",
+                "spot": "evenement-ephemere",
+                "faq": False,
+                "fn": lambda city, **_: f"Festivals und Events {prep} {city} diese Woche",
+            },
+            {
+                "kind": "map-activities",
+                "intent": "carte-interactive",
+                "persona": "voyageur",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"interaktive Karte Aktivitäten {prep} {city}",
+            },
+            {
+                "kind": "locals-travelers",
+                "intent": "locaux-voyageurs",
+                "persona": "local",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"Locals und Reisende {prep} {city}",
+            },
+            {
+                "kind": "nightlife",
+                "intent": "sortir-soir",
+                "persona": "amis",
+                "spot": "bar",
+                "faq": False,
+                "fn": lambda city, **_: f"Nachtleben und Ausgehen {prep} {city}",
+            },
+            {
+                "kind": "afterwork",
+                "intent": "sortir-soir",
+                "persona": "local",
+                "spot": "afterwork",
+                "faq": False,
+                "fn": lambda city, **_: f"Afterwork zum Kennenlernen {prep} {city}",
+            },
+            {
+                "kind": "walking-tour",
+                "intent": "itineraire",
+                "persona": "voyageur",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"Community-Spaziergang {prep} {city}",
+            },
+            {
+                "kind": "last-minute",
+                "intent": "last-minute",
+                "persona": "voyageur",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"Last-Minute-Aktivitäten {prep} {city}",
+            },
+            {
+                "kind": "share-spot",
+                "intent": "partager-adresse",
+                "persona": "local",
+                "spot": True,
+                "faq": False,
+                "fn": lambda city, spot, **_: f"einen lokalen {spots[spot]}-Tipp teilen {prep} {city}",
+            },
+            {
+                "kind": "mod-spots",
+                "intent": "decouvrir-spot",
+                "persona": "voyageur",
+                "spot": True,
+                "mod": True,
+                "faq": False,
+                "fn": lambda city, spot, mod, **_: f"{mods[mod]} {spots[spot]} {prep} {city}",
+            },
+            {
+                "kind": "faq-where-spot",
+                "intent": "decouvrir-spot",
+                "persona": "voyageur",
+                "spot": True,
+                "faq": True,
+                "fn": lambda city, spot, **_: f"wo findet man {spots[spot]} {prep} {city}",
+            },
+            {
+                "kind": "nomad-cowork",
+                "intent": "decouvrir-spot",
+                "persona": "nomade",
+                "spot": "cowork",
+                "faq": False,
+                "fn": lambda city, **_: f"Coworking für digitale Nomaden {prep} {city}",
+            },
+            {
+                "kind": "expat-meet",
+                "intent": "rencontre",
+                "persona": "expat",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"andere Expats treffen {prep} {city}",
+            },
+            {
+                "kind": "couple-citybreak",
+                "intent": "decouvrir-spot",
+                "persona": "couple",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"authentische Spots für Paare {prep} {city}",
+            },
+            {
+                "kind": "organizer",
+                "intent": "partager-adresse",
+                "persona": "organisateur",
+                "spot": None,
+                "faq": False,
+                "fn": lambda city, **_: f"Community-Treffen organisieren {prep} {city}",
+            },
+            {
+                "kind": "bored-local",
+                "intent": "sortir-soir",
+                "persona": "local",
+                "spot": None,
+                "faq": True,
+                "fn": lambda city, **_: f"langeweile {prep} {city} was tun heute Abend",
+            },
+            {
+                "kind": "brand-city",
+                "intent": "carte-interactive",
+                "persona": "voyageur",
+                "spot": None,
+                "brand": True,
+                "faq": False,
+                "fn": lambda city, **_: f"MapTrotter {city}",
+            },
+            {
+                "kind": "brand-spot",
+                "intent": "decouvrir-spot",
+                "persona": "local",
+                "spot": True,
+                "brand": True,
+                "faq": False,
+                "fn": lambda city, spot, **_: f"MapTrotter {spots[spot]} {city}",
+            },
+        ]
+
+    raise ValueError(f"unsupported locale: {locale}")
 
 
 # Spot subsets for patterns that need spots — keep matrix dense but readable
@@ -1035,8 +1611,9 @@ MOD_SPOT_PAIRS = [
     ("budget", "parc"),
 ]
 
-# City priority tiers for coverage balance (all cities get base patterns)
-TIER_A = {
+# City priority tiers — Australia-first, then legacy anchors
+TIER_A = set(CITIES_AU_MAJOR) | {
+    "Auckland",
     "Paris",
     "Lyon",
     "Marseille",
@@ -1045,51 +1622,60 @@ TIER_A = {
     "London",
     "Montréal",
     "Bruxelles",
+    "Roma",
 }
-TIER_B = {
+TIER_B = set(CITIES_AU_SECONDARY) | set(CITIES_OCEANIA) | {
     "Bordeaux",
     "Toulouse",
     "Nantes",
     "Nice",
     "Amsterdam",
     "Lisboa",
-    "Roma",
     "New York",
 }
-# Remaining = tier C (lighter expansion)
+# Remaining legacy = tier C (lighter expansion)
 
-# Locale expansion policy → aim ~40% FR / 35% EN / 25% ES
+# AU + Oceania always get base patterns in every locale
+_AU_WAVE = AU_CITIES | OCEANIA_CITIES
+_LEGACY_ES_HEAVY = {
+    "Barcelona",
+    "Paris",
+    "Lisboa",
+    "Montréal",
+    "Berlin",
+    "London",
+    "Marseille",
+    "Nice",
+    "Bruxelles",
+    "Amsterdam",
+}
+_LEGACY_IT_HEAVY = {"Roma", "Paris", "Berlin", "London", "Barcelona", "Amsterdam", "Nice"}
+_LEGACY_DE_HEAVY = {"Berlin", "Paris", "London", "Amsterdam", "Bruxelles", "Genève", "Roma"}
+
+# Locale expansion — EN heaviest on AU; FR/ES/IT/DE cover AU majors + language anchors
 LOCALE_POLICY = {
     "fr": {
         "cities": CITIES,
-        "heavy_cities": TIER_A | TIER_B | set(CITIES),  # full FR coverage
-        "mod_cities": TIER_A | TIER_B | set(CITIES),
-        "spot_cities": set(CITIES),
+        "heavy_cities": _AU_WAVE | TIER_A | TIER_B,
+        "mod_cities": set(CITIES_AU_MAJOR) | TIER_A | TIER_B,
+        "spot_cities": _AU_WAVE | set(CITIES_LEGACY),
         "skip_heavy_kinds_tier_c": False,
     },
     "en": {
+        # EN = primary for Australia wave
         "cities": CITIES,
-        "heavy_cities": TIER_A | TIER_B,
-        "mod_cities": TIER_A | TIER_B,
-        "spot_cities": TIER_A | TIER_B | {"Lille", "Montpellier", "Strasbourg", "Genève"},
+        "heavy_cities": _AU_WAVE | TIER_A | TIER_B,
+        "mod_cities": _AU_WAVE | TIER_A | TIER_B,
+        "spot_cities": _AU_WAVE
+        | TIER_A
+        | TIER_B
+        | {"Lille", "Montpellier", "Strasbourg", "Genève"},
         "skip_heavy_kinds_tier_c": True,
     },
     "es": {
-        # ES-speaking / high-traffic anchors; thinner expansion than FR/EN
-        "cities": CITIES,  # all seed cities get base ES patterns
-        "heavy_cities": {
-            "Barcelona",
-            "Paris",
-            "Lisboa",
-            "Montréal",
-            "Berlin",
-            "London",
-            "Marseille",
-            "Nice",
-            "Bruxelles",
-            "Amsterdam",
-        },
-        "mod_cities": {
+        "cities": CITIES,
+        "heavy_cities": set(CITIES_AU_MAJOR) | {"Auckland"} | _LEGACY_ES_HEAVY,
+        "mod_cities": set(CITIES_AU_MAJOR) | {
             "Barcelona",
             "Paris",
             "Lisboa",
@@ -1099,7 +1685,10 @@ LOCALE_POLICY = {
             "Marseille",
             "Nice",
         },
-        "spot_cities": {
+        "spot_cities": set(CITIES_AU_MAJOR)
+        | set(CITIES_AU_SECONDARY)
+        | {"Auckland", "Wellington"}
+        | {
             "Barcelona",
             "Paris",
             "Lyon",
@@ -1116,6 +1705,28 @@ LOCALE_POLICY = {
             "Toulouse",
             "Roma",
         },
+        "skip_heavy_kinds_tier_c": True,
+    },
+    "it": {
+        "cities": CITIES,
+        "heavy_cities": set(CITIES_AU_MAJOR) | {"Auckland"} | _LEGACY_IT_HEAVY,
+        "mod_cities": set(CITIES_AU_MAJOR) | _LEGACY_IT_HEAVY,
+        "spot_cities": set(CITIES_AU_MAJOR)
+        | set(CITIES_AU_SECONDARY)
+        | {"Auckland", "Wellington"}
+        | _LEGACY_IT_HEAVY
+        | {"Lyon", "Marseille", "Bruxelles", "New York", "Lisboa"},
+        "skip_heavy_kinds_tier_c": True,
+    },
+    "de": {
+        "cities": CITIES,
+        "heavy_cities": set(CITIES_AU_MAJOR) | {"Auckland"} | _LEGACY_DE_HEAVY,
+        "mod_cities": set(CITIES_AU_MAJOR) | _LEGACY_DE_HEAVY,
+        "spot_cities": set(CITIES_AU_MAJOR)
+        | set(CITIES_AU_SECONDARY)
+        | {"Auckland", "Wellington", "Christchurch"}
+        | _LEGACY_DE_HEAVY
+        | {"Lyon", "Marseille", "Nice", "Barcelona", "New York", "Lisboa"},
         "skip_heavy_kinds_tier_c": True,
     },
 }
@@ -1201,7 +1812,9 @@ def build() -> dict:
                         persona=persona,
                         spot_type=spot,
                         cluster=cluster_id(locale, intent, persona),
-                        priority=priority_for(intent, persona, is_faq, is_brand),
+                        priority=priority_for(
+                            intent, persona, is_faq, is_brand, city=city
+                        ),
                     )
                     add(entry)
 
@@ -1236,11 +1849,7 @@ def build() -> dict:
     for locale in LOCALES:
         labels = SPOT_LABEL[locale]
         for spot in ("cafe", "bar", "rooftop", "marche", "parc", "street-art", "cowork"):
-            phrase = {
-                "fr": f"MapTrotter {labels[spot]}",
-                "en": f"MapTrotter {labels[spot]}",
-                "es": f"MapTrotter {labels[spot]}",
-            }[locale]
+            phrase = f"MapTrotter {labels[spot]}"
             add(
                 make_entry(
                     id_=f"{locale}-brand-spot-{spot}-01",
@@ -1275,6 +1884,18 @@ def build() -> dict:
             ("conocer viajeros en MapTrotter", "rencontre", "voyageur"),
             ("vibes locales mapa MapTrotter", "carte-interactive", "local"),
         ],
+        "it": [
+            ("mappa interattiva MapTrotter community", "carte-interactive", "voyageur"),
+            ("spot locali autentici MapTrotter", "decouvrir-spot", "local"),
+            ("incontrare viaggiatori su MapTrotter", "rencontre", "voyageur"),
+            ("vibes locali mappa MapTrotter", "carte-interactive", "local"),
+        ],
+        "de": [
+            ("interaktive MapTrotter Karte Community", "carte-interactive", "voyageur"),
+            ("authentische lokale Spots MapTrotter", "decouvrir-spot", "local"),
+            ("Reisende treffen auf MapTrotter", "rencontre", "voyageur"),
+            ("lokale Vibes MapTrotter Karte", "carte-interactive", "local"),
+        ],
     }
     for locale, rows in anchors.items():
         for i, (phrase, intent, persona) in enumerate(rows, 1):
@@ -1304,10 +1925,17 @@ def build() -> dict:
                 "modifiers": MODIFIERS,
                 "cities": CITIES,
                 "locales": list(LOCALES),
+                "rollout": {
+                    "au_major": CITIES_AU_MAJOR,
+                    "au_secondary": CITIES_AU_SECONDARY,
+                    "oceania": CITIES_OCEANIA,
+                    "legacy": CITIES_LEGACY,
+                },
             },
             "notes": (
                 "Generated by scripts/build-dictionary.py for SEO/AIO blog topic rotation. "
-                "Absurd geo×spot combos (e.g. plage × Lyon) excluded. "
+                "Australia-first city wave; locales FR/EN/ES/IT/DE. "
+                "Absurd geo×spot combos (e.g. plage × Canberra inland-only) excluded where listed. "
                 "Phrases are localized intent translations, not word-for-word spam."
             ),
         },
@@ -1322,7 +1950,30 @@ def stats(doc: dict) -> None:
     for k in kws:
         by_locale[k["locale"]] = by_locale.get(k["locale"], 0) + 1
         p = k["phrase"].lower()
-        if p.startswith(("comment ", "cómo ", "how to ", "que faire", "qué hacer", "what to do", "où ", "dónde ", "where ", "je m'ennuie", "me aburro", "bored ")):
+        if p.startswith(
+            (
+                "comment ",
+                "cómo ",
+                "how to ",
+                "que faire",
+                "qué hacer",
+                "what to do",
+                "où ",
+                "dónde ",
+                "where ",
+                "je m'ennuie",
+                "me aburro",
+                "bored ",
+                "come ",
+                "cosa fare",
+                "dove ",
+                "mi annoio",
+                "wie man ",
+                "was tun ",
+                "wo findet ",
+                "langeweile ",
+            )
+        ):
             faq += 1
         if "maptrotter" in p:
             brand += 1
