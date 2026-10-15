@@ -1,0 +1,12 @@
+{
+  "name": "maptrotter-landing",
+  "private": true,
+  "description": "MapTrotter static landing — Cloudflare Workers assets",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "preview": "wrangler preview"
+  },
+  "devDependencies": {
+    "wrangler": "^4.151.0"
+  }
+}
