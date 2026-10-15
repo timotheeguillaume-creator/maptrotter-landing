@@ -55,16 +55,19 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-[#E2725B] selection:text-white">
 
-  <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex justify-between items-center border-b border-white/10">
-    <a href="/" class="flex items-center group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-xl p-1">
+  <header class="max-w-6xl mx-auto w-full px-1.5 py-2 sm:p-6 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2 sm:gap-3 border-b border-white/10">
+    <a href="/" class="brand-splash-link group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-xl" aria-label="MapTrotter">
       <img
         src="/splash.png"
         alt="MapTrotter"
-        class="h-10 sm:h-12 md:h-14 w-auto max-w-[240px] object-contain transition-transform duration-300 group-hover:scale-105"
-        onerror="this.style.display='none'"
+        width="871"
+        height="261"
+        class="brand-splash brand-splash--home"
+        onerror="this.style.display='none'; const f=this.nextElementSibling; if(f) f.hidden=false;"
       />
+      <span class="brand-wordmark-fallback" hidden aria-hidden="true">MAPTROTTER <em>live</em></span>
     </a>
-    <a href="/" class="text-sm font-semibold text-white bg-[#1A222D] border border-white/20 px-4 py-2 rounded-xl hover:bg-[#242F3E] transition focus:outline-none focus:ring-2 focus:ring-[#E2725B]">
+    <a href="/" class="self-end sm:self-auto shrink-0 text-sm font-semibold text-white bg-[#1A222D] border border-white/20 px-4 py-2 rounded-xl hover:bg-[#242F3E] transition focus:outline-none focus:ring-2 focus:ring-[#E2725B]">
       ← Accueil
     </a>
   </header>
