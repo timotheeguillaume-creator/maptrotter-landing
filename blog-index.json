@@ -14,12 +14,42 @@
       "dateModified": "2026-10-15",
       "locale": "fr",
       "category": "Astuces",
-      "tags": ["rencontres", "voyageurs", "carte", "locaux"],
+      "tags": [
+        "rencontres",
+        "voyageurs",
+        "carte",
+        "locaux"
+      ],
       "readingMinutes": 4,
       "path": "/blog/rencontrer-voyageurs-ville.html",
       "source": "/blog/posts/2026-10-15-rencontrer-voyageurs-ville.md",
       "status": "published",
       "image": "/splash.png"
+    },
+    {
+      "slug": "hidden-food-halls-newcastle-en",
+      "title": "Hidden Food Halls in Newcastle: Where Locals Actually Eat",
+      "description": "Ditch the generic dining chains. Explore vibrant, independent food halls and hidden culinary hubs across Newcastle's creative quarters with MapTrotter.",
+      "excerpt": "To uncover genuine, hidden food halls in Newcastle away from commercial crowds, head just beyond the central shopping streets into creative enclaves like the Ou",
+      "date": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "locale": "en",
+      "city": "Newcastle",
+      "cluster": "voyageur-eviter-touristique-en",
+      "category": "Spots",
+      "tags": [
+        "Newcastle",
+        "Food Hall",
+        "Street Food",
+        "Local Vibes",
+        "Alternative Guide"
+      ],
+      "readingMinutes": 6,
+      "path": "/blog/hidden-food-halls-newcastle-en.html",
+      "source": "/blog/posts/2026-10-15-hidden-food-halls-newcastle-en.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "en-newcastle-eviter-touristique-spots-hidden-food-hall-01"
     }
   ]
 }
