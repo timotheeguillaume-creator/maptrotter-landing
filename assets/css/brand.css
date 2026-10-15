@@ -360,7 +360,7 @@ body {
 }
 
 /*
- * Motif: organic spot pops — larger, drifted, rotated; unique paths per node.
+ * Motif: organic spot pops — JS spawns random emoji + motion class + position.
  * Cap at 5; transform+opacity only; paused when .is-paused (offscreen).
  */
 .mt-spot-pops {
@@ -384,48 +384,39 @@ body {
   will-change: transform, opacity;
   user-select: none;
   filter: drop-shadow(0 3px 8px rgb(0 0 0 / 0.4));
-}
-
-/* Far corners / edges — readable but not crowding the title */
-.mt-spot-pops span:nth-child(1) {
-  left: 2%; top: 8%;
-  font-size: 2.15rem;
-  animation: mt-pop-drift-a 7.2s cubic-bezier(0.22, 1.2, 0.36, 1) infinite;
-  animation-delay: 0.2s;
-}
-.mt-spot-pops span:nth-child(2) {
-  right: 3%; top: 14%;
-  font-size: 1.75rem;
-  animation: mt-pop-drift-b 9.4s cubic-bezier(0.34, 1.4, 0.64, 1) infinite;
-  animation-delay: 1.6s;
-}
-.mt-spot-pops span:nth-child(3) {
-  left: 5%; bottom: 12%;
-  font-size: 2rem;
-  animation: mt-pop-drift-c 8.1s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-  animation-delay: 3.4s;
-}
-.mt-spot-pops span:nth-child(4) {
-  right: 6%; bottom: 16%;
-  font-size: 1.85rem;
-  animation: mt-pop-drift-d 10.2s cubic-bezier(0.45, 0.05, 0.2, 1.2) infinite;
-  animation-delay: 5.1s;
-}
-.mt-spot-pops span:nth-child(5) {
-  left: 47%; top: 3%;
-  font-size: 1.6rem;
-  animation: mt-pop-drift-e 11s cubic-bezier(0.28, 1.35, 0.4, 1) infinite;
-  animation-delay: 6.8s;
+  /* Motion applied via .mt-pop-anim-* (picked at random per spawn) */
 }
 
 .mt-spot-pops.is-paused span,
 .mt-spot-pops[hidden] span {
-  animation-play-state: paused;
+  animation-play-state: paused !important;
   opacity: 0;
   will-change: auto;
 }
 
-/* Organic paths: wander + rotate — not vertical fades */
+/* Distinct one-shot motions — each spawn picks one at random */
+.mt-spot-pops span.mt-pop-anim-a {
+  animation: mt-pop-drift-a 7.2s cubic-bezier(0.22, 1.2, 0.36, 1) 1 both;
+}
+.mt-spot-pops span.mt-pop-anim-b {
+  animation: mt-pop-drift-b 8.6s cubic-bezier(0.34, 1.4, 0.64, 1) 1 both;
+}
+.mt-spot-pops span.mt-pop-anim-c {
+  animation: mt-pop-drift-c 6.8s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
+}
+.mt-spot-pops span.mt-pop-anim-d {
+  animation: mt-pop-drift-d 9.4s cubic-bezier(0.45, 0.05, 0.2, 1.2) 1 both;
+}
+.mt-spot-pops span.mt-pop-anim-e {
+  animation: mt-pop-drift-e 7.8s cubic-bezier(0.28, 1.35, 0.4, 1) 1 both;
+}
+.mt-spot-pops span.mt-pop-anim-f {
+  animation: mt-pop-drift-f 8.2s cubic-bezier(0.2, 0.9, 0.3, 1.15) 1 both;
+}
+.mt-spot-pops span.mt-pop-anim-g {
+  animation: mt-pop-drift-g 10s cubic-bezier(0.33, 1.2, 0.5, 1) 1 both;
+}
+
 @keyframes mt-pop-drift-a {
   0%   { opacity: 0; transform: translate3d(-18px, 28px, 0) rotate(-28deg) scale(0.45); }
   14%  { opacity: 0.85; transform: translate3d(10px, -4px, 0) rotate(14deg) scale(1.2); }
@@ -460,6 +451,22 @@ body {
   22%  { opacity: 0.55; transform: translate3d(18px, -4px, 0) rotate(18deg) scale(1); }
   38%  { opacity: 0; transform: translate3d(-6px, -36px, 0) rotate(-8deg) scale(0.7); }
   100% { opacity: 0; transform: translate3d(-6px, -36px, 0) rotate(-8deg) scale(0.7); }
+}
+/* Spin-wobble rise */
+@keyframes mt-pop-drift-f {
+  0%   { opacity: 0; transform: translate3d(8px, 30px, 0) rotate(0deg) scale(0.3); }
+  15%  { opacity: 0.9; transform: translate3d(-12px, -8px, 0) rotate(40deg) scale(1.25); }
+  35%  { opacity: 0.7; transform: translate3d(20px, -20px, 0) rotate(-30deg) scale(1.05); }
+  55%  { opacity: 0; transform: translate3d(-6px, -55px, 0) rotate(55deg) scale(0.55); }
+  100% { opacity: 0; transform: translate3d(-6px, -55px, 0) rotate(55deg) scale(0.55); }
+}
+/* Soft lateral glide */
+@keyframes mt-pop-drift-g {
+  0%   { opacity: 0; transform: translate3d(-30px, 10px, 0) rotate(-12deg) scale(0.5); }
+  20%  { opacity: 0.8; transform: translate3d(4px, -16px, 0) rotate(10deg) scale(1.15); }
+  45%  { opacity: 0.6; transform: translate3d(28px, -8px, 0) rotate(-6deg) scale(1); }
+  65%  { opacity: 0; transform: translate3d(40px, -42px, 0) rotate(18deg) scale(0.65); }
+  100% { opacity: 0; transform: translate3d(40px, -42px, 0) rotate(18deg) scale(0.65); }
 }
 
 /* —— Google Play robot rocket gag —— */
@@ -547,7 +554,8 @@ body {
   position: fixed;
   z-index: 80;
   margin: 0;
-  animation: mt-rocket-orbit 2.35s cubic-bezier(0.12, 0.7, 0.2, 1) forwards;
+  /* ~15% slower than 2.35s */
+  animation: mt-rocket-orbit 2.7s cubic-bezier(0.12, 0.7, 0.2, 1) forwards;
 }
 
 .mt-play-rocket.is-flying .mt-play-rocket__flame {
