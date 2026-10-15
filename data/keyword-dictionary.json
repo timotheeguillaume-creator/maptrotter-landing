@@ -58854,8 +58854,8 @@
       "spotType": "cafe",
       "clusterId": "voyageur-decouvrir-spot-en",
       "priority": 5,
-      "usedCount": 0,
-      "lastUsed": null,
+      "usedCount": 1,
+      "lastUsed": "2026-10-15",
       "status": "active"
     },
     {

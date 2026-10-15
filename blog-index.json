@@ -14,12 +14,42 @@
       "dateModified": "2026-10-15",
       "locale": "fr",
       "category": "Astuces",
-      "tags": ["rencontres", "voyageurs", "carte", "locaux"],
+      "tags": [
+        "rencontres",
+        "voyageurs",
+        "carte",
+        "locaux"
+      ],
       "readingMinutes": 4,
       "path": "/blog/rencontrer-voyageurs-ville.html",
       "source": "/blog/posts/2026-10-15-rencontrer-voyageurs-ville.md",
       "status": "published",
       "image": "/splash.png"
+    },
+    {
+      "slug": "lgbtq-friendly-cafes-in-amsterdam-en",
+      "title": "LGBTQ+ Friendly Cafés in Amsterdam: Welcoming Spots to Connect",
+      "description": "Discover genuine LGBTQ+ friendly cafés in Amsterdam. From historic meeting points to quiet daytime spaces, find authentic spots to relax and meet people.",
+      "excerpt": "Amsterdam is globally renowned for its open-hearted culture, making LGBTQ+ friendly cafés easy to find across its historic canal belt and creative suburbs. Whet",
+      "date": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "locale": "en",
+      "city": "Amsterdam",
+      "cluster": "voyageur-decouvrir-spot-en",
+      "category": "Spots",
+      "tags": [
+        "amsterdam",
+        "cafes",
+        "lgbtq",
+        "community",
+        "slow travel"
+      ],
+      "readingMinutes": 6,
+      "path": "/blog/lgbtq-friendly-cafes-in-amsterdam-en.html",
+      "source": "/blog/posts/2026-10-15-lgbtq-friendly-cafes-in-amsterdam-en.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "en-amsterdam-decouvrir-spot-mod-spots-cafe-lgbtq-01"
     }
   ]
 }
