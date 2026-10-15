@@ -169,14 +169,8 @@
 
   <!-- Hero Section -->
   <main class="mt-hero max-w-4xl mx-auto text-center px-4 sm:px-6 py-8 sm:py-16 my-auto">
-    <!-- Sparse spot pops — one motif, capped at 5 (CSS-only; paused offscreen) -->
-    <div class="mt-spot-pops" aria-hidden="true">
-      <span>📍</span>
-      <span>👋</span>
-      <span>✨</span>
-      <span>🗺️</span>
-      <span>📍</span>
-    </div>
+    <!-- Sparse spot pops — JS fills random emoji + motion + position (cap 5) -->
+    <div class="mt-spot-pops" aria-hidden="true"></div>
 
     <div class="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#1A222D] text-xs sm:text-sm font-medium mb-6 sm:mb-8 border border-white/10 shadow-inner mx-auto">
       <span data-i18n="badge">🛰️ La carte interactive de la communauté</span>
@@ -350,20 +344,101 @@
         langMenu.classList.add('hidden');
       });
 
-      // Pause sparse spot pops when hero is offscreen (cheap; no rAF loop)
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // —— Organic spot pops: random emoji + motion class + edge position ——
       const pops = document.querySelector('.mt-spot-pops');
-      if (pops && 'IntersectionObserver' in window) {
-        const io = new IntersectionObserver(
-          ([entry]) => {
-            pops.classList.toggle('is-paused', !entry.isIntersecting);
-          },
-          { rootMargin: '40px', threshold: 0 }
-        );
-        io.observe(pops);
+      if (pops && !reduceMotion) {
+        const POP_EMOJIS = [
+          '📍', '👋', '✨', '🗺️', '⛺', '🥾', '🎉', '😊',
+          '❤️', '🤝', '🍻', '🧭', '🎒', '🌅', '🕺', '🫶',
+          '🏕️', '👫', '😎', '🥂'
+        ];
+        const POP_ANIMS = [
+          'mt-pop-anim-a', 'mt-pop-anim-b', 'mt-pop-anim-c', 'mt-pop-anim-d',
+          'mt-pop-anim-e', 'mt-pop-anim-f', 'mt-pop-anim-g'
+        ];
+        /* Edge zones — avoid center title band */
+        const POP_ZONES = [
+          { left: [1, 12], top: [4, 22] },
+          { left: [82, 96], top: [6, 24] },
+          { left: [2, 14], top: [72, 90] },
+          { left: [80, 95], top: [68, 88] },
+          { left: [40, 58], top: [1, 8] },
+          { left: [18, 32], top: [78, 92] },
+          { left: [62, 78], top: [76, 90] },
+          { left: [8, 20], top: [28, 40] },
+          { left: [75, 90], top: [30, 42] }
+        ];
+        const POP_CAP = 5;
+        const recent = []; // { emoji, zone } — avoid immediate repeats
+
+        const rand = (min, max) => min + Math.random() * (max - min);
+        const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+        const pickEmoji = () => {
+          const banned = new Set(recent.slice(-3).map((r) => r.emoji));
+          const pool = POP_EMOJIS.filter((e) => !banned.has(e));
+          return pick(pool.length ? pool : POP_EMOJIS);
+        };
+
+        const pickZoneIndex = (emoji) => {
+          const bannedZones = new Set(
+            recent.filter((r) => r.emoji === emoji).map((r) => r.zone)
+          );
+          const idxs = POP_ZONES.map((_, i) => i).filter((i) => !bannedZones.has(i));
+          return pick(idxs.length ? idxs : POP_ZONES.map((_, i) => i));
+        };
+
+        const armPop = (el) => {
+          const emoji = pickEmoji();
+          const zoneIdx = pickZoneIndex(emoji);
+          const zone = POP_ZONES[zoneIdx];
+          const anim = pick(POP_ANIMS);
+          const size = (1.55 + Math.random() * 0.7).toFixed(2) + 'rem';
+
+          el.className = '';
+          el.textContent = emoji;
+          el.style.left = rand(zone.left[0], zone.left[1]).toFixed(1) + '%';
+          el.style.top = rand(zone.top[0], zone.top[1]).toFixed(1) + '%';
+          el.style.right = 'auto';
+          el.style.bottom = 'auto';
+          el.style.fontSize = size;
+
+          recent.push({ emoji, zone: zoneIdx });
+          if (recent.length > 12) recent.shift();
+
+          void el.offsetWidth;
+          el.classList.add(anim);
+        };
+
+        const onPopEnd = (e) => {
+          if (e.target.parentElement !== pops) return;
+          if (!String(e.animationName || '').startsWith('mt-pop-drift-')) return;
+          if (pops.classList.contains('is-paused')) return;
+          // Small gap, then respawn with new random combo
+          window.setTimeout(() => armPop(e.target), 180 + Math.random() * 520);
+        };
+
+        pops.addEventListener('animationend', onPopEnd);
+
+        for (let i = 0; i < POP_CAP; i++) {
+          const el = document.createElement('span');
+          pops.appendChild(el);
+          window.setTimeout(() => armPop(el), i * (280 + Math.random() * 420));
+        }
+
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver(
+            ([entry]) => {
+              pops.classList.toggle('is-paused', !entry.isIntersecting);
+            },
+            { rootMargin: '40px', threshold: 0 }
+          ).observe(pops);
+        }
       }
 
       // Google Play robot rocket — CSS keyframes + tiny trigger/reset JS
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const playBtn = document.getElementById('play-store-btn');
       const rocket = document.getElementById('play-rocket');
       const rocketSlot = playBtn && playBtn.querySelector('.mt-play-rocket-slot');
@@ -371,14 +446,16 @@
       if (!reduceMotion && playBtn && rocket && rocketSlot && 'IntersectionObserver' in window) {
         let busy = false;
         let cycles = 0;
-        const MAX_AUTO = 3; // don't spam forever
+        let firstLaunchPending = false;
+        const MAX_AUTO = 3;
+        const FIRST_LAUNCH_DELAY_MS = 2800; // delay before first launch
 
         const launchRocket = () => {
           if (busy || document.hidden) return;
           busy = true;
+          firstLaunchPending = false;
           const rect = rocket.getBoundingClientRect();
           rocket.classList.remove('is-reappearing');
-          // Park as fixed at current screen coords BEFORE animating (avoid relative left/top)
           rocket.style.position = 'fixed';
           rocket.style.left = rect.left + 'px';
           rocket.style.top = rect.top + 'px';
@@ -419,15 +496,15 @@
         const playIo = new IntersectionObserver(
           ([entry]) => {
             playBtn.dataset.inView = entry.isIntersecting ? '1' : '0';
-            if (entry.isIntersecting && cycles < MAX_AUTO && !busy) {
-              window.setTimeout(launchRocket, 500);
+            if (entry.isIntersecting && cycles === 0 && !busy && !firstLaunchPending) {
+              firstLaunchPending = true;
+              window.setTimeout(launchRocket, FIRST_LAUNCH_DELAY_MS);
             }
           },
           { threshold: 0.45, rootMargin: '0px' }
         );
         playIo.observe(playBtn);
 
-        // Replay gag on focus / click (still keeps href="#")
         playBtn.addEventListener('focus', () => {
           if (!busy) { cycles = Math.min(cycles, MAX_AUTO - 1); launchRocket(); }
         });
