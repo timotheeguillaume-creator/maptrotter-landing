@@ -20,6 +20,147 @@ body {
 .accent-bg { background-color: var(--mt-accent); }
 .accent-text { color: var(--mt-accent); }
 
+/* Brand splash wordmark — large, near edge-to-edge on small screens */
+.brand-splash-link {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+}
+
+.brand-splash {
+  display: block;
+  width: min(calc(100vw - 1.25rem), 34rem);
+  height: auto;
+  max-height: 5.75rem;
+  object-fit: contain;
+  object-position: left center;
+  transition: transform 0.3s ease;
+}
+
+.brand-splash-link:hover .brand-splash,
+.brand-splash-link:focus-visible .brand-splash {
+  transform: scale(1.02);
+}
+
+/* Homepage: brand-first, fuller bleed, centered on mobile */
+.brand-splash--home {
+  width: min(calc(100vw - 0.75rem), 42rem);
+  max-height: none;
+  margin-inline: auto;
+  object-position: center;
+}
+
+@media (min-width: 640px) {
+  .brand-splash {
+    width: min(100%, 26rem);
+    max-height: 6.5rem;
+  }
+
+  .brand-splash--home {
+    width: min(100%, 36rem);
+    max-height: 7.5rem;
+    margin-inline: 0;
+    object-position: left center;
+  }
+}
+
+@media (min-width: 768px) {
+  .brand-splash {
+    width: min(100%, 32rem);
+    max-height: 7.75rem;
+  }
+
+  .brand-splash--home {
+    width: min(100%, 40rem);
+    max-height: 8.5rem;
+  }
+}
+
+/* Solid accent CTA — always readable on orange (beats .prose a color) */
+.mt-cta {
+  display: inline-block;
+  background-color: var(--mt-accent);
+  color: #ffffff !important;
+  font-weight: 700;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.25);
+  text-decoration: none !important;
+  text-align: center;
+  white-space: nowrap;
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.mt-cta:hover,
+.mt-cta:focus,
+.mt-cta:focus-visible {
+  color: #ffffff !important;
+  filter: brightness(1.1);
+  text-decoration: none !important;
+}
+
+.mt-cta:active {
+  transform: scale(0.97);
+}
+
+.mt-cta:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.mt-cta--sm {
+  padding: 0.625rem 1rem;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .mt-cta--sm {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+}
+
+.prose a.mt-cta,
+.prose .article-cta a,
+.article-cta a.mt-cta {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.prose a.mt-cta:hover,
+.prose .article-cta a:hover,
+.article-cta a.mt-cta:hover {
+  color: #ffffff !important;
+}
+
+/* Optional text fallback if splash.png fails to load */
+.brand-wordmark-fallback {
+  display: inline-block;
+  font-family: var(--mt-font);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 8vw, 3rem);
+  letter-spacing: 0.02em;
+  color: var(--mt-accent);
+  line-height: 1;
+  padding: 0.25rem 0;
+}
+
+.brand-wordmark-fallback[hidden] {
+  display: none !important;
+}
+
+.brand-wordmark-fallback em {
+  font-style: italic;
+  font-weight: 500;
+  font-size: 0.55em;
+  color: var(--mt-cyan);
+  margin-left: 0.15em;
+}
+
 /* Article / legal prose */
 .prose h1 {
   color: #ffffff;

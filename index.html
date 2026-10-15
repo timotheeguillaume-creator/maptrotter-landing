@@ -101,22 +101,23 @@
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-[#E2725B] selection:text-white">
 
   <!-- Header / Navigation -->
-  <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
+  <header class="max-w-6xl mx-auto w-full px-1.5 pt-2 pb-3 sm:p-6 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-6">
     
-    <!-- Ligne 1 sur Mobile : Logo Splash Image (Ajusté pour une visibilité maximale) -->
-    <a href="/" class="flex items-center group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-xl p-1">
+    <!-- Brand splash — near edge-to-edge on mobile -->
+    <a href="/" class="brand-splash-link group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-xl w-full sm:w-auto" aria-label="MapTrotter">
       <img 
         src="/splash.png" 
         alt="MapTrotter Live - Carte interactive et réseau social géolocalisé" 
-        width="440" 
-        height="180"
-        class="h-12 sm:h-16 md:h-20 w-auto max-w-[280px] sm:max-w-[380px] md:max-w-[440px] object-contain transition-transform duration-300 group-hover:scale-105" 
-        onerror="this.style.display='none'"
+        width="1024" 
+        height="469"
+        class="brand-splash brand-splash--home" 
+        onerror="this.style.display='none'; const f=this.nextElementSibling; if(f) f.hidden=false;"
       />
+      <span class="brand-wordmark-fallback" hidden aria-hidden="true">MAPTROTTER <em>live</em></span>
     </a>
 
-    <!-- Ligne 2 sur Mobile : Sélecteur de langue + Bouton CTA -->
-    <div class="flex items-center justify-center w-full sm:w-auto gap-3 sm:gap-4">
+    <!-- Language + CTA pair -->
+    <div class="flex items-center justify-center w-full sm:w-auto gap-2 sm:gap-3 flex-wrap">
       
       <!-- Sélecteur de langue (FR, EN, ES, DE, PT, IT) -->
       <div class="relative inline-block text-left" id="lang-dropdown-wrapper">
@@ -153,7 +154,10 @@
         </div>
       </div>
 
-      <a href="#download" data-i18n="get_app" class="accent-bg text-white text-xs sm:text-sm font-bold px-4 sm:px-5 py-2.5 rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition text-center whitespace-nowrap">
+      <a href="/" data-i18n="open_map" class="mt-cta mt-cta--sm">
+        Ouvrir la map
+      </a>
+      <a href="#download" data-i18n="get_app" class="mt-cta mt-cta--sm">
         Obtenir l'application
       </a>
     </div>
@@ -215,6 +219,7 @@
         title_accent: "exactement là où vous êtes.",
         description: "Trouvez des activités locales, des festivals, des sorties en soirée et faites des rencontres authentiques avec des voyageurs et locaux.",
         get_app: "Obtenir l'application",
+        open_map: "Ouvrir la map",
         app_store_sub: "Télécharger dans l'",
         play_store_sub: "Disponible sur"
       },
@@ -225,6 +230,7 @@
         title_accent: "right where you are.",
         description: "Find local activities, festivals, nightlife, and make authentic connections with travelers and locals alike.",
         get_app: "Get the app",
+        open_map: "Open the map",
         app_store_sub: "Download on the",
         play_store_sub: "Get it on"
       },
@@ -235,6 +241,7 @@
         title_accent: "exactamente donde estás.",
         description: "Encuentra actividades locales, festivales, vida nocturna y haz conexiones auténticas con viajeros y locales.",
         get_app: "Obtener la app",
+        open_map: "Abrir el mapa",
         app_store_sub: "Consíguelo en el",
         play_store_sub: "Disponible en"
       },
@@ -245,6 +252,7 @@
         title_accent: "genau da, wo du bist.",
         description: "Finde lokale Aktivitäten, Festivals, Nachtleben und knüpfe authentische Kontakte mit Reisenden und Einheimischen.",
         get_app: "App holen",
+        open_map: "Karte öffnen",
         app_store_sub: "Laden im",
         play_store_sub: "Jetzt bei"
       },
@@ -255,6 +263,7 @@
         title_accent: "exatamente onde você está.",
         description: "Encontre atividades locais, festivais, vida noturna e faça conexões autênticas com viajantes e moradores locais.",
         get_app: "Obter o app",
+        open_map: "Abrir o mapa",
         app_store_sub: "Baixar na",
         play_store_sub: "Disponível no"
       },
@@ -265,6 +274,7 @@
         title_accent: "esattamente dove ti trovi.",
         description: "Trova attività locali, festival, vita notturna e fai incontri autentici con viaggiatori e del posto.",
         get_app: "Scarica l'app",
+        open_map: "Apri la mappa",
         app_store_sub: "Scarica su",
         play_store_sub: "Disponibile su"
       }
