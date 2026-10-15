@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "updated": "2026-10-15",
+  "urlScheme": "B2-A",
+  "urlPattern": "/blog/{slug}.html",
+  "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
+  "posts": [
+    {
+      "slug": "rencontrer-voyageurs-ville",
+      "title": "Comment rencontrer des voyageurs solo dans votre propre ville ?",
+      "description": "Astuces concrètes et carte interactive MapTrotter pour repérer les lieux animés et rencontrer des voyageurs authentiques près de chez vous.",
+      "excerpt": "Utilisez la carte interactive pour repérer les spots populaires auprès des backpackers et des nomades digitaux ce week-end.",
+      "date": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "locale": "fr",
+      "category": "Astuces",
+      "tags": ["rencontres", "voyageurs", "carte", "locaux"],
+      "readingMinutes": 4,
+      "path": "/blog/rencontrer-voyageurs-ville.html",
+      "source": "/blog/posts/2026-10-15-rencontrer-voyageurs-ville.md",
+      "status": "published",
+      "image": "/splash.png"
+    }
+  ]
+}

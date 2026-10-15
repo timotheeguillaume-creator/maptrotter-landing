@@ -45,7 +45,12 @@
     "description": "MapTrotter est une carte interactive communautaire permettant de découvrir des activités locales, des événements, des festivals et de faciliter les rencontres humaines entre voyageurs et locaux.",
     "publisher": {
       "@type": "Organization",
-      "name": "xWalk"
+      "name": "MapTrotter",
+      "url": "https://maptrotter.xyz/",
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "xWalk"
+      }
     },
     "offers": {
       "@type": "Offer",
@@ -60,10 +65,11 @@
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="apple-touch-icon" href="/favicon.png" />
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts + shared brand -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/brand.css" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -73,7 +79,7 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
           },
           colors: {
             brand: {
@@ -89,12 +95,6 @@
       }
     }
   </script>
-
-  <style>
-    body { background-color: #0F172A; color: #F5F5DC; }
-    .accent-bg { background-color: #E2725B; }
-    .accent-text { color: #E2725B; }
-  </style>
 </head>
 
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-[#E2725B] selection:text-white">
@@ -197,7 +197,8 @@
     <div>
       &copy; <span id="year">2026</span> <strong class="text-gray-400 font-bold">MAPTROTTER</strong> by <span class="text-[#E2725B] font-semibold">xWalk</span>.
     </div>
-    <div class="flex gap-4">
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="/" class="hover:text-[#E2725B] transition">Accueil</a>
       <a href="/blog.html" class="hover:text-[#E2725B] transition">Blog & Guides</a>
       <a href="/legals.html" class="hover:text-[#E2725B] transition">Mentions Légales</a>
     </div>

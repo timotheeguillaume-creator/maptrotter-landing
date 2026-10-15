@@ -3,64 +3,192 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Le Blog MAPTROTTER — Sorties, Rencontres et Astuces Locales</title>
-  <meta name="description" content="Découvrez les meilleurs conseils de la communauté MapTrotter pour explorer votre ville, trouver des événements exclusifs et faire de nouvelles rencontres." />
-  <link rel="icon" type="image/png" href="/favicon.png" />
+  <title>Le Radar MapTrotter — Blog & Guides Locaux</title>
+  <meta name="description" content="Guides locaux, astuces communautaires et actualités MapTrotter pour explorer votre ville, trouver des événements et faire des rencontres authentiques." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <meta name="author" content="Équipe MapTrotter" />
   <link rel="canonical" href="https://maptrotter.xyz/blog.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://maptrotter.xyz/blog.html" />
+  <meta property="og:title" content="Le Radar MapTrotter — Blog & Guides" />
+  <meta property="og:description" content="Guides locaux, astuces communautaires et actualités de la carte interactive MapTrotter." />
+  <meta property="og:image" content="https://maptrotter.xyz/splash.png" />
+
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://maptrotter.xyz/blog.html" />
+  <meta property="twitter:title" content="Le Radar MapTrotter" />
+  <meta property="twitter:description" content="Guides locaux, astuces communautaires et actualités MapTrotter." />
+  <meta property="twitter:image" content="https://maptrotter.xyz/splash.png" />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/brand.css" />
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>body { background-color: #0F172A; color: #F5F5DC; }</style>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              bg: '#0F172A',
+              card: '#1A222D',
+              accent: '#E2725B',
+              cyan: '#00E9FF',
+              gold: '#E5B869',
+              cream: '#F5F5DC',
+            }
+          }
+        }
+      }
+    }
+  </script>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-[#E2725B] selection:text-white">
-  
+
   <header class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex justify-between items-center border-b border-white/10">
-    <a href="/" class="flex items-center group">
-      <img src="/splash.png" alt="MapTrotter" class="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform" onerror="this.style.display='none'" />
+    <a href="/" class="flex items-center group select-none outline-none focus:ring-2 focus:ring-[#E2725B] rounded-xl p-1">
+      <img
+        src="/splash.png"
+        alt="MapTrotter"
+        class="h-10 sm:h-12 md:h-14 w-auto max-w-[240px] object-contain transition-transform duration-300 group-hover:scale-105"
+        onerror="this.style.display='none'"
+      />
     </a>
-    <a href="/" class="text-sm font-semibold text-white bg-[#1A222D] border border-white/20 px-4 py-2 rounded-xl hover:bg-[#242F3E] transition">
-      ← Retour
+    <a href="/" class="text-sm font-semibold text-white bg-[#1A222D] border border-white/20 px-4 py-2 rounded-xl hover:bg-[#242F3E] transition focus:outline-none focus:ring-2 focus:ring-[#E2725B]">
+      ← Accueil
     </a>
   </header>
 
   <main class="max-w-6xl mx-auto px-4 sm:px-6 py-12 flex-grow w-full">
-    <h1 class="text-3xl sm:text-5xl font-black text-white mb-4">Le Radar <span class="text-[#E2725B]">MapTrotter</span></h1>
-    <p class="text-gray-400 text-lg mb-12">Guides locaux, astuces communautaires et actualités de l'application.</p>
+    <h1 class="text-3xl sm:text-5xl font-black text-white mb-4 tracking-tight">
+      Le Radar <span class="accent-text">MapTrotter</span>
+    </h1>
+    <p class="text-gray-400 text-lg mb-12 max-w-2xl">
+      Guides locaux, astuces communautaires et actualités de l'application.
+    </p>
 
-    <!-- Grille des articles -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      
-      <!-- Article 1 (Exemple SEO : "Rencontres Voyageurs") -->
-      <article class="bg-[#1A222D] rounded-2xl border border-white/10 overflow-hidden hover:border-[#E2725B]/50 transition-colors group cursor-pointer">
-        <div class="h-48 bg-gray-800 relative overflow-hidden">
-          <!-- Espace pour image d'illustration -->
-          <div class="absolute inset-0 bg-gradient-to-tr from-[#E2725B]/20 to-[#00E9FF]/20 group-hover:scale-105 transition-transform duration-500"></div>
-        </div>
-        <div class="p-6">
-          <div class="text-[#00E9FF] text-xs font-bold uppercase tracking-wider mb-2">Astuces</div>
-          <h2 class="text-xl font-bold text-white mb-3">Comment rencontrer des voyageurs solo dans votre propre ville ?</h2>
-          <p class="text-gray-400 text-sm mb-4 line-clamp-3">Utilisez la carte interactive pour repérer les spots populaires auprès des backpackers et des nomades digitaux ce week-end...</p>
-          <a href="#" class="text-[#E2725B] text-sm font-semibold hover:underline">Lire la suite →</a>
-        </div>
-      </article>
-
-      <!-- Article 2 (Exemple SEO : "Activités Locales") -->
-      <article class="bg-[#1A222D] rounded-2xl border border-white/10 overflow-hidden hover:border-[#E2725B]/50 transition-colors group cursor-pointer">
-        <div class="h-48 bg-gray-800 relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-tr from-[#E5B869]/20 to-[#E2725B]/20 group-hover:scale-105 transition-transform duration-500"></div>
-        </div>
-        <div class="p-6">
-          <div class="text-[#E5B869] text-xs font-bold uppercase tracking-wider mb-2">Festivals</div>
-          <h2 class="text-xl font-bold text-white mb-3">Les 5 festivals de rue cachés à ne pas rater cet été</h2>
-          <p class="text-gray-400 text-sm mb-4 line-clamp-3">La communauté a signalé de nombreux événements underground. Voici comment les trouver avant tout le monde grâce aux filtres de l'app...</p>
-          <a href="#" class="text-[#E2725B] text-sm font-semibold hover:underline">Lire la suite →</a>
-        </div>
-      </article>
-
+    <div id="blog-listing" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Populated from blog-index.json; noscript fallback below -->
     </div>
+
+    <noscript>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <a href="/blog/rencontrer-voyageurs-ville.html" class="block bg-[#1A222D] rounded-2xl border border-white/10 overflow-hidden hover:border-[#E2725B]/50 transition-colors group">
+          <div class="h-48 bg-gray-800 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-tr from-[#E2725B]/20 to-[#00E9FF]/20 group-hover:scale-105 transition-transform duration-500"></div>
+          </div>
+          <div class="p-6">
+            <div class="text-[#00E9FF] text-xs font-bold uppercase tracking-wider mb-2">Astuces</div>
+            <h2 class="text-xl font-bold text-white mb-3">Comment rencontrer des voyageurs solo dans votre propre ville ?</h2>
+            <p class="text-gray-400 text-sm mb-4">Utilisez la carte interactive pour repérer les spots populaires auprès des backpackers et des nomades digitaux.</p>
+            <span class="text-[#E2725B] text-sm font-semibold">Lire la suite →</span>
+          </div>
+        </a>
+      </div>
+    </noscript>
+
+    <p id="blog-empty" class="hidden text-gray-400 text-lg">Prochain guide bientôt — la communauté MapTrotter prépare de nouvelles pistes.</p>
   </main>
 
-  <footer class="max-w-6xl mx-auto w-full p-6 text-center text-xs sm:text-sm text-gray-500 border-t border-white/10 mt-auto">
-    &copy; 2026 <strong class="text-gray-400 font-bold">MAPTROTTER</strong> by <span class="text-[#E2725B]">xWalk</span>. 
-    <a href="/legals.html" class="ml-3 hover:text-[#E2725B] transition">Mentions Légales</a>
+  <footer class="max-w-6xl mx-auto w-full p-6 text-center text-xs sm:text-sm text-gray-500 border-t border-white/10 mt-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+    <div>
+      &copy; <span id="year">2026</span> <strong class="text-gray-400 font-bold">MAPTROTTER</strong> by <span class="text-[#E2725B] font-semibold">xWalk</span>.
+    </div>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="/" class="hover:text-[#E2725B] transition">Accueil</a>
+      <a href="/blog.html" class="hover:text-[#E2725B] transition">Blog & Guides</a>
+      <a href="/legals.html" class="hover:text-[#E2725B] transition">Mentions Légales</a>
+    </div>
   </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const TAG_COLORS = {
+      Astuces: 'text-[#00E9FF]',
+      Festivals: 'text-[#E5B869]',
+      default: 'text-[#E2725B]'
+    };
+
+    function truncate(text, max) {
+      if (!text) return '';
+      const t = text.trim();
+      return t.length <= max ? t : t.slice(0, max - 1).trimEnd() + '…';
+    }
+
+    function formatDate(iso) {
+      try {
+        return new Date(iso + 'T12:00:00').toLocaleDateString('fr-FR', {
+          day: 'numeric', month: 'long', year: 'numeric'
+        });
+      } catch { return iso; }
+    }
+
+    function renderPosts(posts) {
+      const listing = document.getElementById('blog-listing');
+      const empty = document.getElementById('blog-empty');
+      listing.innerHTML = '';
+
+      const published = (posts || [])
+        .filter(p => p.status === 'published')
+        .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+      if (!published.length) {
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      published.forEach((post, i) => {
+        const tagClass = TAG_COLORS[post.category] || TAG_COLORS.default;
+        const gradients = [
+          'from-[#E2725B]/20 to-[#00E9FF]/20',
+          'from-[#E5B869]/20 to-[#E2725B]/20',
+          'from-[#00E9FF]/20 to-[#E5B869]/20'
+        ];
+        const grad = gradients[i % gradients.length];
+        const a = document.createElement('a');
+        a.href = post.path;
+        a.className = 'block bg-[#1A222D] rounded-2xl border border-white/10 overflow-hidden hover:border-[#E2725B]/50 transition-colors group focus:outline-none focus:ring-2 focus:ring-[#E2725B]';
+        a.innerHTML = `
+          <div class="h-48 bg-gray-800 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-tr ${grad} group-hover:scale-105 transition-transform duration-500"></div>
+          </div>
+          <div class="p-6">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="${tagClass} text-xs font-bold uppercase tracking-wider">${post.category || 'Guide'}</span>
+              <time class="text-gray-500 text-xs" datetime="${post.date || ''}">${formatDate(post.date)}</time>
+            </div>
+            <h2 class="text-xl font-bold text-white mb-3">${post.title}</h2>
+            <p class="text-gray-400 text-sm mb-4">${truncate(post.excerpt, 160)}</p>
+            <span class="text-[#E2725B] text-sm font-semibold">Lire la suite →</span>
+          </div>
+        `;
+        listing.appendChild(a);
+      });
+    }
+
+    fetch('/blog-index.json')
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(data => renderPosts(data.posts || data))
+      .catch(() => {
+        renderPosts([{
+          status: 'published',
+          title: 'Comment rencontrer des voyageurs solo dans votre propre ville ?',
+          excerpt: 'Utilisez la carte interactive pour repérer les spots populaires auprès des backpackers et des nomades digitaux.',
+          category: 'Astuces',
+          date: '2026-10-15',
+          path: '/blog/rencontrer-voyageurs-ville.html'
+        }]);
+      });
+  </script>
 </body>
 </html>
