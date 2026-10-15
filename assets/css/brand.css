@@ -33,9 +33,9 @@ body {
 
 .brand-splash {
   display: block;
-  width: min(calc(100vw - 1.25rem), 34rem);
+  width: min(calc(100vw - 7.5rem), 22rem);
   height: auto;
-  max-height: 5.75rem;
+  max-height: none;
   object-fit: contain;
   object-position: left center;
   transition: transform 0.3s ease;
@@ -46,23 +46,20 @@ body {
   transform: scale(1.02);
 }
 
-/* Homepage: brand-first, fuller bleed, centered on mobile */
+/* Homepage: brand-first, near edge-to-edge, centered on mobile */
 .brand-splash--home {
-  width: min(calc(100vw - 0.75rem), 42rem);
-  max-height: none;
+  width: min(calc(100vw - 0.5rem), 44rem);
   margin-inline: auto;
   object-position: center;
 }
 
 @media (min-width: 640px) {
   .brand-splash {
-    width: min(100%, 26rem);
-    max-height: 6.5rem;
+    width: min(100%, 28rem);
   }
 
   .brand-splash--home {
-    width: min(100%, 36rem);
-    max-height: 7.5rem;
+    width: min(100%, 38rem);
     margin-inline: 0;
     object-position: left center;
   }
@@ -70,13 +67,11 @@ body {
 
 @media (min-width: 768px) {
   .brand-splash {
-    width: min(100%, 32rem);
-    max-height: 7.75rem;
+    width: min(100%, 34rem);
   }
 
   .brand-splash--home {
-    width: min(100%, 40rem);
-    max-height: 8.5rem;
+    width: min(100%, 44rem);
   }
 }
 
