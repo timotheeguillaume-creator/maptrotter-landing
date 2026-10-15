@@ -187,8 +187,14 @@
 
     <!-- App Store / Play Store Buttons (placeholders until real store IDs) -->
     <div id="download" class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-sm sm:max-w-none mx-auto">
-      <a href="#" class="w-full sm:w-auto bg-[#1A222D] hover:bg-black/40 border border-white/15 text-white px-6 py-3.5 rounded-2xl flex items-center justify-center gap-3 transition active:scale-95 shadow-md">
-        <span class="text-2xl" aria-hidden="true">🍏</span>
+      <a
+        href="#"
+        id="app-store-btn"
+        class="mt-store-btn--apple w-full sm:w-auto bg-[#1A222D] hover:bg-black/40 border border-white/15 text-white px-6 py-3.5 rounded-2xl flex items-center justify-center gap-3 transition active:scale-95 shadow-md"
+      >
+        <span class="mt-apple-slot" aria-hidden="true">
+          <span class="mt-apple" id="app-apple">🍏</span>
+        </span>
         <div class="text-left">
           <div class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold" data-i18n="app_store_sub">Télécharger dans l'</div>
           <div class="text-sm font-bold text-white">App Store</div>
@@ -438,17 +444,38 @@
         }
       }
 
-      // Google Play robot rocket — CSS keyframes + tiny trigger/reset JS
+      // Google Play robot rocket + App Store apple tip-off (choreographed)
       const playBtn = document.getElementById('play-store-btn');
       const rocket = document.getElementById('play-rocket');
       const rocketSlot = playBtn && playBtn.querySelector('.mt-play-rocket-slot');
+      const apple = document.getElementById('app-apple');
+      const appleSlot = document.querySelector('.mt-apple-slot');
 
       if (!reduceMotion && playBtn && rocket && rocketSlot && 'IntersectionObserver' in window) {
         let busy = false;
         let cycles = 0;
         let firstLaunchPending = false;
+        let appleBusy = false;
+        let appleTimer = null;
         const MAX_AUTO = 3;
-        const FIRST_LAUNCH_DELAY_MS = 2800; // delay before first launch
+        const FIRST_LAUNCH_DELAY_MS = 2800;
+        const ROCKET_ORBIT_MS = 2700;
+        const APPLE_MID_FLIGHT_MS = Math.round(ROCKET_ORBIT_MS * 0.5); // ~halfway
+
+        const tipApple = () => {
+          if (!apple || !appleSlot || appleBusy || document.hidden) return;
+          appleBusy = true;
+          const rect = apple.getBoundingClientRect();
+          apple.classList.remove('is-reappearing');
+          apple.style.position = 'fixed';
+          apple.style.left = rect.left + 'px';
+          apple.style.top = rect.top + 'px';
+          apple.style.right = 'auto';
+          apple.style.bottom = 'auto';
+          appleSlot.classList.add('is-empty');
+          void apple.offsetWidth;
+          apple.classList.add('is-tipping');
+        };
 
         const launchRocket = () => {
           if (busy || document.hidden) return;
@@ -464,6 +491,9 @@
           rocketSlot.classList.add('is-empty');
           void rocket.offsetWidth;
           rocket.classList.add('is-flying');
+          // Apple rolls + falls ~halfway through rocket orbit
+          if (appleTimer) window.clearTimeout(appleTimer);
+          appleTimer = window.setTimeout(tipApple, APPLE_MID_FLIGHT_MS);
         };
 
         const onOrbitEnd = (e) => {
@@ -490,8 +520,30 @@
           }
         };
 
+        const onAppleTipEnd = (e) => {
+          if (!apple || e.target !== apple || e.animationName !== 'mt-apple-roll-fall') return;
+          apple.classList.remove('is-tipping');
+          apple.style.position = '';
+          apple.style.left = '';
+          apple.style.top = '';
+          apple.style.right = '';
+          apple.style.bottom = '';
+          appleSlot.classList.remove('is-empty');
+          apple.classList.add('is-reappearing');
+        };
+
+        const onAppleReappearEnd = (e) => {
+          if (!apple || e.target !== apple || e.animationName !== 'mt-apple-reappear') return;
+          apple.classList.remove('is-reappearing');
+          appleBusy = false;
+        };
+
         rocket.addEventListener('animationend', onOrbitEnd);
         rocket.addEventListener('animationend', onReappearEnd);
+        if (apple) {
+          apple.addEventListener('animationend', onAppleTipEnd);
+          apple.addEventListener('animationend', onAppleReappearEnd);
+        }
 
         const playIo = new IntersectionObserver(
           ([entry]) => {
