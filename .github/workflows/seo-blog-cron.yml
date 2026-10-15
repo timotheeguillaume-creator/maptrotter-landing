@@ -20,7 +20,8 @@
 # (dry_run=true recommended for the first smoke test).
 #
 # Deploy model: commit/merge to main → Cloudflare Workers/Pages republish.
-# Rodage default: open a draft PR instead of pushing straight to main.
+# Schedule default: publish_mode=commit (push main + IndexNow).
+# workflow_dispatch can still choose pr (draft PR) or commit.
 
 name: seo-blog-cron
 
@@ -47,12 +48,12 @@ on:
         type: string
         default: ""
       publish_mode:
-        description: "pr = draft PR (rodage); commit = push main + IndexNow"
+        description: "commit = push main + IndexNow; pr = draft PR (rodage)"
         type: choice
         options:
-          - pr
           - commit
-        default: pr
+          - pr
+        default: commit
 
 concurrency:
   group: seo-blog
@@ -80,7 +81,7 @@ jobs:
         id: opts
         run: |
           DRY="${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}"
-          MODE="${{ github.event_name == 'workflow_dispatch' && inputs.publish_mode || 'pr' }}"
+          MODE="${{ github.event_name == 'workflow_dispatch' && inputs.publish_mode || 'commit' }}"
           echo "dry_run=${DRY}" >> "$GITHUB_OUTPUT"
           echo "publish_mode=${MODE}" >> "$GITHUB_OUTPUT"
           echo "locale=${{ github.event_name == 'workflow_dispatch' && inputs.locale || '' }}" >> "$GITHUB_OUTPUT"
