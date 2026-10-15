@@ -358,7 +358,9 @@
         const POP_EMOJIS = [
           '📍', '👋', '✨', '🗺️', '⛺', '🥾', '🎉', '😊',
           '❤️', '🤝', '🍻', '🧭', '🎒', '🌅', '🕺', '🫶',
-          '🏕️', '👫', '😎', '🥂'
+          '🏕️', '👫', '😎', '🥂',
+          /* sport / activity */
+          '⚽', '🏀', '🎾', '🏐', '🏃', '🚴', '🏄', '🏋️', '🤸', '🏂'
         ];
         const POP_ANIMS = [
           'mt-pop-anim-a', 'mt-pop-anim-b', 'mt-pop-anim-c', 'mt-pop-anim-d',
@@ -460,7 +462,8 @@
         const MAX_AUTO = 3;
         const FIRST_LAUNCH_DELAY_MS = 2800;
         const ROCKET_ORBIT_MS = 2700;
-        const APPLE_MID_FLIGHT_MS = Math.round(ROCKET_ORBIT_MS * 0.5); // ~halfway
+        /* Near end of orbit — almost finished, not mid-flight */
+        const APPLE_NEAR_END_MS = Math.round(ROCKET_ORBIT_MS * 0.88);
 
         const tipApple = () => {
           if (!apple || !appleSlot || appleBusy || document.hidden) return;
@@ -491,9 +494,9 @@
           rocketSlot.classList.add('is-empty');
           void rocket.offsetWidth;
           rocket.classList.add('is-flying');
-          // Apple rolls + falls ~halfway through rocket orbit
+          // Apple rolls + falls when rocket is almost finished
           if (appleTimer) window.clearTimeout(appleTimer);
-          appleTimer = window.setTimeout(tipApple, APPLE_MID_FLIGHT_MS);
+          appleTimer = window.setTimeout(tipApple, APPLE_NEAR_END_MS);
         };
 
         const onOrbitEnd = (e) => {
