@@ -68,12 +68,13 @@ body {
    object-position is a no-op when the image fills the box, so translate instead. */
 @media (max-width: 639.98px) {
   .mt-header-primary .brand-splash--home {
-    transform: translateX(0.35rem);
+    /* ~coral glyph offset inside splash.png at home width */
+    transform: translateX(0.125rem);
   }
 
   .mt-header-primary .brand-splash-link:hover .brand-splash--home,
   .mt-header-primary .brand-splash-link:focus-visible .brand-splash--home {
-    transform: translateX(0.35rem) scale(1.02);
+    transform: translateX(0.125rem) scale(1.02);
   }
 }
 
