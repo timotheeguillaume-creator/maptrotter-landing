@@ -4,8 +4,17 @@
 #   GEMINI_API_KEY   — Google AI Studio key (Gemini API, free tier)
 #   INDEXNOW_KEY     — IndexNow key (Bing/Yandex/etc.); also creates /{key}.txt
 #
+# Optional secrets:
+#   SEO_CRON_TOKEN   — PAT with repo + pull_requests. Use when GITHUB_TOKEN
+#                      cannot open PRs (Actions "create and approve PRs" off).
+#
 # Optional variables:
 #   GEMINI_MODEL     — default gemini-3.8-flash (gemini-2.0-flash retired)
+#
+# publish_mode=pr also needs (unless SEO_CRON_TOKEN is set):
+#   Settings → Actions → General → Workflow permissions
+#   → enable "Allow GitHub Actions to create and approve pull requests"
+#   (contents/pull-requests: write alone is not enough)
 #
 # First enable: add secrets, then Actions → seo-blog-cron → Run workflow
 # (dry_run=true recommended for the first smoke test).
@@ -169,11 +178,13 @@ jobs:
           && steps.changes.outputs.has_changes == 'true'
           && steps.opts.outputs.publish_mode != 'commit'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer a PAT when the default GITHUB_TOKEN is blocked from creating PRs.
+          GH_TOKEN: ${{ secrets.SEO_CRON_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           SLUG="${{ steps.changes.outputs.slug }}"
           BRANCH="blog/auto-${SLUG}-$(date -u +%Y%m%d)"
+          REPO="${{ github.repository }}"
           git checkout -b "$BRANCH"
           git add blog/ blog-index.json sitemap.xml feed.xml data/keyword-dictionary.json index.html blog.html || true
           git ls-files --others --exclude-standard | grep -E '^[A-Za-z0-9_-]+\.txt$' | xargs -r git add || true
@@ -188,7 +199,23 @@ jobs:
 
           Rodage: skim quality, then merge → Cloudflare republishes from \`main\`.
           After merge, IndexNow can be triggered with \`publish_mode=commit\` or a follow-up ping job."
-          gh pr create --draft --base main --title "$TITLE" --body "$BODY"
+          set +e
+          PR_OUT="$(gh pr create --draft --base main --title "$TITLE" --body "$BODY" 2>&1)"
+          PR_RC=$?
+          set -e
+          echo "$PR_OUT"
+          if [ "$PR_RC" -eq 0 ]; then
+            exit 0
+          fi
+          COMPARE_URL="https://github.com/${REPO}/compare/main...${BRANCH}?expand=1"
+          if echo "$PR_OUT" | grep -qi 'not permitted to create or approve pull requests'; then
+            echo "::error::GITHUB_TOKEN cannot open PRs. Enable Settings → Actions → General → Workflow permissions → 'Allow GitHub Actions to create and approve pull requests', or add secret SEO_CRON_TOKEN (PAT with pull-request create)."
+            echo "Branch already pushed. Open manually: ${COMPARE_URL}"
+            exit 8
+          fi
+          echo "::error::gh pr create failed (exit ${PR_RC}). Branch pushed: ${BRANCH}"
+          echo "Open manually: ${COMPARE_URL}"
+          exit "$PR_RC"
 
       - name: Ping IndexNow + sitemap
         if: >-
