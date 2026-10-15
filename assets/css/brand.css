@@ -61,8 +61,20 @@ body {
   width: 15.5rem;
   max-width: min(15.5rem, calc(100% - 0.5rem));
   margin-inline: auto;
-  /* Optical center: coral wordmark sits slightly left of PNG mid ("live" overhangs right) */
-  object-position: 54% center;
+  object-position: center;
+}
+
+/* Optical nudge: coral MAPTROTTER sits left of PNG mid ("live" overhangs right).
+   object-position is a no-op when the image fills the box, so translate instead. */
+@media (max-width: 639.98px) {
+  .mt-header-primary .brand-splash--home {
+    transform: translateX(0.35rem);
+  }
+
+  .mt-header-primary .brand-splash-link:hover .brand-splash--home,
+  .mt-header-primary .brand-splash-link:focus-visible .brand-splash--home {
+    transform: translateX(0.35rem) scale(1.02);
+  }
 }
 
 @media (min-width: 640px) {
@@ -161,10 +173,6 @@ body {
   .mt-header-primary .brand-splash-link {
     margin-inline: 0;
     align-self: auto;
-  }
-
-  .brand-splash--home {
-    object-position: left center;
   }
 }
 
@@ -369,20 +377,21 @@ body {
 
 .mt-spot-pops span {
   position: absolute;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   line-height: 1;
   opacity: 0;
   transform: translate3d(0, 8px, 0) scale(0.85);
-  animation: mt-spot-pop 7.5s ease-in-out infinite;
+  animation: mt-spot-pop 8.5s ease-in-out infinite;
   filter: none;
   user-select: none;
 }
 
-.mt-spot-pops span:nth-child(1) { left: 8%;  top: 18%; animation-delay: 0s; }
-.mt-spot-pops span:nth-child(2) { right: 10%; top: 28%; animation-delay: 1.8s; font-size: 0.85rem; }
-.mt-spot-pops span:nth-child(3) { left: 14%;  bottom: 22%; animation-delay: 3.4s; }
-.mt-spot-pops span:nth-child(4) { right: 16%; bottom: 30%; animation-delay: 5s; font-size: 0.8rem; }
-.mt-spot-pops span:nth-child(5) { left: 46%;  top: 8%; animation-delay: 6.2s; font-size: 0.75rem; }
+/* Keep pops in far corners — never beside the title band (avoids false left-shift) */
+.mt-spot-pops span:nth-child(1) { left: 2%;  top: 6%; animation-delay: 0s; }
+.mt-spot-pops span:nth-child(2) { right: 3%; top: 10%; animation-delay: 2.1s; font-size: 0.75rem; }
+.mt-spot-pops span:nth-child(3) { left: 4%;  bottom: 8%; animation-delay: 4s; }
+.mt-spot-pops span:nth-child(4) { right: 5%; bottom: 12%; animation-delay: 5.8s; font-size: 0.72rem; }
+.mt-spot-pops span:nth-child(5) { left: 50%; top: 2%; margin-left: -0.4em; animation-delay: 7.2s; font-size: 0.7rem; }
 
 .mt-spot-pops.is-paused span,
 .mt-spot-pops[hidden] span {
@@ -391,9 +400,9 @@ body {
 }
 
 @keyframes mt-spot-pop {
-  0%, 8% { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.8); }
-  18%, 32% { opacity: 0.55; transform: translate3d(0, 0, 0) scale(1); }
-  45%, 100% { opacity: 0; transform: translate3d(0, -6px, 0) scale(0.9); }
+  0%, 10% { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.8); }
+  20%, 34% { opacity: 0.4; transform: translate3d(0, 0, 0) scale(1); }
+  48%, 100% { opacity: 0; transform: translate3d(0, -6px, 0) scale(0.9); }
 }
 
 @media (prefers-reduced-motion: reduce) {
