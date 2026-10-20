@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-15",
+  "updated": "2026-10-20",
   "meta": {
     "product": "MapTrotter",
     "axes": {
@@ -6236,8 +6236,8 @@
       "spotType": "afterwork",
       "clusterId": "local-partager-adresse-fr",
       "priority": 5,
-      "usedCount": 0,
-      "lastUsed": null,
+      "usedCount": 1,
+      "lastUsed": "2026-10-20",
       "status": "active"
     },
     {

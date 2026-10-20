@@ -1,10 +1,34 @@
 {
   "version": 1,
-  "updated": "2026-10-15",
+  "updated": "2026-10-20",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "partager-adresse-afterworks-perth",
+      "title": "Comment partager une adresse d'afterwork à Perth et faire vivre la communauté",
+      "description": "Envie de faire découvrir ton spot préféré pour décompresser après le travail ? Voici comment partager une bonne adresse d'afterwork à Perth avec d'autres voyageurs et locaux.",
+      "excerpt": "Pour partager une adresse d'afterwork à Perth, il te suffit de cerner l'ambiance du lieu, de noter ses points forts (cour intérieure, bières locales, terrasse o",
+      "date": "2026-10-20",
+      "dateModified": "2026-10-20",
+      "locale": "fr",
+      "city": "Perth",
+      "cluster": "local-partager-adresse-fr",
+      "category": "Spots",
+      "tags": [
+        "Perth",
+        "Afterwork",
+        "Australie",
+        "Bons plans"
+      ],
+      "readingMinutes": 5,
+      "path": "/blog/partager-adresse-afterworks-perth.html",
+      "source": "/blog/posts/2026-10-20-partager-adresse-afterworks-perth.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "fr-perth-partager-adresse-share-spot-afterwork-01"
+    },
     {
       "slug": "rencontrer-voyageurs-ville",
       "title": "Comment rencontrer des voyageurs solo dans votre propre ville ?",
