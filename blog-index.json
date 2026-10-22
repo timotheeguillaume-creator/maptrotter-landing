@@ -1,10 +1,34 @@
 {
   "version": 1,
-  "updated": "2026-10-20",
+  "updated": "2026-10-22",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "langeweile-in-melbourne-was-tun-heute-abend-de",
+      "title": "Langeweile in Melbourne? Was du heute Abend spontan tun kannst",
+      "description": "Allein oder neu in Melbourne und planlos für heute Abend? Entdecke authentische Laneways, Live-Musik und Orte, um Locals und Reisende zu treffen.",
+      "excerpt": "Wenn du dich heute Abend in Melbourne langweilst, lass dein Hotelzimmer hinter dir. Melbournes Nachtleben lebt nicht von riesigen Mega-Clubs, sondern von verste",
+      "date": "2026-10-22",
+      "dateModified": "2026-10-22",
+      "locale": "de",
+      "city": "Melbourne",
+      "cluster": "local-sortir-soir-de",
+      "category": "Spots",
+      "tags": [
+        "Melbourne",
+        "Nachtleben",
+        "Community",
+        "Reisetipps"
+      ],
+      "readingMinutes": 6,
+      "path": "/blog/langeweile-in-melbourne-was-tun-heute-abend-de.html",
+      "source": "/blog/posts/2026-10-22-langeweile-in-melbourne-was-tun-heute-abend-de.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "de-melbourne-sortir-soir-bored-local-01"
+    },
     {
       "slug": "partager-adresse-afterworks-perth",
       "title": "Comment partager une adresse d'afterwork à Perth et faire vivre la communauté",
