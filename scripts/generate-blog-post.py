@@ -174,7 +174,27 @@ def main() -> int:
         try:
             raw = gemini.call_gemini(prompt, api_key=api_key)
         except gemini.GeminiError as e:
-            log.error("gemini failed: %s", e)
+            # Exit 4 = Gemini API failure (not quality gates / parse).
+            log.error(
+                "gemini failed (exit 4) model=%s status=%s retryable=%s: %s",
+                getattr(e, "model", None),
+                getattr(e, "status", None),
+                getattr(e, "retryable", False),
+                e,
+            )
+            if e.status == 503 or (e.retryable and "high demand" in str(e).lower()):
+                log.error(
+                    "hint: model capacity — fallbacks exhausted. "
+                    "Cron will retry next schedule; or set GEMINI_MODEL / "
+                    "GEMINI_MODEL_FALLBACKS (comma-separated)."
+                )
+            elif e.status == 404:
+                log.error(
+                    "hint: model id retired/missing — update DEFAULT_MODEL or "
+                    "Actions var GEMINI_MODEL."
+                )
+            elif e.status in (401, 403):
+                log.error("hint: check GEMINI_API_KEY secret.")
             return 4
 
     try:
