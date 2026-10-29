@@ -79,7 +79,7 @@ Après le Markdown, un unique bloc :
 ````
 
 Règles JSON-LD :
-- `BlogPosting` : headline, description, datePublished, dateModified, author (Organization « Équipe MapTrotter »), publisher (Organization « MapTrotter », parentOrganization « xWalk »), image `https://maptrotter.xyz/splash.png`, mainEntityOfPage, inLanguage.
+- `BlogPosting` : headline, description, datePublished, dateModified, author (Organization « Équipe MapTrotter »), publisher (Organization « MapTrotter », parentOrganization « Xwalk »), image `https://maptrotter.xyz/splash.png`, mainEntityOfPage, inLanguage.
 - `FAQPage` : au moins 3 Question/Answer alignées sur la section FAQ.
 - `Place` si une ville est centrale.
 - `ItemList` **seulement** si tu listes un top N de spots (ListItem name + position) — sinon omets-le.
