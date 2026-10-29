@@ -100,7 +100,7 @@ Ready to explore Newcastle's hidden kitchens and share your favourite discoverie
         "name": "MapTrotter",
         "parentOrganization": {
           "@type": "Organization",
-          "name": "xWalk"
+          "name": "Xwalk"
         }
       }
     },

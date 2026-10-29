@@ -95,7 +95,7 @@ No necesariamente. Aunque algunos murales de gran formato perduran por años, mu
         "name": "MapTrotter",
         "parentOrganization": {
           "@type": "Organization",
-          "name": "xWalk"
+          "name": "Xwalk"
         }
       }
     },

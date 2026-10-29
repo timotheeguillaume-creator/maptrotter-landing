@@ -295,7 +295,7 @@ def ensure_json_ld(
                         "@type": "ImageObject",
                         "url": f"{SITE}/favicon.png",
                     },
-                    "parentOrganization": {"@type": "Organization", "name": "xWalk"},
+                    "parentOrganization": {"@type": "Organization", "name": "Xwalk"},
                 },
                 "datePublished": date_iso,
                 "dateModified": date_iso,
@@ -319,7 +319,7 @@ def ensure_json_ld(
                     "@type": "Organization",
                     "name": "MapTrotter",
                     "url": f"{SITE}/",
-                    "parentOrganization": {"@type": "Organization", "name": "xWalk"},
+                    "parentOrganization": {"@type": "Organization", "name": "Xwalk"},
                 },
             )
 

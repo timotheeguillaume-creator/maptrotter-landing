@@ -87,7 +87,7 @@ Prêt à faire découvrir ton coin préféré ? [Ouvrir la carte](/) et partage 
         "name": "MapTrotter",
         "parentOrganization": {
           "@type": "Organization",
-          "name": "xWalk"
+          "name": "Xwalk"
         }
       }
     },

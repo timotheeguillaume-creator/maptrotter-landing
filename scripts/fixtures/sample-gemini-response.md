@@ -111,7 +111,7 @@ Prêt à tester ce week-end ? [Ouvrir la carte](/) MapTrotter et repère deux ca
         },
         "parentOrganization": {
           "@type": "Organization",
-          "name": "xWalk"
+          "name": "Xwalk"
         }
       },
       "mainEntityOfPage": {

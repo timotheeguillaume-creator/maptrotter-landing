@@ -85,7 +85,7 @@ Pronto a scoprire la costa con occhi diversi? [Apri la mappa interattiva](/) e g
         "name": "MapTrotter",
         "parentOrganization": {
           "@type": "Organization",
-          "name": "xWalk"
+          "name": "Xwalk"
         }
       },
       "image": "https://maptrotter.xyz/splash.png",

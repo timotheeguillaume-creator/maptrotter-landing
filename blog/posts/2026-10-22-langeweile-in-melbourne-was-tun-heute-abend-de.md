@@ -92,7 +92,7 @@ Finde authentische Spots und verbinde dich mit Locals: [Karte öffnen](/)
         "name": "MapTrotter",
         "parentOrganization": {
           "@type": "Organization",
-          "name": "xWalk"
+          "name": "Xwalk"
         }
       }
     },
