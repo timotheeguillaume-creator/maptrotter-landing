@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-22",
+  "updated": "2026-10-30",
   "meta": {
     "product": "MapTrotter",
     "axes": {
@@ -79638,8 +79638,8 @@
       "spotType": null,
       "clusterId": "voyageur-last-minute-en",
       "priority": 5,
-      "usedCount": 0,
-      "lastUsed": null,
+      "usedCount": 1,
+      "lastUsed": "2026-10-30",
       "status": "active"
     },
     {

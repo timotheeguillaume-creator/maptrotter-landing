@@ -1,10 +1,35 @@
 {
   "version": 1,
-  "updated": "2026-10-22",
+  "updated": "2026-10-30",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "last-minute-activities-in-adelaide-en",
+      "title": "Last-Minute Activities in Adelaide: Spontaneous Ways to Explore the City",
+      "description": "Found yourself with a free afternoon in Adelaide? Discover walk-in-friendly cultural spots, laneway secrets, beach sunsets, and relaxed community vibes.",
+      "excerpt": "Looking for last-minute activities in Adelaide? You do not need reservations to experience the city's easygoing charm. Adelaide's compact layout makes spontaneo",
+      "date": "2026-10-30",
+      "dateModified": "2026-10-30",
+      "locale": "en",
+      "city": "Adelaide",
+      "cluster": "voyageur-last-minute-en",
+      "category": "Guides",
+      "tags": [
+        "adelaide",
+        "last-minute",
+        "australia",
+        "spontaneous-travel",
+        "local-spots"
+      ],
+      "readingMinutes": 5,
+      "path": "/blog/last-minute-activities-in-adelaide-en.html",
+      "source": "/blog/posts/2026-10-30-last-minute-activities-in-adelaide-en.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "en-adelaide-last-minute-last-minute-01"
+    },
     {
       "slug": "langeweile-in-melbourne-was-tun-heute-abend-de",
       "title": "Langeweile in Melbourne? Was du heute Abend spontan tun kannst",
