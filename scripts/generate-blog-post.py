@@ -161,99 +161,191 @@ def main() -> int:
     prompt_path = ROOT / "prompts" / "maptrotter-blog.md"
     prompt = build_prompt(picked, prompt_path, today)
 
-    if args.fixture:
-        raw = args.fixture.read_text(encoding="utf-8")
-        log.info("using fixture %s (%s chars)", args.fixture, len(raw))
-    else:
-        api_key = os.environ.get("GEMINI_API_KEY")
-        if not api_key:
-            log.error(
-                "GEMINI_API_KEY missing. Set the secret or pass --fixture for a dry run."
-            )
-            return 3
-        try:
-            raw = gemini.call_gemini(prompt, api_key=api_key)
-        except gemini.GeminiError as e:
-            # Exit 4 = Gemini API failure (not quality gates / parse).
-            log.error(
-                "gemini failed (exit 4) model=%s status=%s retryable=%s: %s",
-                getattr(e, "model", None),
-                getattr(e, "status", None),
-                getattr(e, "retryable", False),
-                e,
-            )
-            if e.status == 503 or (e.retryable and "high demand" in str(e).lower()):
-                log.error(
-                    "hint: model capacity — fallbacks exhausted. "
-                    "Cron will retry next schedule; or set GEMINI_MODEL / "
-                    "GEMINI_MODEL_FALLBACKS (comma-separated)."
-                )
-            elif e.status == 404:
-                log.error(
-                    "hint: model id retired/missing — update DEFAULT_MODEL or "
-                    "Actions var GEMINI_MODEL."
-                )
-            elif e.status in (401, 403):
-                log.error("hint: check GEMINI_API_KEY secret.")
-            return 4
-
-    try:
-        meta, body_with_ld = parse.parse_frontmatter(raw)
-        body, json_ld_raw = parse.extract_json_ld(body_with_ld)
-    except ValueError as e:
-        log.error("parse error: %s", e)
-        return 5
-
-    # Fill meta from topic when model omits fields
-    meta.setdefault("locale", picked.get("locale") or "fr")
-    meta.setdefault("city", picked.get("city"))
-    meta.setdefault("cluster", picked.get("clusterId"))
-    meta.setdefault("date", today.isoformat())
-    meta["phrase"] = picked.get("phrase")
-    meta["keywordId"] = picked.get("id")
-    if args.slug_override:
-        meta["slug"] = args.slug_override
-    elif not meta.get("slug"):
-        meta["slug"] = parse.slugify(
-            str(meta.get("title") or picked.get("phrase") or "post"),
-            locale=str(meta.get("locale") or "fr"),
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not args.fixture and not api_key:
+        log.error(
+            "GEMINI_API_KEY missing. Set the secret or pass --fixture for a dry run."
         )
+        return 3
 
-    # Idempotence: skip if HTML already exists
-    html_path = ROOT / "blog" / f"{meta['slug']}.html"
-    if html_path.exists() and not args.slug_override:
-        log.warning("slug already exists: %s — pick next topic manually or override", meta["slug"])
-        return 6
+    # Regenerate on transient quality/parse failures so cron is not killed by
+    # a single incomplete draft (e.g. missing json-ld from flash-lite).
+    gate_attempts = int(os.environ.get("GATE_ATTEMPTS", "3"))
+    if args.fixture:
+        gate_attempts = 1  # fixture is deterministic — no point re-reading
+    gate_attempts = max(1, min(gate_attempts, 5))
 
     index = catalog.load_blog_index(ROOT)
     recent_titles, recent_bodies = recent_corpus(ROOT, index)
 
-    gate = gates.run_gates(
-        meta,
-        body,
-        json_ld_raw,
-        recent_titles=recent_titles,
-        recent_bodies=recent_bodies,
-    )
-    if args.allow_short_fixture or (args.fixture and dry):
-        # Drop only the hard min-length failure for scaffolding fixtures
-        gate.failures = [f for f in gate.failures if not f.startswith("too short:")]
-        gate.ok = len(gate.failures) == 0
+    meta: dict = {}
+    body = ""
+    json_ld_raw: dict | list | None = None
+    last_failures: list[str] = []
+    correction = ""
 
-    if not gate.ok:
-        log.error("quality gates failed:")
-        for f in gate.failures:
+    for attempt in range(1, gate_attempts + 1):
+        prompt_attempt = prompt
+        if correction:
+            prompt_attempt = (
+                prompt
+                + "\n\n# CORRECTION OBLIGATOIRE (brouillon précédent rejeté)\n"
+                + "Corrige STRICTEMENT ces échecs de qualité avant de renvoyer "
+                + "l’article complet (frontmatter + Markdown + bloc ```json-ld``` "
+                + "en fin de sortie) :\n"
+                + correction
+            )
+
+        if args.fixture:
+            raw = args.fixture.read_text(encoding="utf-8")
+            log.info("using fixture %s (%s chars)", args.fixture, len(raw))
+        else:
+            assert api_key is not None
+            try:
+                log.info(
+                    "gemini draft attempt=%s/%s",
+                    attempt,
+                    gate_attempts,
+                )
+                raw = gemini.call_gemini(prompt_attempt, api_key=api_key)
+            except gemini.GeminiError as e:
+                # Exit 4 = Gemini API failure (not quality gates / parse).
+                log.error(
+                    "gemini failed (exit 4) model=%s status=%s retryable=%s: %s",
+                    getattr(e, "model", None),
+                    getattr(e, "status", None),
+                    getattr(e, "retryable", False),
+                    e,
+                )
+                if e.status == 503 or (e.retryable and "high demand" in str(e).lower()):
+                    log.error(
+                        "hint: model capacity — fallbacks exhausted. "
+                        "Cron will retry next schedule; or set GEMINI_MODEL / "
+                        "GEMINI_MODEL_FALLBACKS (comma-separated)."
+                    )
+                elif e.status == 404:
+                    log.error(
+                        "hint: model id retired/missing — update DEFAULT_MODEL or "
+                        "Actions var GEMINI_MODEL."
+                    )
+                elif e.status in (401, 403):
+                    log.error("hint: check GEMINI_API_KEY secret.")
+                return 4
+
+        try:
+            meta, body_with_ld = parse.parse_frontmatter(raw)
+            body, json_ld_raw = parse.extract_json_ld(body_with_ld)
+        except ValueError as e:
+            last_failures = [f"parse error: {e}"]
+            log.warning(
+                "parse failed attempt=%s/%s: %s",
+                attempt,
+                gate_attempts,
+                e,
+            )
+            correction = f"- {last_failures[0]}\n"
+            if attempt < gate_attempts:
+                continue
+            log.error("parse error after %s attempt(s): %s", gate_attempts, e)
+            return 5
+
+        # Fill meta from topic when model omits fields
+        meta.setdefault("locale", picked.get("locale") or "fr")
+        meta.setdefault("city", picked.get("city"))
+        meta.setdefault("cluster", picked.get("clusterId"))
+        meta.setdefault("date", today.isoformat())
+        meta["phrase"] = picked.get("phrase")
+        meta["keywordId"] = picked.get("id")
+        if args.slug_override:
+            meta["slug"] = args.slug_override
+        elif not meta.get("slug"):
+            meta["slug"] = parse.slugify(
+                str(meta.get("title") or picked.get("phrase") or "post"),
+                locale=str(meta.get("locale") or "fr"),
+            )
+
+        # Idempotence: skip if HTML already exists
+        html_path = ROOT / "blog" / f"{meta['slug']}.html"
+        if html_path.exists() and not args.slug_override:
+            log.warning(
+                "slug already exists: %s — pick next topic manually or override",
+                meta["slug"],
+            )
+            return 6
+
+        # Salvage missing / incomplete JSON-LD from FAQ + meta before gates.
+        # Keeps E-E-A-T structure (BlogPosting + FAQPage) without gutting checks.
+        slug_preview = str(meta["slug"])
+        canonical_preview = f"https://maptrotter.xyz/blog/{slug_preview}.html"
+        if json_ld_raw is None:
+            log.warning(
+                "missing json-ld fence — synthesizing from meta/FAQ (attempt=%s)",
+                attempt,
+            )
+        json_ld_for_gates = render.ensure_json_ld(
+            json_ld_raw,
+            meta=meta,
+            canonical=canonical_preview,
+            markdown=body,
+        )
+
+        gate = gates.run_gates(
+            meta,
+            body,
+            json_ld_for_gates,
+            recent_titles=recent_titles,
+            recent_bodies=recent_bodies,
+        )
+        if args.allow_short_fixture or (args.fixture and dry):
+            # Drop only the hard min-length failure for scaffolding fixtures
+            gate.failures = [f for f in gate.failures if not f.startswith("too short:")]
+            gate.ok = len(gate.failures) == 0
+
+        if gate.ok:
+            json_ld_raw = json_ld_for_gates
+            log.info(
+                "quality gates OK (words≈%s attempt=%s/%s)",
+                gates.word_count(body),
+                attempt,
+                gate_attempts,
+            )
+            break
+
+        last_failures = list(gate.failures)
+        log.warning(
+            "quality gates failed attempt=%s/%s:",
+            attempt,
+            gate_attempts,
+        )
+        for f in last_failures:
+            log.warning("  - %s", f)
+        correction = "".join(f"- {f}\n" for f in last_failures)
+        if attempt < gate_attempts:
+            log.info("regenerating draft after gate failure…")
+            continue
+    else:
+        # Exhausted gate attempts
+        log.error(
+            "quality gates failed after %s attempt(s) (exit 7). Failures:",
+            gate_attempts,
+        )
+        for f in last_failures:
             log.error("  - %s", f)
+        log.error(
+            "hint: exit 7 = content quality (structure/E-E-A-T/json-ld), "
+            "not Gemini API. Pipeline regenerates up to GATE_ATTEMPTS "
+            "(default 3). Check prompt compliance or raise GATE_ATTEMPTS."
+        )
         return 7
-
-    log.info("quality gates OK (words≈%s)", gates.word_count(body))
 
     if args.skip_write:
         log.info("skip-write: exiting after gates")
         return 0
 
     canonical = f"https://maptrotter.xyz/blog/{meta['slug']}.html"
-    json_ld = render.ensure_json_ld(json_ld_raw, meta=meta, canonical=canonical)
+    json_ld = render.ensure_json_ld(
+        json_ld_raw, meta=meta, canonical=canonical, markdown=body
+    )
     body_html = render.markdown_to_html(body)
     template = render.load_template(ROOT)
     article_html = render.render_article_html(

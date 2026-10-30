@@ -7,8 +7,13 @@ import re
 from typing import Any
 
 FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n(.*)\Z", re.DOTALL)
+# Tolerate json-ld / jsonld / json fences and missing trailing newline before ```.
 JSON_LD_RE = re.compile(
-    r"```(?:json-ld|json)\s*\n(.*?)\n```",
+    r"```(?:json-ld|jsonld|json)\s*\r?\n(.*?)```",
+    re.DOTALL | re.IGNORECASE,
+)
+SCRIPT_LD_RE = re.compile(
+    r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
     re.DOTALL | re.IGNORECASE,
 )
 
@@ -29,13 +34,49 @@ def parse_frontmatter(raw: str) -> tuple[dict[str, Any], str]:
 def extract_json_ld(body: str) -> tuple[str, dict[str, Any] | list[Any] | None]:
     m = JSON_LD_RE.search(body)
     if not m:
+        m = SCRIPT_LD_RE.search(body)
+    if not m:
+        # Last resort: bare @graph / BlogPosting JSON blob near the end
+        data = _try_bare_json_ld(body)
+        if data is not None:
+            return body, data
         return body, None
     cleaned = (body[: m.start()] + body[m.end() :]).strip()
     try:
-        data = json.loads(m.group(1))
+        data = json.loads(m.group(1).strip())
     except json.JSONDecodeError as e:
         raise ValueError(f"invalid json-ld block: {e}") from e
     return cleaned, data
+
+
+def _try_bare_json_ld(body: str) -> dict[str, Any] | list[Any] | None:
+    """Salvage a trailing JSON object that looks like schema.org JSON-LD."""
+    # Prefer the largest schema-looking decode (outer @graph beats inner nodes).
+    decoder = json.JSONDecoder()
+    best: dict[str, Any] | list[Any] | None = None
+    best_score = -1
+    # Only look in the trailing portion of long articles to stay cheap.
+    start_at = max(0, len(body) - 12000)
+    for idx in range(len(body) - 1, start_at - 1, -1):
+        if body[idx] != "{":
+            continue
+        try:
+            data, end = decoder.raw_decode(body[idx:])
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(data, (dict, list)):
+            continue
+        blob = json.dumps(data, ensure_ascii=False)
+        if not any(m in blob for m in ("@context", "@graph", "BlogPosting", "FAQPage")):
+            continue
+        score = end - idx
+        # Bonus for full graph wrappers so nested BlogPosting loses.
+        if isinstance(data, dict) and ("@graph" in data or "@context" in data):
+            score += 10_000
+        if score > best_score:
+            best_score = score
+            best = data
+    return best
 
 
 def _parse_simple_yaml(block: str) -> dict[str, Any]:
