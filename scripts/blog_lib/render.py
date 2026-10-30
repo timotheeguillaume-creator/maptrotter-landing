@@ -255,18 +255,44 @@ def inline_md(text: str) -> str:
     return escaped
 
 
+def extract_faq_pairs(markdown: str) -> list[tuple[str, str]]:
+    """Pull bold Q/A pairs from a ## FAQ section (best-effort)."""
+    faq_match = re.search(r"(?im)^##\s*FAQ\b\s*\n(.*?)(?=\n##\s|\Z)", markdown, re.DOTALL)
+    if not faq_match:
+        return []
+    block = faq_match.group(1)
+    pairs: list[tuple[str, str]] = []
+    # **Question?** followed by answer until next **…?** or end
+    for m in re.finditer(
+        r"(?m)^\*\*(.+?\?)\*\*\s*\n+([\s\S]*?)(?=^\*\*.+\?\*\*|\Z)",
+        block,
+    ):
+        q = m.group(1).strip()
+        a = re.sub(r"\s+", " ", m.group(2)).strip()
+        if q and a:
+            pairs.append((q, a))
+    return pairs
+
+
 def ensure_json_ld(
     data: dict[str, Any] | list[Any] | None,
     *,
     meta: dict[str, Any],
     canonical: str,
+    markdown: str | None = None,
 ) -> dict[str, Any]:
-    """Normalize / fill defaults for BlogPosting + FAQPage (+ Place/ItemList)."""
+    """Normalize / fill defaults for BlogPosting + FAQPage (+ Place/ItemList).
+
+    When the model omits JSON-LD (or drops FAQPage), salvage from meta + FAQ
+    markdown so a structurally good article is not rejected solely for missing
+    schema. Callers still run quality gates on the result.
+    """
     locale = meta.get("locale") or "fr"
     title = meta.get("title") or ""
     description = meta.get("description") or ""
     date_iso = str(meta.get("date") or date.today().isoformat())[:10]
     image = f"{SITE}/splash.png"
+    city = meta.get("city")
 
     graph: list[dict[str, Any]] = []
     if isinstance(data, dict) and "@graph" in data:
@@ -322,6 +348,36 @@ def ensure_json_ld(
                     "parentOrganization": {"@type": "Organization", "name": "Xwalk"},
                 },
             )
+
+    if "FAQPage" not in types and markdown:
+        faq_pairs = extract_faq_pairs(markdown)
+        if len(faq_pairs) >= 3:
+            graph.append(
+                {
+                    "@type": "FAQPage",
+                    "mainEntity": [
+                        {
+                            "@type": "Question",
+                            "name": q,
+                            "acceptedAnswer": {"@type": "Answer", "text": a},
+                        }
+                        for q, a in faq_pairs
+                    ],
+                }
+            )
+            types.add("FAQPage")
+
+    if city and "Place" not in types:
+        graph.append(
+            {
+                "@type": "Place",
+                "name": city,
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": city,
+                },
+            }
+        )
 
     return {"@context": "https://schema.org", "@graph": graph}
 

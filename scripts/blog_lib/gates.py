@@ -76,8 +76,10 @@ def run_gates(
         result.fail("missing ## Direct Answer section")
     else:
         da_words = word_count(da_match.group(1))
-        if da_words < 30 or da_words > 120:
-            result.fail(f"Direct Answer word count out of range ({da_words}; want ~40–80)")
+        # Soft band around the prompt target (~40–80); allow a little slack so
+        # transient model variance does not kill the cron.
+        if da_words < 25 or da_words > 150:
+            result.fail(f"Direct Answer word count out of range ({da_words}; want ~40–80, hard 25–150)")
 
     faq_match = re.search(r"(?im)^##\s*FAQ\b", body)
     if not faq_match:

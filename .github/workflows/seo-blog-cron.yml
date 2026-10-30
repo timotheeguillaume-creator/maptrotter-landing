@@ -12,6 +12,7 @@
 #   GEMINI_MODEL            — default gemini-3.8-flash (gemini-2.0-flash retired)
 #   GEMINI_MODEL_FALLBACKS  — comma-separated; default gemini-3.6-flash,gemini-3.5-flash-lite
 #                             (used when primary returns 503 high-demand / 404)
+#   GATE_ATTEMPTS           — regenerate drafts on quality-gate fail (default 3; exit 7 after)
 #
 # publish_mode=pr also needs (unless SEO_CRON_TOKEN is set):
 #   Settings → Actions → General → Workflow permissions
@@ -96,6 +97,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.8-flash' }}
           GEMINI_MODEL_FALLBACKS: ${{ vars.GEMINI_MODEL_FALLBACKS || 'gemini-3.6-flash,gemini-3.5-flash-lite' }}
+          GATE_ATTEMPTS: ${{ vars.GATE_ATTEMPTS || '3' }}
           DRY_RUN_DIR: ${{ github.workspace }}/dry-run-out
         run: |
           set -euo pipefail

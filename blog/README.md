@@ -53,7 +53,7 @@ GEMINI_API_KEY=... python3 scripts/generate-blog-post.py --locale fr
 | `INDEXNOW_KEY` | recommandé | IndexNow + fichier public `/{key}.txt` |
 | `SEO_CRON_TOKEN` | optionnel | PAT (repo + pull requests) si `GITHUB_TOKEN` ne peut pas ouvrir de PR |
 
-Variables optionnelles : `GEMINI_MODEL` (défaut `gemini-3.8-flash`) ; `GEMINI_MODEL_FALLBACKS` (défaut `gemini-3.6-flash,gemini-3.5-flash-lite`) si le modèle principal renvoie 503 high-demand.
+Variables optionnelles : `GEMINI_MODEL` (défaut `gemini-3.8-flash`) ; `GEMINI_MODEL_FALLBACKS` (défaut `gemini-3.6-flash,gemini-3.5-flash-lite`) si le modèle principal renvoie 503 high-demand ; `GATE_ATTEMPTS` (défaut `3`) — régénère le brouillon si les quality gates / parse échouent (exit 7 seulement après épuisement).
 
 ### Permissions Actions (obligatoire pour `publish_mode=pr`)
 
@@ -73,4 +73,4 @@ Sans cette case, le cron génère + push la branche puis échoue à `gh pr creat
 3. Cron programmé (mar/jeu 08:00 UTC) : `publish_mode=commit` — push direct sur `main` + ping IndexNow si `INDEXNOW_KEY` est défini.
 4. Manuel (`workflow_dispatch`) : choisir `publish_mode=commit` (défaut fire-and-forget) ou `pr` (PR draft / rodage ; nécessite la case Actions ci-dessus ou `SEO_CRON_TOKEN`).
 
-Cron : mardi & jeudi 08:00 UTC. Cap ~2 posts/semaine. Retries Gemini : 3 tentatives/modèle (backoff 20s→80s), puis fallbacks.
+Cron : mardi & jeudi 08:00 UTC. Cap ~2 posts/semaine. Retries Gemini : 3 tentatives/modèle (backoff 20s→80s), puis fallbacks. Quality gates : jusqu’à `GATE_ATTEMPTS` (3) régénérations ; JSON-LD manquant synthétisé depuis FAQ/meta quand possible.

@@ -61,9 +61,10 @@ Réponse courte.
 Une phrase + lien : [Ouvrir la carte](/) (ou équivalent localisé).
 ```
 
-# JSON-LD (obligatoire en fin de sortie)
+# JSON-LD (OBLIGATOIRE — sans ce bloc la sortie est rejetée)
 
-Après le Markdown, un unique bloc :
+**Toujours** terminer par un unique fence ` ```json-ld ` après le Markdown (après ## CTA).
+Ne coupe jamais avant ce bloc. Ne l’omets jamais, même en brouillon court.
 
 ````
 ```json-ld
@@ -79,11 +80,12 @@ Après le Markdown, un unique bloc :
 ````
 
 Règles JSON-LD :
+- Fence exact : trois backticks puis `json-ld` (pas `json` seul si possible).
 - `BlogPosting` : headline, description, datePublished, dateModified, author (Organization « Équipe MapTrotter »), publisher (Organization « MapTrotter », parentOrganization « Xwalk »), image `https://maptrotter.xyz/splash.png`, mainEntityOfPage, inLanguage.
-- `FAQPage` : au moins 3 Question/Answer alignées sur la section FAQ.
+- `FAQPage` : au moins 3 Question/Answer alignées sur la section FAQ (mêmes questions).
 - `Place` si une ville est centrale.
 - `ItemList` **seulement** si tu listes un top N de spots (ListItem name + position) — sinon omets-le.
-- JSON valide, pas de commentaires.
+- JSON valide, pas de commentaires, pas de texte après le fence fermant.
 
 # Interdits
 
