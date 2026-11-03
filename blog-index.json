@@ -1,10 +1,34 @@
 {
   "version": 1,
-  "updated": "2026-10-30",
+  "updated": "2026-11-03",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "parchi-nascosti-a-canberra-it",
+      "title": "Parchi nascosti a Canberra: dove rilassarsi lontano dai turisti",
+      "description": "Cerchi un'oasi verde a Canberra lontano dalla folla? Scopri i parchi nascosti della capitale australiana per vivere vibes locali e uniche.",
+      "excerpt": "Se vuoi esplorare i parchi nascosti a Canberra ed evitare le solite rotte turistiche attorno al lago Burley Griffin, la capitale offre angoli verdi incredibili ",
+      "date": "2026-11-03",
+      "dateModified": "2026-11-03",
+      "locale": "it",
+      "city": "Canberra",
+      "cluster": "voyageur-eviter-touristique-it",
+      "category": "Spots",
+      "tags": [
+        "Canberra",
+        "parchi",
+        "natura",
+        "off-the-beaten-track"
+      ],
+      "readingMinutes": 6,
+      "path": "/blog/parchi-nascosti-a-canberra-it.html",
+      "source": "/blog/posts/2026-11-03-parchi-nascosti-a-canberra-it.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "it-canberra-eviter-touristique-spots-hidden-parc-01"
+    },
     {
       "slug": "last-minute-activities-in-adelaide-en",
       "title": "Last-Minute Activities in Adelaide: Spontaneous Ways to Explore the City",
