@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-03",
+  "updated": "2026-11-05",
   "meta": {
     "product": "MapTrotter",
     "axes": {
@@ -144570,8 +144570,8 @@
       "spotType": null,
       "clusterId": "expat-rencontre-es",
       "priority": 5,
-      "usedCount": 0,
-      "lastUsed": null,
+      "usedCount": 1,
+      "lastUsed": "2026-11-05",
       "status": "active"
     },
     {

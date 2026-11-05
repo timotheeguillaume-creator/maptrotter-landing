@@ -1,10 +1,34 @@
 {
   "version": 1,
-  "updated": "2026-11-03",
+  "updated": "2026-11-05",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "conocer-otros-expatriados-en-brisbane-es",
+      "title": "Cómo conocer otros expatriados en Brisbane sin complicarse la vida",
+      "description": "¿Te acabas de mudar a Queensland? Descubre los mejores barrios, eventos y consejos locales para conocer otros expatriados en Brisbane de forma natural.",
+      "excerpt": "Para **conocer otros expatriados en Brisbane**, la clave está en aprovechar el estilo de vida al aire libre de la ciudad. Los mercadillos de fin de semana, los ",
+      "date": "2026-11-05",
+      "dateModified": "2026-11-05",
+      "locale": "es",
+      "city": "Brisbane",
+      "cluster": "expat-rencontre-es",
+      "category": "Rencontres",
+      "tags": [
+        "brisbane",
+        "expatriados",
+        "comunidad",
+        "vida-local"
+      ],
+      "readingMinutes": 6,
+      "path": "/blog/conocer-otros-expatriados-en-brisbane-es.html",
+      "source": "/blog/posts/2026-11-05-conocer-otros-expatriados-en-brisbane-es.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "es-brisbane-rencontre-expat-meet-01"
+    },
     {
       "slug": "parchi-nascosti-a-canberra-it",
       "title": "Parchi nascosti a Canberra: dove rilassarsi lontano dai turisti",
