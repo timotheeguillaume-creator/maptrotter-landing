@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-05",
+  "updated": "2026-11-10",
   "meta": {
     "product": "MapTrotter",
     "axes": {
@@ -32276,8 +32276,8 @@
       "spotType": "vue-panoramique",
       "clusterId": "voyageur-decouvrir-spot-fr",
       "priority": 5,
-      "usedCount": 0,
-      "lastUsed": null,
+      "usedCount": 1,
+      "lastUsed": "2026-11-10",
       "status": "active"
     },
     {

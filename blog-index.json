@@ -1,10 +1,35 @@
 {
   "version": 1,
-  "updated": "2026-11-05",
+  "updated": "2026-11-10",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "vues-panoramiques-gratuits-fremantle",
+      "title": "Les meilleures vues panoramiques gratuites à Fremantle",
+      "description": "Découvre les spots avec les plus belles vues panoramiques gratuites à Fremantle. Profitez des couchers de soleil et de l'océan sans dépenser un centime.",
+      "excerpt": "Tu cherches à admirer les plus beaux panoramas de Fremantle sans te ruiner ? La ville portuaire regorge de points de vue spectaculaires sur l'océan Indien et l'",
+      "date": "2026-11-10",
+      "dateModified": "2026-11-10",
+      "locale": "fr",
+      "city": "Fremantle",
+      "cluster": "voyageur-decouvrir-spot-fr",
+      "category": "Spots",
+      "tags": [
+        "Fremantle",
+        "Australie",
+        "Vues",
+        "Gratuit",
+        "Voyage"
+      ],
+      "readingMinutes": 6,
+      "path": "/blog/vues-panoramiques-gratuits-fremantle.html",
+      "source": "/blog/posts/2026-11-10-vues-panoramiques-gratuits-fremantle.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "fr-fremantle-decouvrir-spot-mod-spots-vue-panoramique-gratuit-01"
+    },
     {
       "slug": "conocer-otros-expatriados-en-brisbane-es",
       "title": "Cómo conocer otros expatriados en Brisbane sin complicarse la vida",
