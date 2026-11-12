@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-10",
+  "updated": "2026-11-12",
   "meta": {
     "product": "MapTrotter",
     "axes": {
@@ -249850,8 +249850,8 @@
       "spotType": null,
       "clusterId": "voyageur-carte-interactive-de",
       "priority": 5,
-      "usedCount": 0,
-      "lastUsed": null,
+      "usedCount": 1,
+      "lastUsed": "2026-11-12",
       "status": "active"
     },
     {

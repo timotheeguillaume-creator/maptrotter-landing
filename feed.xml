@@ -5,12 +5,20 @@
     <link>https://maptrotter.xyz/blog.html</link>
     <description>Guides locaux, rencontres et spots authentiques — MapTrotter</description>
     <language>fr</language>
-    <lastBuildDate>Tue, 10 Nov 2026 16:05:41 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 12 Nov 2026 16:31:51 +0000</lastBuildDate>
     <image>
       <url>https://maptrotter.xyz/splash.png</url>
       <title>MapTrotter</title>
       <link>https://maptrotter.xyz/blog.html</link>
     </image>
+    <item>
+      <title>Hobart entdecken: Deine interaktive Karte für Aktivitäten und lokale Spots</title>
+      <link>https://maptrotter.xyz/blog/interaktive-karte-aktivitaeten-in-hobart-de.html</link>
+      <guid isPermaLink="true">https://maptrotter.xyz/blog/interaktive-karte-aktivitaeten-in-hobart-de.html</guid>
+      <pubDate>Thu, 12 Nov 2026 08:00:00 +0000</pubDate>
+      <description>Erkunde Hobart wie ein Local! Mit der interaktiven Karte für Aktivitäten auf MapTrotter findest du echte Geheimtipps, entspannte Vibes und tolle Begegnungen.</description>
+      <language>de</language>
+    </item>
     <item>
       <title>Les meilleures vues panoramiques gratuites à Fremantle</title>
       <link>https://maptrotter.xyz/blog/vues-panoramiques-gratuits-fremantle.html</link>

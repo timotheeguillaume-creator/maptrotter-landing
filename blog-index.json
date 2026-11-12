@@ -1,10 +1,35 @@
 {
   "version": 1,
-  "updated": "2026-11-10",
+  "updated": "2026-11-12",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "interaktive-karte-aktivitaeten-in-hobart-de",
+      "title": "Hobart entdecken: Deine interaktive Karte für Aktivitäten und lokale Spots",
+      "description": "Erkunde Hobart wie ein Local! Mit der interaktiven Karte für Aktivitäten auf MapTrotter findest du echte Geheimtipps, entspannte Vibes und tolle Begegnungen.",
+      "excerpt": "Eine **interaktive Karte für Aktivitäten in Hobart** zeigt dir auf einen Blick, wo das Leben der Stadt pulsiert. Egal ob du entspannte Märkte, Naturpfade oder g",
+      "date": "2026-11-12",
+      "dateModified": "2026-11-12",
+      "locale": "de",
+      "city": "Hobart",
+      "cluster": "voyageur-carte-interactive-de",
+      "category": "Guides",
+      "tags": [
+        "Hobart",
+        "Tasmanien",
+        "Interaktive Karte",
+        "Reisetipps",
+        "Community"
+      ],
+      "readingMinutes": 6,
+      "path": "/blog/interaktive-karte-aktivitaeten-in-hobart-de.html",
+      "source": "/blog/posts/2026-11-12-interaktive-karte-aktivitaeten-in-hobart-de.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "de-hobart-carte-interactive-map-activities-01"
+    },
     {
       "slug": "vues-panoramiques-gratuits-fremantle",
       "title": "Les meilleures vues panoramiques gratuites à Fremantle",
