@@ -1,10 +1,34 @@
 {
   "version": 1,
-  "updated": "2026-11-12",
+  "updated": "2026-11-17",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "what-to-do-tonight-in-geelong-en",
+      "title": "What to Do Tonight in Geelong: Local Bars, Gigs & Evening Vibes",
+      "description": "Wondering what to do tonight in Geelong? Explore vibrant laneway bars, live music venues, waterfront strolls, and community spots with MapTrotter.",
+      "excerpt": "If you are wondering what to do tonight in Geelong, start with sunset drinks along Corio Bay before heading to the Little Malop Street precinct for cozy wine ba",
+      "date": "2026-11-17",
+      "dateModified": "2026-11-17",
+      "locale": "en",
+      "city": "Geelong",
+      "cluster": "local-sortir-soir-en",
+      "category": "Guides",
+      "tags": [
+        "geelong",
+        "nightlife",
+        "australia",
+        "local-tips"
+      ],
+      "readingMinutes": 6,
+      "path": "/blog/what-to-do-tonight-in-geelong-en.html",
+      "source": "/blog/posts/2026-11-17-what-to-do-tonight-in-geelong-en.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "en-geelong-sortir-soir-faq-tonight-01"
+    },
     {
       "slug": "interaktive-karte-aktivitaeten-in-hobart-de",
       "title": "Hobart entdecken: Deine interaktive Karte für Aktivitäten und lokale Spots",

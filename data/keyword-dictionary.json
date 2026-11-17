@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-12",
+  "updated": "2026-11-17",
   "meta": {
     "product": "MapTrotter",
     "axes": {
@@ -92798,8 +92798,8 @@
       "spotType": null,
       "clusterId": "local-sortir-soir-en",
       "priority": 5,
-      "usedCount": 0,
-      "lastUsed": null,
+      "usedCount": 1,
+      "lastUsed": "2026-11-17",
       "status": "active"
     },
     {
