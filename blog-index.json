@@ -1,10 +1,35 @@
 {
   "version": 1,
-  "updated": "2026-11-17",
+  "updated": "2026-11-19",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "incontrare-locali-e-viaggiatori-a-launceston-it",
+      "title": "Incontrare locali e viaggiatori a Launceston: dove vivere la vera Tasmania",
+      "description": "Cerchi un modo autentico per incontrare locali e viaggiatori a Launceston? Dai mercati del weekend ai bar indie, ecco come vivere la città al meglio.",
+      "excerpt": "Per connettere **locali e viaggiatori a Launceston**, il segreto è frequentare i punti di ritrovo comunitari come Harvest Market il sabato mattina, i bar indipe",
+      "date": "2026-11-19",
+      "dateModified": "2026-11-19",
+      "locale": "it",
+      "city": "Launceston",
+      "cluster": "local-locaux-voyageurs-it",
+      "category": "Rencontres",
+      "tags": [
+        "launceston",
+        "tasmania",
+        "locali",
+        "viaggiatori",
+        "maptrotter"
+      ],
+      "readingMinutes": 5,
+      "path": "/blog/incontrare-locali-e-viaggiatori-a-launceston-it.html",
+      "source": "/blog/posts/2026-11-19-incontrare-locali-e-viaggiatori-a-launceston-it.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "it-launceston-locaux-voyageurs-locals-travelers-01"
+    },
     {
       "slug": "what-to-do-tonight-in-geelong-en",
       "title": "What to Do Tonight in Geelong: Local Bars, Gigs & Evening Vibes",

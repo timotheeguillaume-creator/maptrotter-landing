@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-17",
+  "updated": "2026-11-19",
   "meta": {
     "product": "MapTrotter",
     "axes": {
@@ -211266,8 +211266,8 @@
       "spotType": null,
       "clusterId": "local-locaux-voyageurs-it",
       "priority": 5,
-      "usedCount": 0,
-      "lastUsed": null,
+      "usedCount": 1,
+      "lastUsed": "2026-11-19",
       "status": "active"
     },
     {
