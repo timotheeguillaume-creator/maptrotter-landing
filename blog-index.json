@@ -1,10 +1,34 @@
 {
   "version": 1,
-  "updated": "2026-11-19",
+  "updated": "2026-11-24",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "miradores-escondidos-byron-bay-es",
+      "title": "Miradores escondidos en Byron Bay: lejos de las multitudes de Cape Byron",
+      "description": "Descubre los miradores escondidos en Byron Bay para huir de las masas. Rincones tranquilos, vistas al océano y consejos de la comunidad de MapTrotter.",
+      "excerpt": "Si buscas miradores escondidos en Byron Bay para escapar del bullicio del icónico faro de Cape Byron, existen alternativas tranquilas rodeadas de naturaleza sal",
+      "date": "2026-11-24",
+      "dateModified": "2026-11-24",
+      "locale": "es",
+      "city": "Byron Bay",
+      "cluster": "voyageur-eviter-touristique-es",
+      "category": "Spots",
+      "tags": [
+        "byron bay",
+        "miradores",
+        "naturaleza",
+        "australia"
+      ],
+      "readingMinutes": 5,
+      "path": "/blog/miradores-escondidos-byron-bay-es.html",
+      "source": "/blog/posts/2026-11-24-miradores-escondidos-byron-bay-es.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "es-byron-bay-eviter-touristique-spots-hidden-vue-panoramique-01"
+    },
     {
       "slug": "incontrare-locali-e-viaggiatori-a-launceston-it",
       "title": "Incontrare locali e viaggiatori a Launceston: dove vivere la vera Tasmania",

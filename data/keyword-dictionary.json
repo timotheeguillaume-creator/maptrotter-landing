@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-19",
+  "updated": "2026-11-24",
   "meta": {
     "product": "MapTrotter",
     "axes": {
@@ -164128,8 +164128,8 @@
       "spotType": "vue-panoramique",
       "clusterId": "voyageur-eviter-touristique-es",
       "priority": 5,
-      "usedCount": 0,
-      "lastUsed": null,
+      "usedCount": 1,
+      "lastUsed": "2026-11-24",
       "status": "active"
     },
     {
