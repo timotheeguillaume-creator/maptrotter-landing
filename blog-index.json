@@ -1,10 +1,34 @@
 {
   "version": 1,
-  "updated": "2026-11-24",
+  "updated": "2026-11-26",
   "urlScheme": "B2-A",
   "urlPattern": "/blog/{slug}.html",
   "localeRule": "suffix optional: -fr / -en / -es (omit for default FR)",
   "posts": [
+    {
+      "slug": "coworking-nomades-digitaux-cairns",
+      "title": "Où poser son ordinateur : coworking pour nomades digitaux à Cairns",
+      "description": "Trouve les meilleurs espaces de coworking et cafés working-friendly à Cairns. Des conseils concrets pour bosser avec le Wi-Fi tout en profitant des vibes du Queensland.",
+      "excerpt": "Si tu cherches un espace de **coworking pour nomades digitaux à Cairns**, la ville offre un mix parfait entre cafés lumineux et espaces partagés professionnels.",
+      "date": "2026-11-26",
+      "dateModified": "2026-11-26",
+      "locale": "fr",
+      "city": "Cairns",
+      "cluster": "nomade-decouvrir-spot-fr",
+      "category": "Spots",
+      "tags": [
+        "cairns",
+        "coworking",
+        "nomade digital",
+        "australie"
+      ],
+      "readingMinutes": 6,
+      "path": "/blog/coworking-nomades-digitaux-cairns.html",
+      "source": "/blog/posts/2026-11-26-coworking-nomades-digitaux-cairns.md",
+      "status": "published",
+      "image": "/splash.png",
+      "keywordId": "fr-cairns-decouvrir-spot-nomad-cowork-cowork-01"
+    },
     {
       "slug": "miradores-escondidos-byron-bay-es",
       "title": "Miradores escondidos en Byron Bay: lejos de las multitudes de Cape Byron",

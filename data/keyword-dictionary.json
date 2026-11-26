@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-24",
+  "updated": "2026-11-26",
   "meta": {
     "product": "MapTrotter",
     "axes": {
@@ -19060,8 +19060,8 @@
       "spotType": "cowork",
       "clusterId": "nomade-decouvrir-spot-fr",
       "priority": 5,
-      "usedCount": 0,
-      "lastUsed": null,
+      "usedCount": 1,
+      "lastUsed": "2026-11-26",
       "status": "active"
     },
     {
