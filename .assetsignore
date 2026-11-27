@@ -16,3 +16,6 @@ package.json
 package-lock.json
 blog-generate-summary.json
 requirements-blog.txt
+
+# Internal notes never ship
+HANDOFF*.md
